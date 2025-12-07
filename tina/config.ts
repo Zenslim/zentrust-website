@@ -22,7 +22,7 @@ const config = defineConfig({
   // NOTE: After media config changes, delete the .next folder and restart `npm run dev` so Tina picks up the new media store.
 
   /* -----------------------------------------------------
-   * SCHEMA
+   * SCHEMA 
    * ----------------------------------------------------- */
   schema: {
     collections: [
