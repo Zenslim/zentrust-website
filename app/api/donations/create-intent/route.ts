@@ -90,16 +90,13 @@ export async function POST(req: Request) {
     // 4) EXTRACT CLIENT SECRET SAFELY
     // -------------------------------------------------------
 
-    const latestInvoice = subscription.latest_invoice
-
+    const latest = subscription.latest_invoice
     let clientSecret: string | null = null
 
-    if (typeof latestInvoice === "object" && latestInvoice !== null) {
-      const invoiceObj = latestInvoice as Stripe.Invoice
-      const paymentIntent = invoiceObj.payment_intent
-
-      if (paymentIntent && typeof paymentIntent !== "string") {
-        clientSecret = paymentIntent.client_secret
+    if (typeof latest === "object" && latest !== null) {
+      const pi = latest.payment_intent
+      if (pi && typeof pi !== "string") {
+        clientSecret = (pi as Stripe.PaymentIntent).client_secret
       }
     }
 
