@@ -3,13 +3,9 @@ import Stripe from "stripe"
 
 export const runtime = "nodejs"
 
-// Load Stripe secret key
 const stripeSecret = process.env.STRIPE_SECRET_KEY
-if (!stripeSecret) {
-  throw new Error("Missing STRIPE_SECRET_KEY environment variable.")
-}
+if (!stripeSecret) throw new Error("Missing STRIPE_SECRET_KEY")
 
-// Initialize Stripe (no apiVersion override → prevents TS mismatch)
 const stripe = new Stripe(stripeSecret)
 
 export async function POST(req: Request) {
@@ -20,9 +16,6 @@ export async function POST(req: Request) {
     const frequency = body?.frequency === "monthly" ? "monthly" : "once"
     const impactPath = body?.impactPath || "flexible"
 
-    // -------------------------------------------------------
-    // 1) BASIC VALIDATION
-    // -------------------------------------------------------
     if (!amount || amount < 1 || amount > 200000) {
       return NextResponse.json(
         { error: "Invalid donation amount." },
@@ -30,19 +23,17 @@ export async function POST(req: Request) {
       )
     }
 
-    // Convert USD → cents
     const amountInCents = Math.round(amount * 100)
 
-    // Shared metadata
     const metadata = {
       donationAmountUSD: amount.toString(),
       frequency,
       impactPath,
     }
 
-    // -------------------------------------------------------
-    // 2) ONE-TIME DONATION
-    // -------------------------------------------------------
+    // -----------------------------------------------------
+    // ONE-TIME DONATION
+    // -----------------------------------------------------
     if (frequency === "once") {
       const paymentIntent = await stripe.paymentIntents.create({
         amount: amountInCents,
@@ -57,16 +48,13 @@ export async function POST(req: Request) {
       })
     }
 
-    // -------------------------------------------------------
-    // 3) MONTHLY DONATION (Subscription)
-    // -------------------------------------------------------
-
-    // Step 1 — Create customer
+    // -----------------------------------------------------
+    // MONTHLY RECURRING DONATION
+    // -----------------------------------------------------
     const customer = await stripe.customers.create({
       metadata,
     })
 
-    // Step 2 — Create dynamic price for monthly donation
     const price = await stripe.prices.create({
       unit_amount: amountInCents,
       currency: "usd",
@@ -77,7 +65,6 @@ export async function POST(req: Request) {
       metadata,
     })
 
-    // Step 3 — Create subscription in incomplete state
     const subscription = await stripe.subscriptions.create({
       customer: customer.id,
       items: [{ price: price.id }],
@@ -86,29 +73,28 @@ export async function POST(req: Request) {
       metadata,
     })
 
-    // -------------------------------------------------------
-    // 4) EXTRACT CLIENT SECRET SAFELY
-    // -------------------------------------------------------
+    // -----------------------------------------------------
+    // GET CLIENT SECRET FROM EXPANDED INVOICE
+    // Stripe TS 2025: must use index access instead of .payment_intent
+    // -----------------------------------------------------
 
     const latest = subscription.latest_invoice
+
     let clientSecret: string | null = null
 
     if (typeof latest === "object" && latest !== null) {
-      const pi = latest.payment_intent
-      if (pi && typeof pi !== "string") {
-        clientSecret = (pi as Stripe.PaymentIntent).client_secret
+      // Access expanded fields using index access since Stripe types hide them
+      const piRaw = (latest as any)["payment_intent"]
+
+      if (piRaw && typeof piRaw !== "string") {
+        clientSecret = (piRaw as Stripe.PaymentIntent).client_secret
       }
     }
 
     if (!clientSecret) {
-      throw new Error(
-        "Unable to obtain client secret for subscription PaymentIntent."
-      )
+      throw new Error("Unable to obtain client secret for subscription PaymentIntent.")
     }
 
-    // -------------------------------------------------------
-    // 5) SEND RESPONSE TO CLIENT
-    // -------------------------------------------------------
     return NextResponse.json({
       type: "subscription",
       clientSecret,
