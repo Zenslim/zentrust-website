@@ -30,7 +30,6 @@ import { calculateDonationImpact } from "@/lib/calculator"
 // ------------------------------------------------------------------
 
 const stripePublicKey = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
-
 const stripePromise = stripePublicKey ? loadStripe(stripePublicKey) : null
 
 // ------------------------------------------------------------------
@@ -38,28 +37,27 @@ const stripePromise = stripePublicKey ? loadStripe(stripePublicKey) : null
 // ------------------------------------------------------------------
 
 type Frequency = "once" | "monthly"
-
 type PaymentStatus = "idle" | "loading" | "submitting" | "error"
 
 // ------------------------------------------------------------------
 // Page Component
 // ------------------------------------------------------------------
 
-export default function DonatePaymentPage() {
+export default function StewardshipPaymentPage() {
   return (
     <Suspense
       fallback={
         <div className="min-h-screen flex items-center justify-center px-4 text-sm text-muted-foreground">
-          Loading secure payment experience...
+          Preparing secure stewardship flow…
         </div>
       }
     >
-      <DonatePaymentPageInner />
+      <StewardshipPaymentPageInner />
     </Suspense>
   )
 }
 
-function DonatePaymentPageInner() {
+function StewardshipPaymentPageInner() {
   const searchParams = useSearchParams()
   const router = useRouter()
 
@@ -86,8 +84,8 @@ function DonatePaymentPageInner() {
 
   const displayLabel =
     frequency === "monthly"
-      ? `Donate $${amount.toLocaleString()}/month`
-      : `Donate $${amount.toLocaleString()} once`
+      ? `Confirm $${amount.toLocaleString()}/month resource flow`
+      : `Confirm $${amount.toLocaleString()} one-time resource flow`
 
   // Create PaymentIntent via backend
   useEffect(() => {
@@ -117,7 +115,7 @@ function DonatePaymentPageInner() {
         })
 
         if (!res.ok) {
-          throw new Error("Unable to create payment session.")
+          throw new Error("Unable to create stewardship session.")
         }
 
         const data = await res.json()
@@ -131,7 +129,7 @@ function DonatePaymentPageInner() {
         console.error(err)
         setError(
           err?.message ||
-            "Something went wrong while preparing your secure payment. Please try again.",
+            "Something went wrong while preparing the secure stewardship flow. Please try again.",
         )
         setStatus("error")
       }
@@ -148,10 +146,8 @@ function DonatePaymentPageInner() {
             Payment configuration incomplete
           </h1>
           <p className="text-muted-foreground text-sm">
-            Stripe is not configured yet. Please set
-            {" "}
-            <code className="font-mono text-xs">NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY</code>
-            {" "}
+            Stripe is not configured yet. Please set{" "}
+            <code className="font-mono text-xs">NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY</code>{" "}
             in your environment variables and redeploy.
           </p>
         </div>
@@ -161,11 +157,12 @@ function DonatePaymentPageInner() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-background via-background to-muted/40">
+      {/* Top security bar */}
       <div className="border-b border-border/60 bg-background/80 backdrop-blur">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-3 flex flex-wrap items-center justify-between gap-2 text-xs text-muted-foreground">
           <div className="inline-flex items-center gap-2">
             <Lock className="h-3.5 w-3.5" />
-            <span>Secure payment via Stripe</span>
+            <span>Secure resource processing via Stripe</span>
           </div>
           <div className="inline-flex items-center gap-2">
             <ShieldCheck className="h-3.5 w-3.5" />
@@ -181,21 +178,22 @@ function DonatePaymentPageInner() {
             className="inline-flex items-center gap-2 text-xs text-muted-foreground hover:text-foreground transition-colors"
           >
             <ArrowLeft className="h-3 w-3" />
-            Back to contribution details
+            Back to participation details
           </Link>
         </div>
 
         <div className="grid lg:grid-cols-[minmax(0,1.6fr)_minmax(0,1.2fr)] gap-10 lg:gap-16 items-start">
-          {/* LEFT: Payment Form */}
+          {/* LEFT: Stewardship Form */}
           <div className="space-y-6">
             <div className="space-y-3">
               <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight text-foreground">
-                Complete Your Contribution
+                Finalize Your Stewardship Exchange
               </h1>
               <p className="text-sm sm:text-base text-muted-foreground max-w-xl">
-                Your payment details are encrypted and processed securely via Stripe.
-                Once confirmed, you&apos;ll receive a receipt and a summary of the
-                regenerative impact your contribution helps unlock.
+                This step completes your voluntary resource flow into ZenTrust&apos;s
+                regenerative ecosystem. Payment details are encrypted and processed
+                securely by Stripe. After completion, you&apos;ll receive a receipt
+                and a reflection of the regenerative influence associated with this action.
               </p>
             </div>
 
@@ -204,27 +202,27 @@ function DonatePaymentPageInner() {
               <div className="flex flex-wrap items-center justify-between gap-3">
                 <div className="space-y-1">
                   <p className="text-xs uppercase tracking-wide text-muted-foreground">
-                    Contribution Summary
+                    Stewardship Summary
                   </p>
                   <p className="text-sm font-semibold text-foreground">
                     {displayLabel} ·{" "}
                     <span className="text-muted-foreground">
                       {pathFromQuery === "flexible"
-                        ? "Where needed most"
+                        ? "Adaptive allocation"
                         : pathLabel(pathFromQuery)}
                     </span>
                   </p>
                 </div>
                 <div className="inline-flex items-center gap-2 rounded-full bg-muted px-3 py-1 text-[11px] text-muted-foreground">
                   <Lock className="h-3 w-3" />
-                  <span>256-bit encrypted</span>
+                  <span>256-bit encrypted processing</span>
                 </div>
               </div>
 
               {/* Stripe Payment Form */}
               {status === "loading" && (
                 <div className="rounded-xl border border-border/60 bg-muted/40 px-4 py-6 text-sm text-muted-foreground">
-                  Preparing your secure payment session…
+                  Preparing your secure stewardship session…
                 </div>
               )}
 
@@ -262,64 +260,66 @@ function DonatePaymentPageInner() {
                 </Elements>
               )}
 
-              <div className="space-y-2 pt-2 border-t border-border/50 mt-4">
-                <p className="text-[11px] text-muted-foreground leading-relaxed">
+              <div className="space-y-2 pt-2 border-t border-border/50 mt-4 text-[11px] text-muted-foreground leading-relaxed">
+                <p>
                   ZenTrust, Inc. is a 501(c)(3) public charity recognized by the IRS
                   under Section 170(b)(1)(A)(vi). EIN:{" "}
-                  <span className="font-mono">33-4318487</span>. No goods or
-                  services were provided in exchange for this contribution. Donations
-                  are tax-deductible as allowed by law.
+                  <span className="font-mono">33-4318487</span>. This resource
+                  transfer is voluntary and may be treated as a charitable
+                  contribution for tax purposes as allowed by law. No goods or
+                  services are provided in return.
                 </p>
-                <p className="text-[11px] text-muted-foreground">
-                  All gifts support ZenTrust&apos;s charitable, educational, and
-                  scientific mission in regenerative ecology, BPSS-integrative
-                  wellness research, and open scientific education.
+                <p>
+                  All resources are stewarded exclusively toward ZenTrust&apos;s
+                  charitable, educational, and scientific mission in regenerative
+                  ecology, BPSS-integrative wellness research, and open scientific
+                  education under Board oversight.
                 </p>
               </div>
             </div>
           </div>
 
-          {/* RIGHT: Regenerative Impact Panel */}
+          {/* RIGHT: Regenerative Influence Panel */}
           <aside className="space-y-6">
             <div className="glass-card rounded-2xl p-6 sm:p-7 border border-primary/20 space-y-5">
               <div className="flex items-center gap-2">
                 <Heart className="h-5 w-5 text-primary" />
                 <h2 className="text-sm font-semibold text-foreground">
-                  Your Regenerative Impact
+                  Regenerative Influence Preview
                 </h2>
               </div>
               <p className="text-xs text-muted-foreground leading-relaxed">
-                Based on your selected amount, here is an approximate view of the
-                regenerative transformations your contribution helps initiate. These
-                are illustrative indicators; all donations support ZenTrust&apos;s
-                full mission.
+                Based on the selected resource level, these indicators offer an
+                illustrative sense of the regenerative patterns your participation
+                helps sustain. All flows ultimately support ZenTrust&apos;s full
+                mission.
               </p>
 
               <div className="space-y-3 text-xs">
                 <ImpactMetric
                   icon={TreePine}
-                  label="Ecosystem Layers Regenerated"
+                  label="Ecosystem Layers Activated"
                   value={impact.trees}
-                  description="Layers of life awakened in emerging syntropic forest systems—canopy, understory, shrubs, herbs, and root networks."
+                  description="Layers of life engaged within emerging syntropic forest systems — canopy, understory, shrubs, herbs, and root networks."
                 />
                 <ImpactMetric
                   icon={Leaf}
-                  label="Regenerative Cells Becoming Anti-Fragile"
+                  label="Regenerative Cells Strengthened"
                   value={impact.acres}
-                  description="Micro-watershed and landscape units transitioning into self-renewing, drought-resilient ecological systems."
+                  description="Micro-watersheds and landscape units moving toward anti-fragility and hydration resilience."
                 />
                 <ImpactMetric
                   icon={Users}
-                  label="Families Moving Toward Self-Sufficiency"
+                  label="Families Advancing Sovereignty"
                   value={impact.households}
-                  description="Families gaining regenerative tools, ecological security, and long-term livelihood resilience."
+                  description="Households cultivating regenerative livelihoods, ecological security, and long-term resilience."
                 />
                 {impact.research_plots > 0 && (
                   <ImpactMetric
                     icon={Microscope}
-                    label="Research Initiatives Supported"
+                    label="Research Pathways Enabled"
                     value={impact.research_plots}
-                    description="Open scientific work in regenerative ecology, watershed behavior, and BPSS-aligned public health."
+                    description="Open research in regenerative ecology, watershed behavior, and BPSS-aligned wellbeing."
                   />
                 )}
               </div>
@@ -331,7 +331,7 @@ function DonatePaymentPageInner() {
                 full card details.
               </p>
               <p>
-                If you have questions about your donation, reach out to{" "}
+                If you have questions about this stewardship exchange, reach out to{" "}
                 <a
                   href="mailto:hello@zentrust.org"
                   className="underline underline-offset-2 hover:text-foreground"
@@ -341,9 +341,9 @@ function DonatePaymentPageInner() {
                 .
               </p>
               <p>
-                By completing this contribution, you become part of a network of
-                people regenerating ecosystems, communities, and ways of knowing that
-                grow stronger under stress.
+                By completing this exchange, you participate in a network of people
+                regenerating ecosystems, communities, and ways of knowing that grow
+                stronger under stress.
               </p>
             </div>
           </aside>
@@ -380,7 +380,7 @@ function PaymentForm({
     setError(null)
 
     if (!stripe || !elements) {
-      setError("Payment system is not ready yet. Please wait a moment and try again.")
+      setError("The stewardship payment system is not ready yet. Please wait a moment and try again.")
       return
     }
 
@@ -397,16 +397,20 @@ function PaymentForm({
 
       if (error) {
         console.error(error)
-        setError(error.message ?? "Your payment could not be processed. Please try again or use a different card.")
+        setError(
+          error.message ??
+            "Your payment could not be processed. Please try again or use a different card.",
+        )
         setStatus("idle")
         return
       }
 
-      // If no redirect was necessary and no error, treat as success.
       onSuccess()
     } catch (err: any) {
       console.error(err)
-      setError("An unexpected error occurred while processing your payment. Please try again.")
+      setError(
+        "An unexpected error occurred while processing your payment. Please try again.",
+      )
       setStatus("idle")
     }
   }
@@ -469,16 +473,16 @@ function ImpactMetric({
 function pathLabel(path: string) {
   switch (path) {
     case "ecology":
-      return "Regenerative Ecology"
+      return "Ecological Regeneration"
     case "research":
-      return "Regenerative & BPSS Research"
+      return "Open Science & BPSS Research"
     case "education":
       return "Ecological Education"
     case "community":
-      return "Community Self-Sufficiency"
+      return "Community Sovereignty Pathways"
     case "global":
-      return "Global Regeneration Partnerships"
+      return "Global Regeneration Network"
     default:
-      return "ZenTrust’s Full Mission"
+      return "ZenTrust’s Full Regenerative Mission"
   }
 }
