@@ -37,7 +37,6 @@ const achievements = [
   "Watershed & Soil Restoration Planning",
   "Open-Access Scientific Education",
 ]
-
 export function Hero() {
   const [current, setCurrent] = useState(0)
 
@@ -48,10 +47,10 @@ export function Hero() {
     return () => clearInterval(interval)
   }, [])
 
-  <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-[110px] md:pt-[140px]">
+  return (
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-[110px] md:pt-[140px]">
       {/* Background gradient */}
       <div className="absolute inset-0 bg-gradient-to-br from-primary/15 via-background to-emerald-500/10" />
-
       {/* Soft pattern overlay */}
       <div className="absolute inset-0 opacity-[0.04]">
         <div
