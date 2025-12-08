@@ -162,8 +162,7 @@ export function Footer() {
 
               {/* Nonprofit Compliance Line */}
               <p className="text-xs text-muted-foreground">
-                ZenTrust, Inc. is a 501(c)(3) public charity. EIN: 33-4318487. Donations are tax-deductible as allowed by law.
-              </p>
+                ZenTrust, Inc. is a 501(c)(3) public charity. EIN: 33-4318487.
             </div>
 
             {/* Social Links */}
