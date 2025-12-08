@@ -105,21 +105,22 @@ export function Hero() {
             </motion.p>
 
             {/* IRS LETTER */}
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.5 }}
-              className="text-sm text-muted-foreground mb-8"
-            >
-              ZenTrust is recognized by the IRS as a 170(b)(1)(A)(vi) public charity.  
-              <Link
-                href="/IRS_Determination_Letter.pdf"
-                target="https://apps.irs.gov/pub/epostcard/dl/FinalLetter_33-4318487_ZENTRUSTINC_04072025_00.pdf"
-                className="ml-1 font-semibold text-foreground underline hover:text-primary transition-colors"
-              >
-                View official IRS determination letter
-              </Link>
-            </motion.div>
+<motion.div
+  initial={{ opacity: 0, y: 10 }}
+  animate={{ opacity: 1, y: 0 }}
+  transition={{ delay: 0.5 }}
+  className="text-sm text-muted-foreground mb-8"
+>
+  ZenTrust is recognized by the IRS as a 170(b)(1)(A)(vi) public charity.
+  <a
+    href="https://apps.irs.gov/pub/epostcard/dl/FinalLetter_33-4318487_ZENTRUSTINC_04072025_00.pdf"
+    target="_blank"
+    rel="noopener noreferrer"
+    className="ml-1 font-semibold text-foreground underline hover:text-primary transition-colors"
+  >
+    View official IRS determination letter
+  </a>
+</motion.div>
 
             {/* ACHIEVEMENTS */}
             <motion.div
