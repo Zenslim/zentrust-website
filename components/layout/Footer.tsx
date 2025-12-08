@@ -16,13 +16,13 @@ const footerLinks = {
   ],
   resources: [
     { name: 'Newsletter', href: '/newsletter' },
-    { name: 'Donor Rights', href: '/donor-rights' },        // ✅ Added properly
+    { name: 'Stewardship Rights', href: '/donor-rights' }, // ← Paraphrased
     { name: 'Privacy Policy', href: '/privacy' },
     { name: 'Terms of Service', href: '/terms' },
     { name: 'Accessibility', href: '/accessibility' },
   ],
   support: [
-    { name: 'Stewardship', href: '/donate' },
+    { name: 'Stewardship Portal', href: '/donate' },
     { name: 'Partnership', href: '/partner' },
     { name: 'General Inquiries', href: '/contact' },
   ],
@@ -57,8 +57,9 @@ export function Footer() {
               </div>
 
               <p className="text-muted-foreground mb-6 max-w-md">
-                Advancing regenerative agriculture, ecological restoration, and public education 
-                to support healthier ecosystems and thriving communities.
+                Advancing regenerative agriculture, ecological restoration, 
+                and open scientific education to support healthier ecosystems 
+                and thriving communities.
               </p>
 
               {/* Contact Information */}
@@ -131,9 +132,9 @@ export function Footer() {
               </ul>
             </div>
 
-            {/* Support Section */}
+            {/* Participate Section */}
             <div>
-              <h3 className="text-sm font-semibold text-foreground mb-4">Participate</h3>
+              <h3 className="text-sm font-semibold text-foreground mb-4">Participation</h3>
               <ul className="space-y-2">
                 {footerLinks.support.map((link) => (
                   <li key={link.name}>
@@ -163,6 +164,7 @@ export function Footer() {
               {/* Nonprofit Compliance Line */}
               <p className="text-xs text-muted-foreground">
                 ZenTrust, Inc. is a 501(c)(3) public charity. EIN: 33-4318487.
+              </p>
             </div>
 
             {/* Social Links */}
