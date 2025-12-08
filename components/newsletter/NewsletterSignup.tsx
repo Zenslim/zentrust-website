@@ -11,8 +11,8 @@ export function NewsletterSignup() {
             Stay Connected
           </h2>
           <p className="text-lg text-muted-foreground mb-8">
-            Get updates on our latest programs, success stories, and ways you can 
-            contribute to building a more sustainable future.
+             Receive reflections on regenerative initiatives, ecological research, 
+  and community-led transformations as they emerge across our network.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
