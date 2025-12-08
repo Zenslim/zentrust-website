@@ -1,5 +1,5 @@
 // ZenTrust Service Worker
-const CACHE_NAME = 'zentrust-v1';
+const CACHE_NAME = 'zentrust-v2';
 const urlsToCache = [
   '/',
   '/manifest.json',
@@ -8,42 +8,42 @@ const urlsToCache = [
   '/images/programs/education-program.jpg'
 ];
 
-// Install event
+// Install
 self.addEventListener('install', (event) => {
   event.waitUntil(
-    caches.open(CACHE_NAME)
-      .then((cache) => {
-        return cache.addAll(urlsToCache);
-      })
+    caches.open(CACHE_NAME).then((cache) => cache.addAll(urlsToCache))
   );
 });
 
-// Fetch event
+// Fetch — FIXED VERSION
 self.addEventListener('fetch', (event) => {
+  const url = new URL(event.request.url);
+
+  // ❗ CRITICAL:
+  // NEVER intercept or cache Next.js build files
+  if (url.pathname.startsWith('/_next/')) {
+    return; // allow network to deliver correct CSS/JS/fonts
+  }
+
+  // SAFE caching for your own public assets
   event.respondWith(
-    caches.match(event.request)
-      .then((response) => {
-        // Return cached version or fetch from network
-        if (response) {
-          return response;
-        }
-        return fetch(event.request);
-      }
-    )
+    caches.match(event.request).then((response) => {
+      return response || fetch(event.request);
+    })
   );
 });
 
-// Activate event
+// Activate
 self.addEventListener('activate', (event) => {
   event.waitUntil(
-    caches.keys().then((cacheNames) => {
-      return Promise.all(
+    caches.keys().then((cacheNames) =>
+      Promise.all(
         cacheNames.map((cacheName) => {
           if (cacheName !== CACHE_NAME) {
             return caches.delete(cacheName);
           }
         })
-      );
-    })
+      )
+    )
   );
 });
