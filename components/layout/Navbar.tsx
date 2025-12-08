@@ -23,9 +23,7 @@ export function Navbar() {
   const pathname = usePathname()
 
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 10)
-    }
+    const handleScroll = () => setIsScrolled(window.scrollY > 10)
     window.addEventListener('scroll', handleScroll)
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
@@ -37,23 +35,22 @@ export function Navbar() {
   return (
     <header
       className={cn(
-        "fixed top-0 w-full z-50 transition-all duration-300",
+        "fixed top-0 left-0 right-0 w-full z-50 transition-all duration-300",
         isScrolled
           ? "bg-background/80 backdrop-blur-md border-b border-border"
-          : "bg-transparent"
+          : "bg-background/70 backdrop-blur-md"
       )}
     >
       <nav className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
+          
           {/* Logo */}
           <Link href="/" className="flex items-center space-x-2 group">
             <div className="relative">
               <Leaf className="h-8 w-8 text-primary group-hover:text-emerald-500 transition-colors" />
               <div className="absolute inset-0 bg-primary/20 rounded-full blur-lg group-hover:bg-emerald-500/20 transition-colors" />
             </div>
-            <span className="text-xl font-bold gradient-text">
-              ZenTrust
-            </span>
+            <span className="text-xl font-bold gradient-text">ZenTrust</span>
           </Link>
 
           {/* Desktop Navigation */}
@@ -67,7 +64,7 @@ export function Navbar() {
                     "relative px-3 py-2 text-sm font-medium transition-colors",
                     pathname === item.href
                       ? "text-primary"
-                      : "text-muted-foreground hover:text-foreground"
+                      : "text-foreground/70 dark:text-foreground/70 hover:text-foreground"
                   )}
                 >
                   {item.name}
@@ -84,17 +81,16 @@ export function Navbar() {
             </div>
           </div>
 
-          {/* Theme Toggle & Mobile Menu Button */}
+          {/* Theme Toggle + Mobile Menu Button */}
           <div className="flex items-center space-x-4">
             <ThemeToggle />
-            
-            {/* Mobile menu button */}
+
             <button
               onClick={() => setIsOpen(!isOpen)}
-              className="md:hidden inline-flex items-center justify-center p-2 rounded-md text-muted-foreground hover:text-foreground hover:bg-accent focus:outline-none focus:ring-2 focus:ring-primary"
-              aria-expanded="false"
+              className="md:hidden inline-flex items-center justify-center p-2 rounded-md 
+                text-foreground/70 hover:text-foreground hover:bg-accent 
+                focus:outline-none focus:ring-2 focus:ring-primary"
             >
-              <span className="sr-only">Open main menu</span>
               {isOpen ? (
                 <X className="h-6 w-6" aria-hidden="true" />
               ) : (
@@ -112,9 +108,11 @@ export function Navbar() {
               animate={{ opacity: 1, height: "auto" }}
               exit={{ opacity: 0, height: 0 }}
               transition={{ duration: 0.2 }}
-              className="md:hidden overflow-hidden"
+              className="md:hidden overflow-hidden 
+                bg-background/95 backdrop-blur-md shadow-lg 
+                border-t border-border rounded-b-xl"
             >
-              <div className="px-2 pt-2 pb-3 space-y-1 border-t border-border mt-2">
+              <div className="px-2 pt-2 pb-3 space-y-1">
                 {navigation.map((item) => (
                   <Link
                     key={item.name}
@@ -123,7 +121,7 @@ export function Navbar() {
                       "block px-3 py-2 rounded-md text-base font-medium transition-colors",
                       pathname === item.href
                         ? "text-primary bg-primary/10"
-                        : "text-muted-foreground hover:text-foreground hover:bg-accent"
+                        : "text-foreground/80 dark:text-foreground/70 hover:text-foreground hover:bg-accent"
                     )}
                   >
                     {item.name}
