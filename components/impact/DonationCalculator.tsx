@@ -34,8 +34,7 @@ export function DonationCalculator() {
     setSelectedTier(tierAmount)
   }
 
-  const handleDonate = () => {
-    console.log('Processing donation of $', amount)
+  const handleProceed = () => {
     window.open('/donate/checkout', '_blank')
   }
 
@@ -52,16 +51,13 @@ export function DonationCalculator() {
             className="text-center mb-12"
           >
             <h2 className="text-3xl md:text-5xl font-bold text-foreground mb-6">
-              Calculate Your <span className="gradient-text">Impact</span>
+              Estimate Your <span className="gradient-text">Regenerative Influence</span>
             </h2>
 
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-              Every contribution helps awaken resilient ecosystems, regenerate living soils, 
-              and empower communities toward long-term self-sufficiency.  
-              <br />
-              <span className="italic font-medium animate-color-pulse bg-gradient-to-r from-green-500 via-emerald-500 to-blue-500 bg-clip-text text-transparent">
-                When we heal the Earth, the Earth begins to heal us in return.
-              </span>
+              This tool helps you explore how a voluntary resource flow may activate 
+              regenerative landscapes, strengthen ecological cells, and support 
+              community sovereignty.
             </p>
           </motion.div>
 
@@ -74,11 +70,12 @@ export function DonationCalculator() {
               transition={{ duration: 0.6, delay: 0.2 }}
               className="space-y-8"
             >
+
               {/* Amount Input */}
               <div className="glass-card rounded-2xl p-8">
                 <h3 className="text-2xl font-bold text-foreground mb-6 flex items-center">
                   <Heart className="h-6 w-6 text-primary mr-3" />
-                  Choose Your Donation
+                  Select Resource Flow Level
                 </h3>
 
                 {/* Quick Tier Buttons */}
@@ -106,49 +103,29 @@ export function DonationCalculator() {
                 {/* Custom Amount Slider */}
                 <div className="space-y-4">
                   <label className="block text-sm font-medium text-foreground">
-                    Or enter a custom amount
+                    Or set a custom resource value
                   </label>
-                  <div className="relative">
-                    <input
-                      type="range"
-                      min="5"
-                      max="1000"
-                      value={amount}
-                      onChange={handleSliderChange}
-                      className="w-full h-2 bg-muted rounded-lg appearance-none cursor-pointer slider"
-                    />
-                    <div className="flex justify-between text-xs text-muted-foreground mt-1">
-                      <span>$5</span>
-                      <span>$1000+</span>
-                    </div>
+                  
+                  <input
+                    type="range"
+                    min="5"
+                    max="1000"
+                    value={amount}
+                    onChange={handleSliderChange}
+                    className="w-full h-2 bg-muted rounded-lg cursor-pointer"
+                  />
+
+                  <div className="flex justify-between text-xs text-muted-foreground mt-1">
+                    <span>$5</span>
+                    <span>$1000+</span>
                   </div>
                   
                   <div className="flex items-center space-x-2">
                     <span className="text-2xl font-bold text-primary">
                       ${amount}
                     </span>
-                    <span className="text-muted-foreground">per month</span>
+                    <span className="text-muted-foreground">resource flow</span>
                   </div>
-                </div>
-              </div>
-
-              {/* Recurring Toggle */}
-              <div className="glass-card rounded-xl p-6">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <h4 className="font-semibold text-foreground">Make it Monthly</h4>
-                    <p className="text-sm text-muted-foreground">
-                      Monthly giving strengthens long-term ecological resilience
-                    </p>
-                  </div>
-                  <label className="relative inline-flex items-center cursor-pointer">
-                    <input type="checkbox" className="sr-only peer" defaultChecked />
-                    <div className="w-11 h-6 bg-muted peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-primary/20 
-                      rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white 
-                      after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full 
-                      after:h-5 after:w-5 after:transition-all peer-checked:bg-primary">
-                    </div>
-                  </label>
                 </div>
               </div>
             </motion.div>
@@ -172,73 +149,45 @@ export function DonationCalculator() {
                   
                   <h3 className="text-2xl font-bold text-foreground mb-6 flex items-center">
                     <TrendingUp className="h-6 w-6 text-primary mr-3" />
-                    Your Regenerative Impact
+                    Regenerative Influence Preview
                   </h3>
 
-                  {/* Updated Regenerative Impact Description */}
                   <div className="bg-primary/10 rounded-xl p-4 mb-6">
                     <p className="text-foreground font-medium leading-relaxed">
-                      Your contribution helps regenerate multi-layered ecosystems, strengthen landscapes
-                      into anti-fragile, self-renewing systems, and empower families to build long-term 
-                      self-sufficiency and regenerative livelihoods.
+                      This projection illustrates how your voluntary resource movement 
+                      may interact with ecological regeneration, watershed activation, 
+                      and community resilience.
                     </p>
                   </div>
 
-                  {/* New Regenerative Metrics */}
                   <div className="space-y-4">
-                    {[
-                      { key: 'trees', label: 'Ecosystem Layers Regenerated', value: impact.trees, icon: TreePine, color: 'text-green-600' },
-                      { key: 'acres', label: 'Regenerative Cells Becoming Anti-Fragile', value: impact.acres, icon: Leaf, color: 'text-emerald-600' },
-                      { key: 'households', label: 'Families Moving Toward Self-Sufficiency', value: impact.households, icon: Users, color: 'text-blue-600' },
-                    ].map((metric) => {
-                      const Icon = metric.icon
-                      return (
-                        <div
-                          key={metric.key}
-                          className="flex items-center justify-between p-4 bg-muted/50 rounded-xl"
-                        >
-                          <div className="flex items-center space-x-3">
-                            <Icon className={`h-5 w-5 ${metric.color}`} />
-                            <span className="text-foreground font-medium">{metric.label}</span>
-                          </div>
-                          <span className="text-lg font-bold text-foreground">
-                            {metric.value.toLocaleString()}
-                          </span>
-                        </div>
-                      )
-                    })}
+                    <ImpactMetric label="Ecosystem Layers Activated" value={impact.trees} Icon={TreePine} />
+                    <ImpactMetric label="Regenerative Cells Strengthening" value={impact.acres} Icon={Leaf} />
+                    <ImpactMetric label="Families Advancing Sovereignty" value={impact.households} Icon={Users} />
                   </div>
 
-                  {/* Research Plots retain original logic */}
                   {impact.research_plots > 0 && (
-                    <motion.div
-                      initial={{ opacity: 0, scale: 0.9 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      transition={{ delay: 0.2 }}
-                      className="mt-6 p-4 bg-gradient-to-r from-purple-100 to-purple-200 dark:from-purple-900/20 
-                      dark:to-purple-800/20 rounded-xl border border-purple-200 dark:border-purple-700"
-                    >
+                    <div className="mt-6 p-4 bg-purple-100 dark:bg-purple-900/20 border border-purple-200 dark:border-purple-800 rounded-xl">
                       <div className="flex items-center space-x-3">
                         <Microscope className="h-6 w-6 text-purple-600" />
                         <div>
                           <div className="font-semibold text-purple-900 dark:text-purple-100">
-                            Research Plot Sponsored
+                            Research Pathways Enabled
                           </div>
                           <div className="text-sm text-purple-700 dark:text-purple-300">
-                            Advancing open scientific research in regenerative ecosystems
+                            Contributing to ecological and BPSS-aligned open science.
                           </div>
                         </div>
                       </div>
-                    </motion.div>
+                    </div>
                   )}
 
                   <Button
-                    onClick={handleDonate}
+                    onClick={handleProceed}
                     size="lg"
                     className="w-full mt-8 group"
                   >
-                    Donate ${amount}/month
-                    <Heart className="ml-2 h-4 w-4 group-hover:scale-110 transition-transform" />
+                    Proceed to Stewardship Portal
                   </Button>
 
                 </motion.div>
@@ -249,5 +198,20 @@ export function DonationCalculator() {
         </div>
       </div>
     </section>
+  )
+}
+
+// Helper
+function ImpactMetric({ label, value, Icon }: any) {
+  return (
+    <div className="flex items-center justify-between p-4 bg-muted/50 rounded-xl">
+      <div className="flex items-center space-x-3">
+        <Icon className="h-5 w-5 text-primary" />
+        <span className="text-foreground font-medium">{label}</span>
+      </div>
+      <span className="text-lg font-bold text-foreground">
+        {value.toLocaleString()}
+      </span>
+    </div>
   )
 }
