@@ -253,7 +253,7 @@ function StewardshipPaymentPageInner() {
                     amount={amount}
                     frequency={frequency}
                     displayLabel={displayLabel}
-                    onSuccess={() => router.push("/donate/thank-you")}
+                    onSuccess={() => router.push(`/donate/thank-you?amount=${amount}`)}
                     setError={setError}
                     setStatus={setStatus}
                   />
