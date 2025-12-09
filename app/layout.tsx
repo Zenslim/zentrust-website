@@ -19,27 +19,31 @@ export const metadata: Metadata = {
     default: 'ZenTrust - Regenerative Agriculture & Environmental Stewardship',
     template: '%s | ZenTrust',
   },
-  description: 'ZenTrust promotes sustainable agriculture, environmental restoration, and community empowerment through research, education, and direct action programs.',
-  keywords: ['sustainable agriculture', 'regenerative farming', 'environmental restoration', 'community education', 'sustainability', 'nonprofit'],
+  description:
+    'ZenTrust promotes sustainable agriculture, environmental restoration, and community empowerment through research, education, and direct action programs.',
+  keywords: [
+    'sustainable agriculture',
+    'regenerative farming',
+    'environmental restoration',
+    'community education',
+    'sustainability',
+    'nonprofit',
+  ],
   authors: [{ name: 'ZenTrust' }],
   creator: 'ZenTrust',
   publisher: 'ZenTrust',
-  formatDetection: {
-    email: false,
-    address: false,
-    telephone: false,
-  },
+  formatDetection: { email: false, address: false, telephone: false },
   metadataBase: new URL('https://zentrust.world'),
-  alternates: {
-    canonical: '/',
-  },
+  alternates: { canonical: '/' },
+
   openGraph: {
     type: 'website',
     locale: 'en_US',
     url: 'https://zentrust.world',
     siteName: 'ZenTrust',
     title: 'ZenTrust - Regenerative Agriculture & Environmental Stewardship',
-    description: 'Promoting sustainable agriculture and environmental restoration through research, education, and community programs.',
+    description:
+      'Promoting sustainable agriculture and environmental restoration through research, education, and community programs.',
     images: [
       {
         url: '/images/og-image.jpg',
@@ -49,12 +53,15 @@ export const metadata: Metadata = {
       },
     ],
   },
+
   twitter: {
     card: 'summary_large_image',
     title: 'ZenTrust - Regenerative Agriculture & Environmental Stewardship',
-    description: 'Promoting sustainable agriculture and environmental restoration through research, education, and community programs.',
+    description:
+      'Promoting sustainable agriculture and environmental restoration through research, education, and community programs.',
     images: ['/images/twitter-image.jpg'],
   },
+
   robots: {
     index: true,
     follow: true,
@@ -72,12 +79,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-
         {/* Favicon + Manifest */}
         <link rel="icon" href="/icon.svg" type="image/svg+xml" />
         <link rel="manifest" href="/manifest.json" />
 
-        {/* CONSENT MODE (Default Denied) */}
+        {/* CONSENT MODE — loads BEFORE ANY analytics */}
         <Script id="consent-default" strategy="beforeInteractive">
           {`
             window.dataLayer = window.dataLayer || [];
@@ -90,16 +96,17 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           `}
         </Script>
 
-        {/* GOOGLE TAG (GA4) */}
+        {/* GA4 SCRIPT — This was missing strategy, so Next.js never executed it */}
         <Script
-          async
           src="https://www.googletagmanager.com/gtag/js?id=G-2G4CVKHFZR"
+          strategy="afterInteractive"
         />
 
+        {/* GA4 INIT */}
         <Script id="gtag-init" strategy="afterInteractive">
           {`
             window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
+            function gtag(){window.dataLayer.push(arguments);}
             gtag('js', new Date());
             gtag('config', 'G-2G4CVKHFZR', { anonymize_ip: true });
           `}
@@ -121,17 +128,21 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             }}
           />
         )}
-
       </head>
 
       <body className={inter.className} suppressHydrationWarning>
-
         {/* TRACK PAGE VIEWS */}
         <Suspense fallback={null}>
           <TrackPageView />
         </Suspense>
 
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+        {/* MAIN APP STRUCTURE */}
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
           <div className="min-h-screen bg-background text-foreground">
             <Navbar />
             <main className="flex-1">{children}</main>
