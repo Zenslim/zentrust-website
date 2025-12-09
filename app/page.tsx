@@ -20,7 +20,7 @@ export default function HomePage() {
       </section>
 
       {/* Donation Calculator - Full Width */}
-      <section className="py-24 w-full bg-muted/10">
+      <section className="py-24 w-full">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <DonationCalculator />
         </div>
@@ -41,7 +41,7 @@ export default function HomePage() {
       </section> */}
 
       {/* Newsletter - Keep existing design */}
-      <section className="py-24 w-full bg-gradient-to-r from-primary/10 to-emerald-500/10">
+      <section className="py-24 w-full">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <NewsletterSignup />
         </div>

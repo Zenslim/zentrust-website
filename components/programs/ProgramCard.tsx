@@ -56,13 +56,13 @@ export function ProgramCard({
       transition={{ duration: 0.6 }}
       className="group h-full"
     >
-      <div className="glass-card rounded-2xl overflow-hidden h-full flex flex-col transition-all duration-300 hover:scale-105 hover:shadow-xl">
+      <div className="h-full flex flex-col gap-6">
         {/* Header with Icon and Category */}
-        <div className="p-6 border-b border-border">
-          <div className="flex items-start justify-between mb-4">
+        <div className="space-y-4">
+          <div className="flex items-start justify-between">
             {/* Icon */}
             <div className="flex-shrink-0">
-              <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center group-hover:bg-primary/20 transition-colors">
+              <div className="w-12 h-12 flex items-center justify-center">
                 <IconComponent className="h-6 w-6 text-primary" />
               </div>
             </div>
@@ -81,7 +81,7 @@ export function ProgramCard({
           </div>
 
           {/* Title */}
-          <h3 className="text-xl font-bold text-foreground mb-3 group-hover:text-primary transition-colors line-clamp-2">
+          <h3 className="text-xl font-bold text-foreground group-hover:text-primary transition-colors line-clamp-2">
             {title}
           </h3>
 
@@ -93,20 +93,18 @@ export function ProgramCard({
 
         {/* Impact Metrics */}
         {impact && (
-          <div className="p-6 border-b border-border">
-            <div className="bg-gradient-to-r from-primary/10 to-emerald-500/10 rounded-xl p-4">
-              <div className="flex items-center justify-between">
-                <div>
-                  <div className="text-2xl font-bold text-primary">
-                    {impact.metric_value} {impact.metric_unit}
-                  </div>
-                  <div className="text-sm text-muted-foreground">
-                    {impact.metric_name}
-                  </div>
+          <div className="space-y-2">
+            <div className="flex items-center justify-between">
+              <div>
+                <div className="text-2xl font-bold text-primary">
+                  {impact.metric_value} {impact.metric_unit}
                 </div>
-                <div className="w-8 h-8 bg-primary/20 rounded-full flex items-center justify-center">
-                  <ArrowRight className="h-4 w-4 text-primary" />
+                <div className="text-sm text-muted-foreground">
+                  {impact.metric_name}
                 </div>
+              </div>
+              <div className="w-8 h-8 flex items-center justify-center">
+                <ArrowRight className="h-4 w-4 text-primary" />
               </div>
             </div>
           </div>
@@ -114,7 +112,7 @@ export function ProgramCard({
 
         {/* Detailed Description (if provided) */}
         {description && (
-          <div className="p-6 flex-1">
+          <div className="flex-1">
             <div className="text-sm text-muted-foreground line-clamp-4">
               {description}
             </div>
@@ -122,7 +120,7 @@ export function ProgramCard({
         )}
 
         {/* Footer with CTA */}
-        <div className="p-6 mt-auto">
+        <div className="mt-auto">
           <div className="flex items-center justify-between">
             <Button asChild variant="outline" size="sm" className="group/btn">
               <Link href={`/programs/${slug}`}>
@@ -159,20 +157,16 @@ export function FeaturedProgram({
       initial={{ opacity: 0, scale: 0.95 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{ duration: 0.6 }}
-      className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-primary/20 to-emerald-500/20 p-8 border border-primary/20"
+      className="relative p-8"
     >
       {/* Background Pattern */}
-      <div className="absolute inset-0 opacity-5">
-        <div className="absolute inset-0" style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23059669' fill-opacity='0.4'%3E%3Cpath d='M30 30c0-6.627-5.373-12-12-12s-12 5.373-12 12 5.373 12 12 12 12-5.373 12-12zm12 0c0-6.627-5.373-12-12-12s-12 5.373-12 12 5.373 12 12 12 12-5.373 12-12z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
-        }} />
-      </div>
+      <div className="absolute inset-0 opacity-5" />
 
       <div className="relative z-10">
         {/* Header */}
         <div className="flex items-start justify-between mb-6">
           {/* Icon */}
-          <div className="w-16 h-16 bg-white/10 backdrop-blur-sm rounded-2xl flex items-center justify-center">
+          <div className="w-16 h-16 flex items-center justify-center">
             <IconComponent className="h-8 w-8 text-primary" />
           </div>
 
@@ -199,7 +193,7 @@ export function FeaturedProgram({
 
         {/* Impact Metrics */}
         {props.impact && (
-          <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 mb-6">
+          <div className="mb-6">
             <div className="flex items-center justify-between">
               <div>
                 <div className="text-3xl font-bold text-primary">
@@ -209,7 +203,7 @@ export function FeaturedProgram({
                   {props.impact.metric_name}
                 </div>
               </div>
-              <div className="w-12 h-12 bg-primary/20 rounded-full flex items-center justify-center">
+              <div className="w-12 h-12 flex items-center justify-center">
                 <ArrowRight className="h-6 w-6 text-primary" />
               </div>
             </div>
