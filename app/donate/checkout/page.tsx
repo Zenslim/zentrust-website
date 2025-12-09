@@ -47,7 +47,6 @@ export default function ParticipationPortalPage() {
   const [impactPath, setImpactPath] = useState<ImpactPath>("flexible")
 
   const [name, setName] = useState("")
-  ￼
   const [email, setEmail] = useState("")
   const [country, setCountry] = useState("")
   const [organization, setOrganization] = useState("")
