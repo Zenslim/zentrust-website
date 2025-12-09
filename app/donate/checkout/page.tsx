@@ -120,8 +120,7 @@ export default function ParticipationPortalPage() {
       }
 
       console.log("Participation Payload:", payload)
-
-      router.push("/donate/payment")
+router.push(`/donate/payment?amount=${amount}&frequency=${frequency}`)
     } catch (err: any) {
       console.error(err)
       setError("Something went wrong. Please try again.")
