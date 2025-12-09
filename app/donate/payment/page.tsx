@@ -1,18 +1,19 @@
 "use client"
 
 import { useEffect, useState } from "react"
+import { useSearchParams } from "next/navigation"
 import { loadStripe } from "@stripe/stripe-js"
 import {
   Elements,
   PaymentElement,
   useStripe,
-  useElements
+  useElements,
 } from "@stripe/react-stripe-js"
 import { Button } from "@/components/ui/button"
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY || "")
 
-function PaymentForm() {
+function PaymentForm({ clientSecret }: { clientSecret: string }) {
   const stripe = useStripe()
   const elements = useElements()
   const [isProcessing, setIsProcessing] = useState(false)
@@ -47,30 +48,48 @@ function PaymentForm() {
       </Button>
 
       {errorMessage && (
-        <p className="text-sm text-red-500 text-center mt-2">{errorMessage}</p>
+        <p className="text-sm text-red-500 text-center">{errorMessage}</p>
       )}
 
       <p className="text-xs text-muted-foreground text-center mt-4">
         ZenTrust · 501(c)(3) Public Charity · EIN 33-4318487  
         <br />
-        Stewardship exchanges are voluntary and used exclusively for  
-        ecological, scientific, and educational purposes.
+        Stewardship exchanges are voluntary and used only for charitable, scientific,  
+        and educational purposes.
       </p>
     </form>
   )
 }
 
 export default function PaymentPage() {
+  const params = useSearchParams()
+  const amount = params.get("amount") // ★ READ AMOUNT FROM URL
   const [clientSecret, setClientSecret] = useState<string | null>(null)
 
   useEffect(() => {
+    if (!amount) return
+
     const createIntent = async () => {
-      const res = await fetch("/api/create-payment-intent", { method: "POST" })
+      const res = await fetch("/api/create-payment-intent", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ amount: Number(amount) }),
+      })
+
       const data = await res.json()
       setClientSecret(data.clientSecret)
     }
+
     createIntent()
-  }, [])
+  }, [amount])
+
+  if (!amount) {
+    return (
+      <div className="min-h-screen flex items-center justify-center text-muted-foreground">
+        Missing amount.
+      </div>
+    )
+  }
 
   if (!clientSecret) {
     return (
@@ -92,7 +111,7 @@ export default function PaymentPage() {
         </p>
       </section>
 
-      {/* Payment Element */}
+      {/* Stripe Element */}
       <section className="pb-24">
         <div className="max-w-md mx-auto px-4">
           <Elements
@@ -101,14 +120,11 @@ export default function PaymentPage() {
               clientSecret,
               appearance: {
                 theme: "flat",
-                variables: {
-                  colorPrimary: "#3b855b",
-                  borderRadius: "8px"
-                }
-              }
+                variables: { borderRadius: "8px" },
+              },
             }}
           >
-            <PaymentForm />
+            <PaymentForm clientSecret={clientSecret} />
           </Elements>
         </div>
       </section>
