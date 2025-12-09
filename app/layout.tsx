@@ -91,7 +91,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             gtag('consent', 'default', {
               'ad_storage': 'denied',
               'ad_user_data': 'denied',
-              'analytics_storage': 'denied'
+              'analytics_storage': 'granted'
             });
           `}
         </Script>
