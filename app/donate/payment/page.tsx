@@ -1,7 +1,5 @@
-// MUST COME BEFORE ANYTHING ELSE
+"use client"               // MUST BE FIRST LINE
 export const dynamic = "force-dynamic"
-
-"use client"
 
 import { useEffect, useState } from "react"
 import { useSearchParams } from "next/navigation"
