@@ -14,7 +14,7 @@ const navigation = [
   { name: 'Programs', href: '/programs' },
   { name: 'Impact', href: '/impact' },
   { name: 'Blog', href: '/blog' },
-  { name: 'Stewardship', href: '/donate' },
+  { name: 'Stewardship', href: '/stewardship' },
 ]
 
 export function Navbar() {
