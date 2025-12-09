@@ -1,6 +1,6 @@
 "use client"
 
-import { Suspense, useEffect, useMemo, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import { useSearchParams, useRouter } from "next/navigation"
 import Link from "next/link"
 import { loadStripe } from "@stripe/stripe-js"
@@ -25,60 +25,141 @@ import {
 import { Button } from "@/components/ui/button"
 import { calculateDonationImpact } from "@/lib/calculator"
 
-// ------------------------------------------------------------------
+// ---------------------------------------------------------------------------
 // Stripe Setup
-// ------------------------------------------------------------------
+// ---------------------------------------------------------------------------
 
 const stripePublicKey = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
 const stripePromise = stripePublicKey ? loadStripe(stripePublicKey) : null
 
-// ------------------------------------------------------------------
-// Types
-// ------------------------------------------------------------------
-
 type Frequency = "once" | "monthly"
 type PaymentStatus = "idle" | "loading" | "submitting" | "error"
 
-// ------------------------------------------------------------------
-// Page Component
-// ------------------------------------------------------------------
+// ---------------------------------------------------------------------------
+// Helper Components (top-level, no nesting)
+// ---------------------------------------------------------------------------
 
-export default function StewardshipPaymentPage() {
-  return (
-    <Suspense
-      fallback={
-        <div className="min-h-screen flex items-center justify-center px-4 text-sm text-muted-foreground">
-          Preparing secure stewardship flow…
-        </div>
+function PaymentForm(props: {
+  amount: number
+  frequency: Frequency
+  buttonLabel: (processing: boolean) => string
+  onSuccess: () => void
+  setError: (msg: string | null) => void
+  setStatus: (s: PaymentStatus) => void
+}) {
+  const { amount, frequency, buttonLabel, onSuccess, setError, setStatus } = props
+
+  const stripe = useStripe()
+  const elements = useElements()
+  const [isProcessing, setIsProcessing] = useState(false)
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setError(null)
+
+    if (!stripe || !elements) {
+      setError("The stewardship payment system is not ready yet. Please wait a moment and try again.")
+      return
+    }
+
+    try {
+      setIsProcessing(true)
+      setStatus("submitting")
+
+      const { error } = await stripe.confirmPayment({
+        elements,
+        confirmParams: {
+          return_url: `${window.location.origin}/donate/thank-you`,
+        },
+        redirect: "if_required",
+      })
+
+      if (error) {
+        console.error(error)
+        setError(
+          error.message ||
+            "Your payment could not be processed. Please try again or use a different card.",
+        )
+        setIsProcessing(false)
+        setStatus("idle")
+        return
       }
-    >
-      <StewardshipPaymentPageInner />
-    </Suspense>
+
+      onSuccess()
+    } catch (err) {
+      console.error(err)
+      setError("An unexpected error occurred while processing your payment. Please try again.")
+      setIsProcessing(false)
+      setStatus("idle")
+    }
+  }
+
+  return (
+    <form onSubmit={handleSubmit} className="space-y-4">
+      <div className="rounded-xl border border-border/60 bg-muted/40 p-4">
+        <PaymentElement id="payment-element" options={{ layout: "tabs" }} />
+      </div>
+
+      <Button
+        type="submit"
+        className="w-full inline-flex items-center justify-center gap-2"
+      >
+        {buttonLabel(isProcessing)}
+        <ArrowRight className="h-4 w-4" />
+      </Button>
+    </form>
   )
 }
 
-function StewardshipPaymentPageInner() {
+function ImpactMetric(props: {
+  icon: React.ComponentType<{ className?: string }>
+  label: string
+  value: number
+  description: string
+}) {
+  const { icon: Icon, label, value, description } = props
+  return (
+    <div className="rounded-xl bg-muted/60 p-3 space-y-1">
+      <div className="flex items-baseline justify-between gap-2">
+        <div className="inline-flex items-center gap-2 text-[11px] font-medium text-muted-foreground">
+          <Icon className="h-3.5 w-3.5 text-primary" />
+          <span>{label}</span>
+        </div>
+        <span className="text-sm font-semibold text-foreground">
+          {value.toLocaleString()}
+        </span>
+      </div>
+      <p className="text-[11px] text-muted-foreground leading-relaxed">
+        {description}
+      </p>
+    </div>
+  )
+}
+
+function pathLabel(path: string) {
+  switch (path) {
+    case "ecology":
+      return "Ecological Regeneration"
+    case "research":
+      return "Open Science & BPSS Research"
+    case "education":
+      return "Ecological Education"
+    case "community":
+      return "Community Sovereignty Pathways"
+    case "global":
+      return "Global Regeneration Network"
+    default:
+      return "ZenTrust’s Full Regenerative Mission"
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Main Page Component
+// ---------------------------------------------------------------------------
+
+export default function StewardshipPaymentPage() {
   const searchParams = useSearchParams()
   const router = useRouter()
-
-  // 🔥 Hydration Guard — prevents Vercel mismatch
-  const [mounted, setMounted] = useState(false)
-  useEffect(() => {
-    setMounted(true)
-  }, [])
-
-  // Pre-hydration placeholder ensures SSR/CSR identical
-  if (!mounted) {
-    return (
-      <div className="min-h-screen flex items-center justify-center px-4 text-sm text-muted-foreground">
-        Loading stewardship details…
-      </div>
-    )
-  }
-
-  // ------------------------------------------------------------------
-  // Now safe to read URL params (client-only)
-  // ------------------------------------------------------------------
 
   const amountFromQuery = Number(searchParams.get("amount") || "50")
   const frequencyFromQuery = (searchParams.get("frequency") as Frequency) || "once"
@@ -96,7 +177,10 @@ function StewardshipPaymentPageInner() {
   const frequency: Frequency =
     frequencyFromQuery === "monthly" ? "monthly" : "once"
 
-  const impact = useMemo(() => calculateDonationImpact(amount), [amount])
+  const impact = useMemo(
+    () => calculateDonationImpact(amount),
+    [amount],
+  )
 
   const buttonLabel = (processing: boolean) =>
     processing
@@ -105,10 +189,7 @@ function StewardshipPaymentPageInner() {
           frequency === "monthly" ? "/month" : "one-time"
         } resource flow`
 
-  // ------------------------------------------------------------------
-  // Create PaymentIntent via backend
-  // ------------------------------------------------------------------
-
+  // Stripe PaymentIntent creation
   useEffect(() => {
     if (!stripePromise) {
       setError(
@@ -135,10 +216,14 @@ function StewardshipPaymentPageInner() {
           body: JSON.stringify(payload),
         })
 
-        if (!res.ok) throw new Error("Unable to create stewardship session.")
+        if (!res.ok) {
+          throw new Error("Unable to create stewardship session.")
+        }
 
         const data = await res.json()
-        if (!data.clientSecret) throw new Error("Missing client secret from server.")
+        if (!data.clientSecret) {
+          throw new Error("Missing client secret from server.")
+        }
 
         setClientSecret(data.clientSecret)
         setStatus("idle")
@@ -146,7 +231,7 @@ function StewardshipPaymentPageInner() {
         console.error(err)
         setError(
           err?.message ||
-            "Something went wrong while preparing the secure stewardship flow.",
+            "Something went wrong while preparing the secure stewardship flow. Please try again.",
         )
         setStatus("error")
       }
@@ -155,10 +240,7 @@ function StewardshipPaymentPageInner() {
     createIntent()
   }, [amount, frequency, pathFromQuery])
 
-  // ------------------------------------------------------------------
-  // No Stripe Key = Show config notice
-  // ------------------------------------------------------------------
-
+  // If Stripe key is missing, bail early with a simple message
   if (!stripePromise) {
     return (
       <div className="min-h-screen flex items-center justify-center px-4">
@@ -168,17 +250,15 @@ function StewardshipPaymentPageInner() {
           </h1>
           <p className="text-muted-foreground text-sm">
             Stripe is not configured yet. Please set{" "}
-            <code className="font-mono text-xs">NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY</code>{" "}
-            in your environment variables.
+            <code className="font-mono text-xs">
+              NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
+            </code>{" "}
+            in your environment variables and redeploy.
           </p>
         </div>
       </div>
     )
   }
-
-  // ------------------------------------------------------------------
-  // MAIN UI
-  // ------------------------------------------------------------------
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-background via-background to-muted/40">
@@ -215,13 +295,16 @@ function StewardshipPaymentPageInner() {
                 Finalize Your Stewardship Exchange
               </h1>
 
-              {/* HYDRATION-SAFE dynamic text */}
+              {/* Dynamic confirmation text */}
               <p className="text-muted-foreground max-w-md mx-auto">
-                Confirming ${amount} {frequency === "monthly" ? "per month" : "one-time"}.
+                Confirming ${amount}{" "}
+                {frequency === "monthly" ? "per month" : "one-time"}.
               </p>
 
               <p className="text-sm sm:text-base text-muted-foreground max-w-xl">
-                This step completes your voluntary resource flow into ZenTrust's ecosystem.
+                This step completes your voluntary resource flow into ZenTrust&apos;s
+                regenerative ecosystem. Payment details are encrypted and processed
+                securely by Stripe.
               </p>
             </div>
 
@@ -234,9 +317,9 @@ function StewardshipPaymentPageInner() {
                   </p>
                   <p className="text-sm font-semibold text-foreground">
                     {frequency === "monthly"
-                      ? `$${amount.toLocaleString()}/month`
-                      : `$${amount.toLocaleString()} one-time`}{" "}
-                    resource flow ·{" "}
+                      ? `$${amount.toLocaleString()}/month resource flow`
+                      : `$${amount.toLocaleString()} one-time resource flow`}{" "}
+                    ·{" "}
                     <span className="text-muted-foreground">
                       {pathFromQuery === "flexible"
                         ? "Adaptive allocation"
@@ -263,7 +346,6 @@ function StewardshipPaymentPageInner() {
                 </div>
               )}
 
-              {/* Stripe */}
               {clientSecret && status !== "error" && (
                 <Elements
                   stripe={stripePromise}
@@ -284,10 +366,27 @@ function StewardshipPaymentPageInner() {
                   />
                 </Elements>
               )}
+
+              <div className="space-y-2 pt-2 border-t border-border/50 mt-4 text-[11px] text-muted-foreground leading-relaxed">
+                <p>
+                  ZenTrust, Inc. is a 501(c)(3) public charity recognized by the IRS
+                  under Section 170(b)(1)(A)(vi). EIN:{" "}
+                  <span className="font-mono">33-4318487</span>. This resource
+                  transfer is voluntary and may be treated as a charitable contribution
+                  for tax purposes as allowed by law. No goods or services are
+                  provided in return.
+                </p>
+                <p>
+                  All resources are stewarded exclusively toward ZenTrust&apos;s
+                  charitable, educational, and scientific mission in regenerative
+                  ecology, BPSS-integrative wellness research, and open scientific
+                  education under Board oversight.
+                </p>
+              </div>
             </div>
           </div>
 
-          {/* RIGHT PANEL — unchanged */}
+          {/* RIGHT: Regenerative Influence Panel */}
           <aside className="space-y-6">
             <div className="glass-card rounded-2xl p-6 sm:p-7 border border-primary/20 space-y-5">
               <div className="flex items-center gap-2">
@@ -296,9 +395,10 @@ function StewardshipPaymentPageInner() {
                   Regenerative Influence Preview
                 </h2>
               </div>
-
               <p className="text-xs text-muted-foreground leading-relaxed">
-                Based on the selected resource level…
+                Based on the selected resource level, these indicators offer an
+                illustrative sense of the regenerative patterns your participation
+                helps sustain. All flows ultimately support ZenTrust&apos;s full mission.
               </p>
 
               <div className="space-y-3 text-xs">
@@ -306,41 +406,50 @@ function StewardshipPaymentPageInner() {
                   icon={TreePine}
                   label="Ecosystem Layers Activated"
                   value={impact.trees}
-                  description="Layers of life engaged in emerging syntropic systems."
+                  description="Layers of life engaged within emerging syntropic forest systems — canopy, understory, shrubs, herbs, and root networks."
                 />
                 <ImpactMetric
                   icon={Leaf}
                   label="Regenerative Cells Strengthened"
                   value={impact.acres}
-                  description="Landscape units moving toward hydration resilience."
+                  description="Micro-watersheds and landscape units moving toward anti-fragility and hydration resilience."
                 />
                 <ImpactMetric
                   icon={Users}
                   label="Families Advancing Sovereignty"
                   value={impact.households}
-                  description="Households cultivating regenerative livelihoods."
+                  description="Households cultivating regenerative livelihoods, ecological security, and long-term resilience."
                 />
                 {impact.research_plots > 0 && (
                   <ImpactMetric
                     icon={Microscope}
                     label="Research Pathways Enabled"
                     value={impact.research_plots}
-                    description="Open research in ecology & BPSS-aligned wellbeing."
+                    description="Open research in regenerative ecology, watershed behavior, and BPSS-aligned wellbeing."
                   />
                 )}
               </div>
             </div>
 
             <div className="glass-card rounded-2xl p-5 text-[11px] text-muted-foreground space-y-3">
-              <p>Payments are processed securely by Stripe.</p>
               <p>
-                Questions?{" "}
+                Payments are processed securely by Stripe. ZenTrust never stores your
+                full card details.
+              </p>
+              <p>
+                If you have questions about this stewardship exchange, reach out to{" "}
                 <a
                   href="mailto:hello@zentrust.org"
                   className="underline underline-offset-2 hover:text-foreground"
                 >
                   hello@zentrust.org
                 </a>
+                .
+              </p>
+              <p>
+                By completing this exchange, you participate in a network of people
+                regenerating ecosystems, communities, and ways of knowing that grow
+                stronger under stress.
               </p>
             </div>
           </aside>
@@ -348,131 +457,4 @@ function StewardshipPaymentPageInner() {
       </div>
     </div>
   )
-}
-
-// ------------------------------------------------------------------
-// Payment Form Component
-// ------------------------------------------------------------------
-
-function PaymentForm({
-  amount,
-  frequency,
-  buttonLabel,
-  onSuccess,
-  setError,
-  setStatus,
-}: {
-  amount: number
-  frequency: Frequency
-  buttonLabel: (processing: boolean) => string
-  onSuccess: () => void
-  setError: (msg: string | null) => void
-  setStatus: (s: PaymentStatus) => void
-}) {
-  const stripe = useStripe()
-  const elements = useElements()
-  const [isProcessing, setIsProcessing] = useState(false)
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setError(null)
-
-    if (!stripe || !elements) {
-      setError("The stewardship payment system is not ready yet.")
-      return
-    }
-
-    try {
-      setIsProcessing(true)
-      setStatus("submitting")
-
-      const { error } = await stripe.confirmPayment({
-        elements,
-        confirmParams: {
-          return_url: `${window.location.origin}/donate/thank-you`,
-        },
-        redirect: "if_required",
-      })
-
-      if (error) {
-        console.error(error)
-        setError(
-          error.message || "Payment could not be processed. Try another card."
-        )
-        setIsProcessing(false)
-        setStatus("idle")
-        return
-      }
-
-      onSuccess()
-    } catch (err) {
-      console.error(err)
-      setError("Unexpected error. Please try again.")
-      setIsProcessing(false)
-      setStatus("idle")
-    }
-  }
-
-  return (
-    <form onSubmit={handleSubmit} className="space-y-4">
-      <div className="rounded-xl border border-border/60 bg-muted/40 p-4">
-        <PaymentElement id="payment-element" options={{ layout: "tabs" }} />
-      </div>
-
-      <Button type="submit" className="w-full inline-flex items-center justify-center gap-2">
-        {buttonLabel(isProcessing)}
-        <ArrowRight className="h-4 w-4" />
-      </Button>
-    </form>
-  )
-}
-
-// ------------------------------------------------------------------
-// Impact Metric Component
-// ------------------------------------------------------------------
-
-function ImpactMetric({
-  icon: Icon,
-  label,
-  value,
-  description,
-}: {
-  icon: React.ComponentType<{ className?: string }>
-  label: string
-  value: number
-  description: string
-}) {
-  return (
-    <div className="rounded-xl bg-muted/60 p-3 space-y-1">
-      <div className="flex items-baseline justify-between gap-2">
-        <div className="inline-flex items-center gap-2 text-[11px] font-medium text-muted-foreground">
-          <Icon className="h-3.5 w-3.5 text-primary" />
-          <span>{label}</span>
-        </div>
-        <span className="text-sm font-semibold text-foreground">
-          {value.toLocaleString()}
-        </span>
-      </div>
-      <p className="text-[11px] text-muted-foreground leading-relaxed">
-        {description}
-      </p>
-    </div>
-  )
-}
-
-function pathLabel(path: string) {
-  switch (path) {
-    case "ecology":
-      return "Ecological Regeneration"
-    case "research":
-      return "Open Science & BPSS Research"
-    case "education":
-      return "Ecological Education"
-    case "community":
-      return "Community Sovereignty Pathways"
-    case "global":
-      return "Global Regeneration Network"
-    default:
-      return "ZenTrust’s Full Regenerative Mission"
-  }
 }
