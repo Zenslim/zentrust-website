@@ -61,6 +61,25 @@ function StewardshipPaymentPageInner() {
   const searchParams = useSearchParams()
   const router = useRouter()
 
+  // 🔥 Hydration Guard — prevents Vercel mismatch
+  const [mounted, setMounted] = useState(false)
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  // Pre-hydration placeholder ensures SSR/CSR identical
+  if (!mounted) {
+    return (
+      <div className="min-h-screen flex items-center justify-center px-4 text-sm text-muted-foreground">
+        Loading stewardship details…
+      </div>
+    )
+  }
+
+  // ------------------------------------------------------------------
+  // Now safe to read URL params (client-only)
+  // ------------------------------------------------------------------
+
   const amountFromQuery = Number(searchParams.get("amount") || "50")
   const frequencyFromQuery = (searchParams.get("frequency") as Frequency) || "once"
   const pathFromQuery = searchParams.get("path") || "flexible"
@@ -77,20 +96,19 @@ function StewardshipPaymentPageInner() {
   const frequency: Frequency =
     frequencyFromQuery === "monthly" ? "monthly" : "once"
 
-  const impact = useMemo(
-    () => calculateDonationImpact(amount),
-    [amount],
-  )
+  const impact = useMemo(() => calculateDonationImpact(amount), [amount])
 
-  // 🎯 NEW: Button uses live frequency + amount
   const buttonLabel = (processing: boolean) =>
     processing
       ? "Processing…"
-      : `Confirm $${amount} ${frequency === "monthly" ? "/month" : "one-time"} resource flow`
+      : `Confirm $${amount} ${
+          frequency === "monthly" ? "/month" : "one-time"
+        } resource flow`
 
   // ------------------------------------------------------------------
   // Create PaymentIntent via backend
   // ------------------------------------------------------------------
+
   useEffect(() => {
     if (!stripePromise) {
       setError(
@@ -117,14 +135,10 @@ function StewardshipPaymentPageInner() {
           body: JSON.stringify(payload),
         })
 
-        if (!res.ok) {
-          throw new Error("Unable to create stewardship session.")
-        }
+        if (!res.ok) throw new Error("Unable to create stewardship session.")
 
         const data = await res.json()
-        if (!data.clientSecret) {
-          throw new Error("Missing client secret from server.")
-        }
+        if (!data.clientSecret) throw new Error("Missing client secret from server.")
 
         setClientSecret(data.clientSecret)
         setStatus("idle")
@@ -132,7 +146,7 @@ function StewardshipPaymentPageInner() {
         console.error(err)
         setError(
           err?.message ||
-            "Something went wrong while preparing the secure stewardship flow. Please try again.",
+            "Something went wrong while preparing the secure stewardship flow.",
         )
         setStatus("error")
       }
@@ -140,6 +154,10 @@ function StewardshipPaymentPageInner() {
 
     createIntent()
   }, [amount, frequency, pathFromQuery])
+
+  // ------------------------------------------------------------------
+  // No Stripe Key = Show config notice
+  // ------------------------------------------------------------------
 
   if (!stripePromise) {
     return (
@@ -151,12 +169,16 @@ function StewardshipPaymentPageInner() {
           <p className="text-muted-foreground text-sm">
             Stripe is not configured yet. Please set{" "}
             <code className="font-mono text-xs">NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY</code>{" "}
-            in your environment variables and redeploy.
+            in your environment variables.
           </p>
         </div>
       </div>
     )
   }
+
+  // ------------------------------------------------------------------
+  // MAIN UI
+  // ------------------------------------------------------------------
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-background via-background to-muted/40">
@@ -193,16 +215,13 @@ function StewardshipPaymentPageInner() {
                 Finalize Your Stewardship Exchange
               </h1>
 
-              {/* 🎯 NEW: Dynamic confirmation line */}
+              {/* HYDRATION-SAFE dynamic text */}
               <p className="text-muted-foreground max-w-md mx-auto">
-                Confirming {amount ? `$${amount}` : ""}{" "}
-                {frequency === "monthly" ? "per month" : "one-time"}.
+                Confirming ${amount} {frequency === "monthly" ? "per month" : "one-time"}.
               </p>
 
               <p className="text-sm sm:text-base text-muted-foreground max-w-xl">
-                This step completes your voluntary resource flow into ZenTrust’s
-                regenerative ecosystem. Payment details are encrypted and processed
-                securely by Stripe.
+                This step completes your voluntary resource flow into ZenTrust's ecosystem.
               </p>
             </div>
 
@@ -215,9 +234,9 @@ function StewardshipPaymentPageInner() {
                   </p>
                   <p className="text-sm font-semibold text-foreground">
                     {frequency === "monthly"
-                      ? `$${amount.toLocaleString()}/month resource flow`
-                      : `$${amount.toLocaleString()} one-time resource flow`}{" "}
-                    ·{" "}
+                      ? `$${amount.toLocaleString()}/month`
+                      : `$${amount.toLocaleString()} one-time`}{" "}
+                    resource flow ·{" "}
                     <span className="text-muted-foreground">
                       {pathFromQuery === "flexible"
                         ? "Adaptive allocation"
@@ -231,7 +250,7 @@ function StewardshipPaymentPageInner() {
                 </div>
               </div>
 
-              {/* Stripe Controlled */}
+              {/* Status states */}
               {status === "loading" && (
                 <div className="rounded-xl border border-border/60 bg-muted/40 px-4 py-6 text-sm text-muted-foreground">
                   Preparing your secure stewardship session…
@@ -244,6 +263,7 @@ function StewardshipPaymentPageInner() {
                 </div>
               )}
 
+              {/* Stripe */}
               {clientSecret && status !== "error" && (
                 <Elements
                   stripe={stripePromise}
@@ -267,7 +287,63 @@ function StewardshipPaymentPageInner() {
             </div>
           </div>
 
-          {/* RIGHT PANEL OMITTED — unchanged */}
+          {/* RIGHT PANEL — unchanged */}
+          <aside className="space-y-6">
+            <div className="glass-card rounded-2xl p-6 sm:p-7 border border-primary/20 space-y-5">
+              <div className="flex items-center gap-2">
+                <Heart className="h-5 w-5 text-primary" />
+                <h2 className="text-sm font-semibold text-foreground">
+                  Regenerative Influence Preview
+                </h2>
+              </div>
+
+              <p className="text-xs text-muted-foreground leading-relaxed">
+                Based on the selected resource level…
+              </p>
+
+              <div className="space-y-3 text-xs">
+                <ImpactMetric
+                  icon={TreePine}
+                  label="Ecosystem Layers Activated"
+                  value={impact.trees}
+                  description="Layers of life engaged in emerging syntropic systems."
+                />
+                <ImpactMetric
+                  icon={Leaf}
+                  label="Regenerative Cells Strengthened"
+                  value={impact.acres}
+                  description="Landscape units moving toward hydration resilience."
+                />
+                <ImpactMetric
+                  icon={Users}
+                  label="Families Advancing Sovereignty"
+                  value={impact.households}
+                  description="Households cultivating regenerative livelihoods."
+                />
+                {impact.research_plots > 0 && (
+                  <ImpactMetric
+                    icon={Microscope}
+                    label="Research Pathways Enabled"
+                    value={impact.research_plots}
+                    description="Open research in ecology & BPSS-aligned wellbeing."
+                  />
+                )}
+              </div>
+            </div>
+
+            <div className="glass-card rounded-2xl p-5 text-[11px] text-muted-foreground space-y-3">
+              <p>Payments are processed securely by Stripe.</p>
+              <p>
+                Questions?{" "}
+                <a
+                  href="mailto:hello@zentrust.org"
+                  className="underline underline-offset-2 hover:text-foreground"
+                >
+                  hello@zentrust.org
+                </a>
+              </p>
+            </div>
+          </aside>
         </div>
       </div>
     </div>
@@ -295,7 +371,6 @@ function PaymentForm({
 }) {
   const stripe = useStripe()
   const elements = useElements()
-
   const [isProcessing, setIsProcessing] = useState(false)
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -303,7 +378,7 @@ function PaymentForm({
     setError(null)
 
     if (!stripe || !elements) {
-      setError("The stewardship payment system is not ready yet. Please try again shortly.")
+      setError("The stewardship payment system is not ready yet.")
       return
     }
 
@@ -321,18 +396,20 @@ function PaymentForm({
 
       if (error) {
         console.error(error)
-        setError(error.message || "Payment failed. Please try a different card.")
-        setStatus("idle")
+        setError(
+          error.message || "Payment could not be processed. Try another card."
+        )
         setIsProcessing(false)
+        setStatus("idle")
         return
       }
 
       onSuccess()
-    } catch (err: any) {
+    } catch (err) {
       console.error(err)
       setError("Unexpected error. Please try again.")
-      setStatus("idle")
       setIsProcessing(false)
+      setStatus("idle")
     }
   }
 
@@ -351,8 +428,37 @@ function PaymentForm({
 }
 
 // ------------------------------------------------------------------
-// Helper
+// Impact Metric Component
 // ------------------------------------------------------------------
+
+function ImpactMetric({
+  icon: Icon,
+  label,
+  value,
+  description,
+}: {
+  icon: React.ComponentType<{ className?: string }>
+  label: string
+  value: number
+  description: string
+}) {
+  return (
+    <div className="rounded-xl bg-muted/60 p-3 space-y-1">
+      <div className="flex items-baseline justify-between gap-2">
+        <div className="inline-flex items-center gap-2 text-[11px] font-medium text-muted-foreground">
+          <Icon className="h-3.5 w-3.5 text-primary" />
+          <span>{label}</span>
+        </div>
+        <span className="text-sm font-semibold text-foreground">
+          {value.toLocaleString()}
+        </span>
+      </div>
+      <p className="text-[11px] text-muted-foreground leading-relaxed">
+        {description}
+      </p>
+    </div>
+  )
+}
 
 function pathLabel(path: string) {
   switch (path) {
