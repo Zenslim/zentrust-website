@@ -1,6 +1,6 @@
-"use client"     // MUST BE FIRST — do not put anything above this
+"use client"
 
-import { useSearchParams, useRouter } from "next/navigation"
+import { useSearchParams } from "next/navigation"
 import { useEffect, useState } from "react"
 import { loadStripe } from "@stripe/stripe-js"
 import {
@@ -9,18 +9,16 @@ import {
   useStripe,
   useElements,
 } from "@stripe/react-stripe-js"
+
 import { Button } from "@/components/ui/button"
-import { ArrowRight, Lock, ShieldCheck } from "lucide-react"
 
-export const dynamic = "force-dynamic" // must come AFTER "use client"
-
-const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY || "")
+const stripePromise = loadStripe(
+  process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY || ""
+)
 
 function PaymentForm({ clientSecret }: { clientSecret: string }) {
   const stripe = useStripe()
   const elements = useElements()
-  const router = useRouter()
-
   const [isProcessing, setIsProcessing] = useState(false)
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
 
@@ -34,7 +32,7 @@ function PaymentForm({ clientSecret }: { clientSecret: string }) {
     const { error } = await stripe.confirmPayment({
       elements,
       confirmParams: {
-        return_url: `${window.location.origin}/donate/thank-you`,
+        return_url: `${process.env.NEXT_PUBLIC_SITE_URL}/donate/thank-you`,
       },
     })
 
@@ -50,18 +48,17 @@ function PaymentForm({ clientSecret }: { clientSecret: string }) {
 
       <Button disabled={isProcessing} className="w-full" size="lg">
         {isProcessing ? "Processing…" : "Confirm Stewardship Flow"}
-        {!isProcessing && <ArrowRight className="h-4 w-4" />}
       </Button>
 
       {errorMessage && (
         <p className="text-red-500 text-sm text-center">{errorMessage}</p>
       )}
 
-      <p className="text-xs text-muted-foreground text-center leading-relaxed">
-        ZenTrust · 501(c)(3) Public Charity · EIN 33-4318487  
+      <p className="text-xs text-muted-foreground text-center">
+        ZenTrust · 501(c)(3) Public Charity · EIN 33-4318487
         <br />
-        Stewardship exchanges are voluntary and used exclusively for charitable,
-        scientific, and educational purposes.
+        Stewardship exchanges are voluntary and used exclusively for
+        charitable, scientific, and educational purposes.
       </p>
     </form>
   )
@@ -75,22 +72,18 @@ export default function PaymentPage() {
   useEffect(() => {
     if (!amount) return
 
-    const createIntent = async () => {
-      try {
-        const res = await fetch("/api/create-payment-intent", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ amount: Number(amount) }),
-        })
+    const makeIntent = async () => {
+      const res = await fetch("/api/create-payment-intent", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ amount: Number(amount) }),
+      })
 
-        const data = await res.json()
-        setClientSecret(data.clientSecret)
-      } catch (err) {
-        console.error(err)
-      }
+      const data = await res.json()
+      setClientSecret(data.clientSecret)
     }
 
-    createIntent()
+    makeIntent()
   }, [amount])
 
   if (!amount) {
