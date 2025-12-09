@@ -10,7 +10,6 @@ import './globals.css'
 import { ThemeProvider } from '@/components/layout/ThemeProvider'
 import { Navbar } from '@/components/layout/Navbar'
 import { Footer } from '@/components/layout/Footer'
-import { GA4 } from '@/components/analytics/GA4'
 import { TrackPageView } from '@/components/analytics/TrackPageView'
 
 const inter = Inter({ subsets: ['latin'] })
@@ -20,16 +19,8 @@ export const metadata: Metadata = {
     default: 'ZenTrust - Regenerative Agriculture & Environmental Stewardship',
     template: '%s | ZenTrust',
   },
-  description:
-    'ZenTrust promotes sustainable agriculture, environmental restoration, and community empowerment through research, education, and direct action programs.',
-  keywords: [
-    'sustainable agriculture',
-    'regenerative farming',
-    'environmental restoration',
-    'community education',
-    'sustainability',
-    'nonprofit',
-  ],
+  description: 'ZenTrust promotes sustainable agriculture, environmental restoration, and community empowerment through research, education, and direct action programs.',
+  keywords: ['sustainable agriculture', 'regenerative farming', 'environmental restoration', 'community education', 'sustainability', 'nonprofit'],
   authors: [{ name: 'ZenTrust' }],
   creator: 'ZenTrust',
   publisher: 'ZenTrust',
@@ -48,8 +39,7 @@ export const metadata: Metadata = {
     url: 'https://zentrust.world',
     siteName: 'ZenTrust',
     title: 'ZenTrust - Regenerative Agriculture & Environmental Stewardship',
-    description:
-      'Promoting sustainable agriculture and environmental restoration through research, education, and community programs.',
+    description: 'Promoting sustainable agriculture and environmental restoration through research, education, and community programs.',
     images: [
       {
         url: '/images/og-image.jpg',
@@ -62,8 +52,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'ZenTrust - Regenerative Agriculture & Environmental Stewardship',
-    description:
-      'Promoting sustainable agriculture and environmental restoration through research, education, and community programs.',
+    description: 'Promoting sustainable agriculture and environmental restoration through research, education, and community programs.',
     images: ['/images/twitter-image.jpg'],
   },
   robots: {
@@ -84,19 +73,15 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" suppressHydrationWarning>
       <head>
 
-        {/* Manifest + Icons */}
+        {/* Favicon + Manifest */}
         <link rel="icon" href="/icon.svg" type="image/svg+xml" />
         <link rel="manifest" href="/manifest.json" />
 
-        {/* ------------------------------
-            GOOGLE CONSENT MODE (Default)
-           ------------------------------ */}
+        {/* CONSENT MODE (Default Denied) */}
         <Script id="consent-default" strategy="beforeInteractive">
           {`
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}
-
-            // Default: deny until user accepts (GDPR safe)
             gtag('consent', 'default', {
               'ad_storage': 'denied',
               'ad_user_data': 'denied',
@@ -105,9 +90,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           `}
         </Script>
 
-        {/* ------------------------------
-            GOOGLE TAG (GA4)
-           ------------------------------ */}
+        {/* GOOGLE TAG (GA4) */}
         <Script
           async
           src="https://www.googletagmanager.com/gtag/js?id=G-2G4CVKHFZR"
@@ -117,18 +100,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           {`
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}
-
             gtag('js', new Date());
-
-            gtag('config', 'G-2G4CVKHFZR', {
-              anonymize_ip: true
-            });
+            gtag('config', 'G-2G4CVKHFZR', { anonymize_ip: true });
           `}
         </Script>
 
-        {/* ------------------------------
-            SERVICE WORKER
-           ------------------------------ */}
+        {/* SERVICE WORKER */}
         {process.env.NODE_ENV === 'production' && (
           <script
             dangerouslySetInnerHTML={{
@@ -136,12 +113,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 if (typeof window !== 'undefined' && 'serviceWorker' in navigator) {
                   window.addEventListener('load', function() {
                     navigator.serviceWorker.register('/sw.js')
-                      .then(function(registration) {
-                        console.log('SW registered: ', registration);
-                      })
-                      .catch(function(registrationError) {
-                        console.log('SW registration failed: ', registrationError);
-                      });
+                      .then(function(reg) { console.log('SW registered:', reg); })
+                      .catch(function(err) { console.log('SW failed:', err); });
                   });
                 }
               `,
@@ -152,8 +125,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
 
       <body className={inter.className} suppressHydrationWarning>
-        {/* Existing Analytics Components */}
-        <GA4 />
+
+        {/* TRACK PAGE VIEWS */}
         <Suspense fallback={null}>
           <TrackPageView />
         </Suspense>
