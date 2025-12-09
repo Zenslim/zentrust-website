@@ -27,7 +27,7 @@ export default function StewardshipPortalPage() {
           </p>
 
           <Button asChild size="lg" className="group mt-6">
-            <Link href="/donate/checkout">
+            <Link href="/stewardship/checkout">
               <Heart className="h-5 w-5 mr-2 group-hover:scale-110 transition-transform" />
               Enter the Stewardship Portal
             </Link>
@@ -107,7 +107,7 @@ export default function StewardshipPortalPage() {
           </p>
 
           <Button asChild size="lg">
-            <Link href="/donate/checkout">
+            <Link href="/stewardship/checkout">
               Enter the Portal
             </Link>
           </Button>
