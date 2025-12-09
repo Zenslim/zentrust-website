@@ -47,7 +47,7 @@ export function Hero() {
   }, [])
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-24 md:pt-36">
+    <section className="relative min-h-screen flex items-center justify-center pt-24 md:pt-36">
       {/* Background */}
       <div className="absolute inset-0 bg-gradient-to-br from-primary/15 via-background to-emerald-500/10" />
 
@@ -132,36 +132,34 @@ export function Hero() {
             initial={{ opacity: 0, x: 30 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
+            className="space-y-6"
           >
-            <div className="glass-card rounded-2xl p-6 sm:p-8 border border-primary/10 shadow-lg">
-              <h3 className="text-xl sm:text-2xl font-bold text-center mb-6">Our Mission Areas</h3>
+            <h3 className="text-xl sm:text-2xl font-bold text-center">Our Mission Areas</h3>
 
-              {/* FIXED GRID → 1 column on mobile, 2 on md+ */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                {missionAreas.map((item, index) => (
-                  <div
-                    key={index}
-                    className={`p-4 rounded-xl transition-all duration-300 ${
-                      current === index ? "bg-primary/10 scale-[1.02]" : "bg-muted/40 hover:bg-muted/60"
-                    }`}
-                  >
-                    <div className="text-base sm:text-lg font-semibold mb-1">{item.title}</div>
-                    <div className="text-xs text-muted-foreground font-medium mb-1">{item.status}</div>
-                    <p className="text-xs text-muted-foreground leading-snug">{item.desc}</p>
-                  </div>
-                ))}
-              </div>
+            {/* FIXED GRID → 1 column on mobile, 2 on md+ */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+              {missionAreas.map((item, index) => (
+                <div
+                  key={index}
+                  className={`py-3 transition-colors duration-300 ${
+                    current === index ? "text-primary" : "text-foreground"
+                  }`}
+                >
+                  <div className="text-base sm:text-lg font-semibold mb-1">{item.title}</div>
+                  <div className="text-xs text-muted-foreground font-medium mb-1">{item.status}</div>
+                  <p className="text-xs text-muted-foreground leading-snug">{item.desc}</p>
+                </div>
+              ))}
+            </div>
 
-              {/* BOTTOM CARD */}
-              <div className="mt-6 p-5 sm:p-6 bg-gradient-to-r from-primary/15 to-emerald-500/15 rounded-xl text-center">
-                <h4 className="text-lg font-bold mb-1">The Journey Begins</h4>
-                <p className="text-sm text-muted-foreground mb-4">
-                  ZenTrust is cultivating long-term ecological and community architectures that support regeneration.
-                </p>
-                <Button asChild size="sm" className="w-full">
-                  <Link href="/about">Explore Our Vision</Link>
-                </Button>
-              </div>
+            <div className="mt-6 text-center space-y-3">
+              <h4 className="text-lg font-bold">The Journey Begins</h4>
+              <p className="text-sm text-muted-foreground">
+                ZenTrust is cultivating long-term ecological and community architectures that support regeneration.
+              </p>
+              <Button asChild size="sm" className="w-full">
+                <Link href="/about">Explore Our Vision</Link>
+              </Button>
             </div>
           </motion.div>
         </div>

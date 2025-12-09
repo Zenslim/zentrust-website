@@ -112,7 +112,7 @@ export function ImpactCounters() {
   const isInView = useInView(ref, { once: true, margin: "-100px" })
 
   return (
-    <section ref={ref} className="py-24 bg-muted/30">
+    <section ref={ref} className="py-24">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
 
         {/* Section Header */}
@@ -123,12 +123,12 @@ export function ImpactCounters() {
           className="text-center mb-16"
         >
           <h2 className="text-3xl md:text-5xl font-bold text-foreground mb-6 leading-tight">
-            Regeneration Is a Collective Journey  
+            Regeneration Is a Collective Journey
           </h2>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-            These milestones are more than numbers — they are signs of life returning,  
-            communities strengthening, and landscapes remembering how to heal themselves.  
-            Every step we take honors the principle of 
+            These milestones are more than numbers — they are signs of life returning,
+            communities strengthening, and landscapes remembering how to heal themselves.
+            Every step we take honors the principle of
             <span className="italic text-foreground"> Vasudhaiva Kutumbakam — the world is one family.</span>
           </p>
         </motion.div>
@@ -143,79 +143,73 @@ export function ImpactCounters() {
                 initial={{ opacity: 0, y: 50 }}
                 animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
                 transition={{ duration: 0.6, delay: index * 0.1 }}
-                className="group"
+                className="group space-y-4"
               >
-                <div className="glass-card rounded-2xl p-8 h-full transition-all duration-300 hover:scale-105 hover:shadow-xl">
-                  
-                  {/* Icon */}
-                  <div className={`inline-flex items-center justify-center w-16 h-16 rounded-2xl ${metric.bgColor} mb-6 group-hover:scale-110 transition-transform duration-300`}>
-                    <Icon className={`h-8 w-8 ${metric.color}`} />
-                  </div>
-
-                  {/* Counter */}
-                  <div className="text-4xl md:text-5xl font-bold text-foreground mb-3">
-                    <AnimatedCounter
-                      end={metric.value}
-                      suffix={metric.suffix}
-                      isInView={isInView}
-                    />
-                  </div>
-
-                  <h3 className="text-lg font-semibold text-foreground mb-4">
-                    {metric.label}
-                  </h3>
-
-                  <p className="text-sm text-muted-foreground leading-relaxed">
-                    {metric.description}
-                  </p>
+                {/* Icon */}
+                <div className="inline-flex items-center justify-center w-16 h-16 mb-2">
+                  <Icon className={`h-8 w-8 ${metric.color}`} />
                 </div>
+
+                {/* Counter */}
+                <div className="text-4xl md:text-5xl font-bold text-foreground">
+                  <AnimatedCounter
+                    end={metric.value}
+                    suffix={metric.suffix}
+                    isInView={isInView}
+                  />
+                </div>
+
+                <h3 className="text-lg font-semibold text-foreground">
+                  {metric.label}
+                </h3>
+
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                  {metric.description}
+                </p>
               </motion.div>
             )
           })}
         </div>
-{/* CTA Section */}
-<motion.div
-  initial={{ opacity: 0, y: 30 }}
-  animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
-  transition={{ duration: 0.6, delay: 0.8 }}
-  className="text-center mt-16"
->
-  <div className="glass-card rounded-2xl p-8 md:p-12 bg-gradient-to-r from-primary/10 to-emerald-500/10 border-primary/20">
-    
-    <h3 className="text-2xl md:text-3xl font-bold text-foreground mb-4">
-      Explore Regenerative Pathways
-    </h3>
+        {/* CTA Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+          transition={{ duration: 0.6, delay: 0.8 }}
+          className="text-center mt-16 space-y-6"
+        >
+          <h3 className="text-2xl md:text-3xl font-bold text-foreground">
+            Explore Regenerative Pathways
+          </h3>
 
-    <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto leading-relaxed">
-      Regeneration emerges from relationship — between people, land, and the 
-      intelligence of living systems. Explore how your voluntary participation 
-      may align with this unfolding work.
-    </p>
+          <p className="text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+            Regeneration emerges from relationship — between people, land, and the
+            intelligence of living systems. Explore how your voluntary participation
+            may align with this unfolding work.
+          </p>
 
-    <div className="flex flex-col sm:flex-row gap-4 justify-center">
-      <motion.a
-        href="/donate"
-        className="btn-primary"
-        whileHover={{ scale: 1.05 }}
-        whileTap={{ scale: 0.95 }}
-      >
-        Enter the Stewardship Portal
-      </motion.a>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <motion.a
+              href="/donate"
+              className="btn-primary"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              Enter the Stewardship Portal
+            </motion.a>
 
-      <motion.a
-        href="/programs"
-        className="btn-secondary"
-        whileHover={{ scale: 1.05 }}
-        whileTap={{ scale: 0.95 }}
-      >
-        Explore Our Programs
-      </motion.a>
-    </div>
+            <motion.a
+              href="/programs"
+              className="btn-secondary"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              Explore Our Programs
+            </motion.a>
+          </div>
 
-  </div>
-</motion.div>
+        </motion.div>
 
-        
+
       </div>
     </section>
   )

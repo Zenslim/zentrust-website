@@ -39,7 +39,7 @@ export function DonationCalculator() {
   }
 
   return (
-    <section className="py-24 bg-gradient-to-br from-primary/5 via-background to-emerald-500/5">
+    <section className="py-24">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl mx-auto">
           
@@ -62,7 +62,7 @@ export function DonationCalculator() {
           </motion.div>
 
           <div className="grid lg:grid-cols-2 gap-12">
-            
+
             {/* Input Section */}
             <motion.div
               initial={{ opacity: 0, x: -30 }}
@@ -72,7 +72,7 @@ export function DonationCalculator() {
             >
 
               {/* Amount Input */}
-              <div className="glass-card rounded-2xl p-8">
+              <div className="space-y-6">
                 <h3 className="text-2xl font-bold text-foreground mb-6 flex items-center">
                   <Heart className="h-6 w-6 text-primary mr-3" />
                   Select Resource Flow Level
@@ -84,10 +84,10 @@ export function DonationCalculator() {
                     <button
                       key={tier.amount}
                       onClick={() => handleTierClick(tier.amount)}
-                      className={`p-4 rounded-xl border-2 transition-all duration-200 text-left ${
+                      className={`p-4 transition-all duration-200 text-left ${
                         selectedTier === tier.amount
-                          ? 'border-primary bg-primary/10 text-primary'
-                          : 'border-border hover:border-primary/50 hover:bg-muted/50'
+                          ? 'text-primary font-semibold'
+                          : 'text-foreground hover:text-primary'
                       }`}
                     >
                       <div className="text-lg font-bold">
@@ -112,7 +112,7 @@ export function DonationCalculator() {
                     max="1000"
                     value={amount}
                     onChange={handleSliderChange}
-                    className="w-full h-2 bg-muted rounded-lg cursor-pointer"
+                    className="w-full h-2 bg-muted cursor-pointer"
                   />
 
                   <div className="flex justify-between text-xs text-muted-foreground mt-1">
@@ -131,12 +131,12 @@ export function DonationCalculator() {
             </motion.div>
 
             {/* Impact Display */}
-            <motion.div
-              initial={{ opacity: 0, x: 30 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6, delay: 0.4 }}
-              className="space-y-6"
-            >
+              <motion.div
+                initial={{ opacity: 0, x: 30 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.6, delay: 0.4 }}
+                className="space-y-6"
+              >
               <AnimatePresence mode="wait">
                 <motion.div
                   key={amount}
@@ -144,21 +144,19 @@ export function DonationCalculator() {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -20 }}
                   transition={{ duration: 0.3 }}
-                  className="glass-card rounded-2xl p-8"
+                  className="space-y-6"
                 >
-                  
+
                   <h3 className="text-2xl font-bold text-foreground mb-6 flex items-center">
                     <TrendingUp className="h-6 w-6 text-primary mr-3" />
                     Regenerative Influence Preview
                   </h3>
 
-                  <div className="bg-primary/10 rounded-xl p-4 mb-6">
-                    <p className="text-foreground font-medium leading-relaxed">
-                      This projection illustrates how your voluntary resource movement 
-                      may interact with ecological regeneration, watershed activation, 
-                      and community resilience.
-                    </p>
-                  </div>
+                  <p className="text-foreground font-medium leading-relaxed">
+                    This projection illustrates how your voluntary resource movement
+                    may interact with ecological regeneration, watershed activation,
+                    and community resilience.
+                  </p>
 
                   <div className="space-y-4">
                     <ImpactMetric label="Ecosystem Layers Activated" value={impact.trees} Icon={TreePine} />
@@ -167,7 +165,7 @@ export function DonationCalculator() {
                   </div>
 
                   {impact.research_plots > 0 && (
-                    <div className="mt-6 p-4 bg-purple-100 dark:bg-purple-900/20 border border-purple-200 dark:border-purple-800 rounded-xl">
+                    <div className="mt-6">
                       <div className="flex items-center space-x-3">
                         <Microscope className="h-6 w-6 text-purple-600" />
                         <div>
@@ -204,7 +202,7 @@ export function DonationCalculator() {
 // Helper
 function ImpactMetric({ label, value, Icon }: any) {
   return (
-    <div className="flex items-center justify-between p-4 bg-muted/50 rounded-xl">
+    <div className="flex items-center justify-between py-3">
       <div className="flex items-center space-x-3">
         <Icon className="h-5 w-5 text-primary" />
         <span className="text-foreground font-medium">{label}</span>

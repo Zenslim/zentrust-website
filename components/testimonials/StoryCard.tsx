@@ -52,9 +52,9 @@ export function StoryCard({
       transition={{ duration: 0.6 }}
       className="group h-full"
     >
-      <div className="glass-card rounded-2xl overflow-hidden h-full flex flex-col transition-all duration-300 hover:scale-105 hover:shadow-xl">
+      <div className="h-full flex flex-col transition-all duration-300">
         {/* Image */}
-        <div className="relative h-64 overflow-hidden">
+        <div className="relative h-64">
           <Image
             src={image}
             alt={title}
@@ -82,7 +82,7 @@ export function StoryCard({
           {/* Impact Badge */}
           {impact && (
             <div className="absolute top-4 right-4">
-              <div className="glass-card rounded-lg px-3 py-2">
+              <div className="px-3 py-2 bg-black/30 text-white">
                 <div className="text-sm font-bold text-primary">
                   {impact.metric_value} {impact.metric_unit}
                 </div>
@@ -157,7 +157,7 @@ export function FeaturedStory({
       initial={{ opacity: 0, scale: 0.95 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{ duration: 0.6 }}
-      className={`relative overflow-hidden rounded-2xl ${
+      className={`relative ${
         featured ? 'h-96 md:h-[500px]' : 'h-64'
       }`}
     >
@@ -254,7 +254,7 @@ export function FeaturedStory({
             transition={{ delay: 0.6 }}
             className="mb-6"
           >
-            <div className="inline-flex items-center bg-white/20 backdrop-blur-sm rounded-lg px-4 py-2">
+            <div className="inline-flex items-center px-4 py-2 text-white">
               <span className="text-lg font-bold">
                 {props.impact.metric_value} {props.impact.metric_unit}
               </span>
