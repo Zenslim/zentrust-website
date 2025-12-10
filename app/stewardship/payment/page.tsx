@@ -259,7 +259,7 @@ export default function StewardshipPaymentPage() {
       <div className="container mx-auto px-4 py-12 lg:py-20">
 
         <Link
-          href="/donate/checkout"
+          href="/stewardship/payment"
           className="inline-flex items-center gap-2 text-xs text-muted-foreground hover:text-foreground"
         >
           <ArrowLeft className="h-3 w-3" />
@@ -320,7 +320,7 @@ export default function StewardshipPaymentPage() {
                     amount={amount}
                     frequency={frequency}
                     buttonLabel={buttonLabel}
-                    onSuccess={() => router.push("/donate/thank-you")}
+                    onSuccess={() => router.push("/stewardship/thank-you")}
                     setError={setError}
                     setStatus={setStatus}
                   />
