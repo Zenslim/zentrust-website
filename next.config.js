@@ -1,52 +1,50 @@
-/** @type {import('next').NextConfig} */
+import withPWAInit from "next-pwa";
 
-// Import next-pwa safely (it may or may not be installed)
-const withPWA = require("next-pwa")({
+const withPWA = withPWAInit({
   dest: "public",
-  disable: true,           // 🔥 THIS IS THE KEY — DISABLE SERVICE WORKER
+  disable: true,       // 🔥 THIS STOPS SERVICE WORKER GENERATION
   register: false,
   skipWaiting: false,
 });
 
+/** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
     remotePatterns: [
       {
-        protocol: 'https',
-        hostname: 'images.unsplash.com',
-        port: '',
-        pathname: '/**',
+        protocol: "https",
+        hostname: "images.unsplash.com",
+        pathname: "/**",
       },
       {
-        protocol: 'https',
-        hostname: 'assets.tina.io',
-        port: '',
-        pathname: '/**',
+        protocol: "https",
+        hostname: "assets.tina.io",
+        pathname: "/**",
       },
     ],
-    formats: ['image/avif', 'image/webp'],
+    formats: ["image/avif", "image/webp"],
   },
 
   async headers() {
     return [
       {
-        source: '/:path*',
+        source: "/:path*",
         headers: [
           {
-            key: 'Content-Security-Policy',
-            value:
-              "frame-ancestors 'self' http://localhost:3000 http://localhost:4001;",
+            key: "Content-Security-Policy",
+            value: "frame-ancestors 'self' http://localhost:3000 http://localhost:4001;",
           },
           {
-            key: 'X-Frame-Options',
-            value: 'ALLOWALL',
+            key: "X-Frame-Options",
+            value: "ALLOWALL",
           },
-          { key: 'X-Content-Type-Options', value: 'nosniff' },
-          { key: 'Referrer-Policy', value: 'origin-when-cross-origin' },
+          { key: "X-Content-Type-Options", value: "nosniff" },
+          { key: "Referrer-Policy", value: "origin-when-cross-origin" },
         ],
       },
     ];
   },
 };
 
-module.exports = withPWA(nextConfig);
+// MUST EXPORT LIKE THIS IN ESM
+export default withPWA(nextConfig);
