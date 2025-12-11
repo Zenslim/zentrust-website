@@ -7,106 +7,176 @@ import clsx from "clsx"
 
 export function Hero() {
   const [offsetY, setOffsetY] = useState(0)
+  const fgParallaxRef = useRef<HTMLDivElement>(null)
+  const canvasRef = useRef<HTMLCanvasElement>(null)
 
-  /* Desktop parallax */
+  /* DESKTOP PARALLAX MOVEMENT */
   useEffect(() => {
     const onScroll = () => {
       if (window.innerWidth < 768) return
-      setOffsetY(window.scrollY * 0.25)
+      setOffsetY(window.scrollY * 0.2)
     }
     window.addEventListener("scroll", onScroll)
     return () => window.removeEventListener("scroll", onScroll)
   }, [])
 
+  /* PARTICLE FLOATING LAYER */
+  useEffect(() => {
+    const canvas = canvasRef.current
+    if (!canvas) return
+
+    const ctx = canvas.getContext("2d")!
+    let width = (canvas.width = window.innerWidth)
+    let height = (canvas.height = window.innerHeight)
+
+    const particles = Array.from({ length: 80 }, () => ({
+      x: Math.random() * width,
+      y: Math.random() * height,
+      r: Math.random() * 1.8 + 0.6,
+      s: Math.random() * 0.3 + 0.1,
+    }))
+
+    const animate = () => {
+      ctx.clearRect(0, 0, width, height)
+      particles.forEach((p) => {
+        ctx.beginPath()
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2)
+        ctx.fillStyle = "rgba(255,255,255,0.25)"
+        ctx.fill()
+
+        p.y -= p.s
+        if (p.y < 0) p.y = height
+      })
+      requestAnimationFrame(animate)
+    }
+
+    animate()
+
+    const resize = () => {
+      width = canvas.width = window.innerWidth
+      height = canvas.height = window.innerHeight
+    }
+    window.addEventListener("resize", resize)
+    return () => window.removeEventListener("resize", resize)
+  }, [])
+
+  /* CAMERA SWAY (Global breathing motion) */
+  useEffect(() => {
+    let angle = 0
+    const sway = () => {
+      angle += 0.002
+      if (fgParallaxRef.current) {
+        fgParallaxRef.current.style.transform =
+          `translateY(${offsetY}px) rotate(${Math.sin(angle) * 0.6}deg)`
+      }
+      requestAnimationFrame(sway)
+    }
+    sway()
+  }, [offsetY])
+
   return (
     <section
-      className={clsx(
-        "relative min-h-screen flex items-center justify-center text-center px-6 pt-24 pb-20 overflow-hidden",
-        "bg-gradient-to-b from-[#F5FAF7] to-[#ECF5F0] dark:from-[#030A08] dark:to-[#0A1E17]",
-        "md:bg-none"
-      )}
+      className="
+        relative min-h-screen flex items-center justify-center text-center
+        px-6 pt-24 pb-20 overflow-hidden
+        bg-gradient-to-b from-[#FAFAF7] to-[#F2F2ED]
+        dark:from-[#060B08] dark:to-[#0A1E17]
+      "
     >
-
-      {/* DESKTOP PARALLAX IMAGE */}
+      {/* DESKTOP BACKGROUND IMAGE */}
       <div
+        ref={fgParallaxRef}
         className="
-          hidden md:block absolute inset-0 bg-cover bg-center
-          brightness-[0.88] contrast-[1.05] saturate-[.85]
+          hidden md:block absolute inset-0 bg-cover bg-center 
+          brightness-[0.75] contrast-[1.15] saturate-[0.9]
           will-change-transform
         "
         style={{
           backgroundImage: `url('/images/zentrust-hero-image.jpeg')`,
-          transform: `translateY(${offsetY}px)`
         }}
       />
 
-      {/* DESKTOP OVERLAY */}
-      <div className="hidden md:block absolute inset-0 bg-emerald-900/30 backdrop-blur-[1px]" />
+      {/* LIGHT RAY OVERLAY */}
+      <div className="
+        hidden md:block absolute inset-0 
+        bg-[url('/images/light-rays.png')] opacity-[0.35] 
+        mix-blend-screen animate-pulse-slow
+      " />
 
-      {/* TEXT */}
-      <div className="relative z-10 max-w-2xl mx-auto">
+      {/* DARKENING VIGNETTE FOR READABILITY */}
+      <div className="
+        hidden md:block absolute inset-0 
+        bg-[rgba(0,0,0,0.55)]
+        backdrop-blur-[2px]
+      " />
 
-        {/* Glowing Badge */}
+      {/* FLOATING PARTICLES */}
+      <canvas
+        ref={canvasRef}
+        className="absolute inset-0 w-full h-full pointer-events-none opacity-[0.5]"
+      />
+
+      {/* TEXT BLOCK */}
+      <div className="relative z-20 max-w-2xl mx-auto animate-fade-in">
+
+        {/* BADGE */}
         <div className="
-          inline-flex items-center px-3 py-1.5 mb-6 rounded-full
-          bg-emerald-600/10 dark:bg-white/10
-          text-emerald-900 dark:text-white text-xs sm:text-sm font-medium
-          backdrop-blur animate-pulse-slow
+          inline-flex items-center px-4 py-1.5 mb-6 rounded-full
+          bg-emerald-700/20 dark:bg-white/10
+          text-emerald-900 dark:text-white
+          text-sm font-medium backdrop-blur
         ">
           ZenTrust · Ecological & Scientific Stewardship
         </div>
 
-        {/* IMMERSIVE GLOWING HEADLINE */}
-        <h1 className="font-bold leading-tight space-y-2">
+        {/* IMMERSIVE BREATHING HEADLINE */}
+        <h1 className="font-bold leading-tight space-y-4 animate-breathe">
 
           <span className="
-            block text-4xl sm:text-5xl md:text-6xl 
-            bg-gradient-to-r from-emerald-600 via-emerald-400 to-emerald-700 
-            dark:from-emerald-200 dark:via-emerald-300 dark:to-emerald-400
-            bg-clip-text text-transparent drop-shadow-[0_0_15px_rgba(16,185,129,0.35)]
+            block text-4xl sm:text-5xl md:text-6xl
+            bg-gradient-to-r from-emerald-300 to-emerald-500
+            bg-clip-text text-transparent
+            drop-shadow-[0_0_14px_rgba(0,0,0,0.65)]
           ">
             Healing Land.
           </span>
 
           <span className="
             block text-4xl sm:text-5xl md:text-6xl
-            bg-gradient-to-r from-amber-500 via-orange-400 to-amber-600
-            dark:from-amber-300 dark:via-amber-400 dark:to-amber-300
-            bg-clip-text text-transparent drop-shadow-[0_0_18px_rgba(251,191,36,0.35)]
+            bg-gradient-to-r from-amber-300 to-orange-500
+            bg-clip-text text-transparent
+            drop-shadow-[0_0_14px_rgba(0,0,0,0.65)]
           ">
             Elevating Humanity.
           </span>
 
           <span className="
             block text-4xl sm:text-5xl md:text-6xl
-            bg-gradient-to-r from-emerald-700 via-cyan-400 to-blue-500
-            dark:from-indigo-200 dark:via-blue-300 dark:to-cyan-300
-            bg-clip-text text-transparent drop-shadow-[0_0_20px_rgba(59,130,246,0.35)]
+            bg-gradient-to-r from-cyan-300 to-blue-500
+            bg-clip-text text-transparent
+            drop-shadow-[0_0_14px_rgba(0,0,0,0.65)]
           ">
             Science for Regeneration.
           </span>
         </h1>
 
-        {/* DESCRIPTION */}
-        <p className="mt-6 text-base md:text-lg text-neutral-700 dark:text-neutral-300 font-light leading-relaxed max-w-xl mx-auto">
+        <p className="mt-6 text-base md:text-lg text-neutral-700 dark:text-neutral-300 font-light leading-relaxed max-w-xl mx-auto animate-fade-up">
           ZenTrust is a <strong>501(c)(3) public charity</strong> advancing regenerative ecology,
           BPSS-integrative wellness research, and open scientific education.
         </p>
 
-        {/* CTA */}
-        <div className="mt-10">
+        <div className="mt-10 animate-fade-up-delayed">
           <Button
             asChild
             className="
               px-9 py-4 rounded-full text-lg shadow-xl
               bg-emerald-600 hover:bg-emerald-700 text-white
-              hover:shadow-emerald-600/40 transition-all duration-300
+              transition-all duration-300 hover:shadow-emerald-500/40
             "
           >
             <Link href="/stewardship">Enter the Stewardship Portal</Link>
           </Button>
         </div>
-
       </div>
     </section>
   )
