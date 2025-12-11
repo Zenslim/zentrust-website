@@ -2,64 +2,68 @@ export const dynamic = "force-dynamic";
 export const fetchCache = "force-no-store";
 export const revalidate = 0;
 
-import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
-import { Suspense } from 'react'
-import Script from "next/script"
-import './globals.css'
-import { ThemeProvider } from '@/components/layout/ThemeProvider'
-import { Navbar } from '@/components/layout/Navbar'
-import { Footer } from '@/components/layout/Footer'
-import { TrackPageView } from '@/components/analytics/TrackPageView'
+import type { Metadata } from "next";
+import { Inter } from "next/font/google";
+import { Suspense } from "react";
+import Script from "next/script";
+import "./globals.css";
 
-const inter = Inter({ subsets: ['latin'] })
+import { ThemeProvider } from "@/components/layout/ThemeProvider";
+import { Navbar } from "@/components/layout/Navbar";
+import { Footer } from "@/components/layout/Footer";
+import { TrackPageView } from "@/components/analytics/TrackPageView";
+
+// 🌿 GLOBAL AMBIENT BACKGROUND (mobile only)
+import { AmbientBackground } from "@/components/global/AmbientBackground";
+
+const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: {
-    default: 'ZenTrust - Regenerative Agriculture & Environmental Stewardship',
-    template: '%s | ZenTrust',
+    default: "ZenTrust - Regenerative Agriculture & Environmental Stewardship",
+    template: "%s | ZenTrust",
   },
   description:
-    'ZenTrust promotes sustainable agriculture, environmental restoration, and community empowerment through research, education, and direct action programs.',
+    "ZenTrust promotes sustainable agriculture, environmental restoration, and community empowerment through research, education, and direct action programs.",
   keywords: [
-    'sustainable agriculture',
-    'regenerative farming',
-    'environmental restoration',
-    'community education',
-    'sustainability',
-    'nonprofit',
+    "sustainable agriculture",
+    "regenerative farming",
+    "environmental restoration",
+    "community education",
+    "sustainability",
+    "nonprofit",
   ],
-  authors: [{ name: 'ZenTrust' }],
-  creator: 'ZenTrust',
-  publisher: 'ZenTrust',
+  authors: [{ name: "ZenTrust" }],
+  creator: "ZenTrust",
+  publisher: "ZenTrust",
   formatDetection: { email: false, address: false, telephone: false },
-  metadataBase: new URL('https://zentrust.world'),
-  alternates: { canonical: '/' },
+  metadataBase: new URL("https://zentrust.world"),
+  alternates: { canonical: "/" },
 
   openGraph: {
-    type: 'website',
-    locale: 'en_US',
-    url: 'https://zentrust.world',
-    siteName: 'ZenTrust',
-    title: 'ZenTrust - Regenerative Agriculture & Environmental Stewardship',
+    type: "website",
+    locale: "en_US",
+    url: "https://zentrust.world",
+    siteName: "ZenTrust",
+    title: "ZenTrust - Regenerative Agriculture & Environmental Stewardship",
     description:
-      'Promoting sustainable agriculture and environmental restoration through research, education, and community programs.',
+      "Promoting sustainable agriculture and environmental restoration through research, education, and community programs.",
     images: [
       {
-        url: '/images/og-image.jpg',
+        url: "/images/og-image.jpg",
         width: 1200,
         height: 630,
-        alt: 'ZenTrust - Sustainable Agriculture',
+        alt: "ZenTrust - Sustainable Agriculture",
       },
     ],
   },
 
   twitter: {
-    card: 'summary_large_image',
-    title: 'ZenTrust - Regenerative Agriculture & Environmental Stewardship',
+    card: "summary_large_image",
+    title: "ZenTrust - Regenerative Agriculture & Environmental Stewardship",
     description:
-      'Promoting sustainable agriculture and environmental restoration through research, education, and community programs.',
-    images: ['/images/twitter-image.jpg'],
+      "Promoting sustainable agriculture and environmental restoration through research, education, and community programs.",
+    images: ["/images/twitter-image.jpg"],
   },
 
   robots: {
@@ -68,14 +72,18 @@ export const metadata: Metadata = {
     googleBot: {
       index: true,
       follow: true,
-      'max-video-preview': -1,
-      'max-image-preview': 'large',
-      'max-snippet': -1,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
     },
   },
-}
+};
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
@@ -83,7 +91,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <link rel="icon" href="/icon.svg" type="image/svg+xml" />
         <link rel="manifest" href="/manifest.json" />
 
-        {/* CONSENT MODE — loads BEFORE ANY analytics */}
+        {/* ------------------------------ */}
+        {/* CONSENT MODE (MUST LOAD FIRST) */}
+        {/* ------------------------------ */}
         <Script id="consent-default" strategy="beforeInteractive">
           {`
             window.dataLayer = window.dataLayer || [];
@@ -96,7 +106,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           `}
         </Script>
 
-        {/* GA4 SCRIPT — This was missing strategy, so Next.js never executed it */}
+        {/* GA4 SCRIPT */}
         <Script
           src="https://www.googletagmanager.com/gtag/js?id=G-2G4CVKHFZR"
           strategy="afterInteractive"
@@ -112,8 +122,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           `}
         </Script>
 
-        {/* SERVICE WORKER */}
-        {process.env.NODE_ENV === 'production' && (
+        {/* ------------------------------ */}
+        {/* SERVICE WORKER REGISTRATION */}
+        {/* ------------------------------ */}
+        {process.env.NODE_ENV === "production" && (
           <script
             dangerouslySetInnerHTML={{
               __html: `
@@ -131,19 +143,26 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
 
       <body className={inter.className} suppressHydrationWarning>
-        {/* TRACK PAGE VIEWS */}
+        {/* PAGE VIEW TRACKING */}
         <Suspense fallback={null}>
           <TrackPageView />
         </Suspense>
 
+        {/* ------------------------------ */}
+        {/* GLOBAL MOBILE AMBIENT BACKGROUND */}
+        {/* ------------------------------ */}
+        <AmbientBackground />
+
+        {/* ------------------------------ */}
         {/* MAIN APP STRUCTURE */}
+        {/* ------------------------------ */}
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
           enableSystem
           disableTransitionOnChange
         >
-          <div className="min-h-screen bg-background text-foreground">
+          <div className="min-h-screen bg-background text-foreground relative z-10">
             <Navbar />
             <main className="flex-1">{children}</main>
             <Footer />
@@ -151,5 +170,5 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         </ThemeProvider>
       </body>
     </html>
-  )
+  );
 }
