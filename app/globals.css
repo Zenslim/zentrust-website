@@ -26,6 +26,9 @@
     --input: 214.3 31.8% 91.4%;
     --ring: 142.1 70.6% 45.3%;
     --radius: 0.75rem;
+
+    --hero-light-head: #064e3b;
+    --hero-light-body: #047857;
   }
 
   .dark {
@@ -48,6 +51,9 @@
     --border: 217.2 32.6% 17.5%;
     --input: 217.2 32.6% 17.5%;
     --ring: 142.1 70.6% 45.3%;
+
+    --hero-light-head: #ffffff;
+    --hero-light-body: #e5ffef;
   }
 
   * {
@@ -57,6 +63,22 @@
   body {
     background-color: hsl(var(--background));
     color: hsl(var(--foreground));
+  }
+
+  .hero-heading {
+    color: var(--hero-light-head);
+  }
+
+  .hero-subheading {
+    color: #065f46;
+  }
+
+  .dark .hero-subheading {
+    color: #ffffff;
+  }
+
+  .hero-body {
+    color: var(--hero-light-body);
   }
 }
 
