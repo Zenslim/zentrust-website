@@ -39,7 +39,7 @@ export default function MissionSection() {
         </p>
 
         {/* FIVE-CARD ROW */}
-        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 w-full mx-auto max-w-[1800px]">
           {pillars.map((pillar, index) => (
             <div
               key={index}
