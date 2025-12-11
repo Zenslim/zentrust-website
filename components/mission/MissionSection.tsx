@@ -1,5 +1,7 @@
 "use client"
 
+import { motion } from "framer-motion"
+
 export default function MissionSection() {
   const pillars = [
     {
@@ -31,19 +33,41 @@ export default function MissionSection() {
 
   return (
     <section className="w-full py-20 bg-background">
-      <div className="container mx-auto px-6 text-center max-w-5xl">
-        {/* SECTION CAPTION */}
-        <p className="text-lg md:text-xl text-muted-foreground mb-12">
+      {/* INTRO CAPTION */}
+      <div className="w-full px-6 text-center">
+        <p className="text-lg md:text-xl text-muted-foreground mb-12 max-w-4xl mx-auto">
           These five pillars guide ZenTrust’s work in restoring ecosystems, uplifting communities,
           protecting cultural wisdom, and advancing holistic human and planetary wellbeing.
         </p>
 
-        {/* FIVE-CARD ROW */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 w-full mx-auto max-w-[1800px]">
+        {/* ANIMATED FIVE-CARD GRID */}
+        <motion.div
+          className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 w-full mx-auto max-w-[1800px]"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.2 }}
+          variants={{
+            hidden: {},
+            visible: { transition: { staggerChildren: 0.15 } },
+          }}
+        >
           {pillars.map((pillar, index) => (
-            <div
+            <motion.div
               key={index}
-              className="p-6 rounded-xl bg-card shadow-sm border border-border/40 hover:shadow-md transition-shadow flex flex-col items-center text-center"
+              className="p-6 rounded-xl bg-card shadow-sm border border-border/40 flex flex-col items-center text-center cursor-default"
+              variants={{
+                hidden: { opacity: 0, y: 40 },
+                visible: {
+                  opacity: 1,
+                  y: 0,
+                  transition: { duration: 0.6, ease: "easeOut" },
+                },
+              }}
+              whileHover={{
+                scale: 1.03,
+                boxShadow: "0px 12px 28px rgba(0, 0, 0, 0.15)",
+              }}
+              transition={{ type: "spring", stiffness: 200, damping: 20 }}
             >
               {/* ICON */}
               <div className="text-4xl mb-4">{pillar.icon}</div>
@@ -55,9 +79,9 @@ export default function MissionSection() {
               <p className="text-sm text-muted-foreground leading-relaxed">
                 {pillar.text}
               </p>
-            </div>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
 
         {/* UNIFYING STATEMENT */}
         <div className="mt-16 max-w-3xl mx-auto">
