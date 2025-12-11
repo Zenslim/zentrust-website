@@ -6,71 +6,37 @@ import { Button } from "@/components/ui/button"
 
 export function Hero() {
   const [offsetY, setOffsetY] = useState(0)
-  const canvasRef = useRef<HTMLCanvasElement>(null)
 
-  /* PARALLAX SCROLL */
+  /* PARALLAX SCROLL — desktop only */
   useEffect(() => {
     const onScroll = () => setOffsetY(window.scrollY * 0.3)
     window.addEventListener("scroll", onScroll)
     return () => window.removeEventListener("scroll", onScroll)
   }, [])
 
-  /* PARTICLE CANVAS */
-  useEffect(() => {
-    const canvas = canvasRef.current
-    if (!canvas) return
-    const ctx = canvas.getContext("2d")!
-
-    let width = (canvas.width = window.innerWidth)
-    let height = (canvas.height = window.innerHeight)
-
-    const particles = Array.from({ length: 60 }, () => ({
-      x: Math.random() * width,
-      y: Math.random() * height,
-      r: Math.random() * 2 + 1,
-      s: Math.random() * 0.4 + 0.2,
-    }))
-
-    const animate = () => {
-      ctx.clearRect(0, 0, width, height)
-      particles.forEach((p) => {
-        ctx.beginPath()
-        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2)
-        ctx.fillStyle = "rgba(255,255,255,0.25)"
-        ctx.fill()
-        p.y -= p.s
-        if (p.y < 0) p.y = height
-      })
-      requestAnimationFrame(animate)
-    }
-
-    animate()
-
-    const resize = () => {
-      width = (canvas.width = window.innerWidth)
-      height = (canvas.height = window.innerHeight)
-    }
-    window.addEventListener("resize", resize)
-    return () => window.removeEventListener("resize", resize)
-  }, [])
-
   return (
-    <section className="relative min-h-screen flex items-center justify-center text-center overflow-hidden pt-24 md:pt-32">
+    <section
+      className="
+        relative min-h-screen flex items-center justify-center text-center overflow-hidden
+        pt-24 md:pt-32
+        bg-transparent md:bg-none
+      "
+    >
 
-      {/* BACKGROUND IMAGE */}
+      {/* DESKTOP BACKGROUND IMAGE (mobile hidden) */}
       <div
-        className="absolute inset-0 bg-cover bg-center will-change-transform"
+        className="
+          absolute inset-0 bg-cover bg-center will-change-transform
+          hidden md:block
+        "
         style={{
           backgroundImage: `url('/images/zentrust-hero-image.jpeg')`,
           transform: `translateY(${offsetY}px)`
         }}
       />
 
-      {/* DARK GREEN OVERLAY */}
-      <div className="absolute inset-0 bg-emerald-900/40 backdrop-blur-[1px]" />
-
-      {/* PARTICLE LAYER */}
-      <canvas ref={canvasRef} className="absolute inset-0 w-full h-full pointer-events-none" />
+      {/* DESKTOP OVERLAY (unchanged) */}
+      <div className="absolute inset-0 bg-emerald-900/40 backdrop-blur-[1px] hidden md:block" />
 
       {/* HERO TEXT BLOCK */}
       <div className="relative z-10 max-w-4xl mx-auto px-6 text-white drop-shadow-xl">
