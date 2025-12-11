@@ -3,17 +3,6 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Ensure smooth scrolling and prevent layout shifts */
-html {
-  scroll-behavior: smooth;
-}
-
-body {
-  background-color: hsl(var(--background));
-  color: hsl(var(--foreground));
-  overflow-x: hidden;
-}
-
 /* Base styles */
 @layer base {
   :root {
@@ -71,6 +60,15 @@ body {
     border-color: hsl(var(--border));
   }
 
+  body {
+    background-color: hsl(var(--background));
+    color: hsl(var(--foreground));
+    /* Prevent horizontal scrolling */
+    overflow-x: hidden;
+    /* Ensure smooth scrolling */
+    scroll-behavior: smooth;
+  }
+
   /* Hero section text styles - theme-aware */
   .hero-heading {
     color: var(--hero-light-head);
@@ -86,27 +84,6 @@ body {
 
   .hero-body {
     color: var(--hero-light-body);
-  }
-
-  /* Ensure proper z-index stacking */
-  .ambient-canvas {
-    z-index: 0;
-  }
-
-  .parallax-background {
-    z-index: 0;
-  }
-
-  .hero-overlay {
-    z-index: 10;
-  }
-
-  .hero-content {
-    z-index: 20;
-  }
-
-  .navbar {
-    z-index: 30;
   }
 }
 

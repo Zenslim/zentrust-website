@@ -53,7 +53,7 @@ type FlowerParticle = {
 
 const LEAF_PATH = "M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"
 const LEAF_VEIN_PATH = "M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"
-const Bird_PATH =
+const BIRD_PATH =
   "M4 10c1-3 4.5-5.5 7.5-3.2c.5.37 1 .83 1.5 1.45c.5-.62 1-1.08 1.5-1.45C17.5 4.5 21 7 22 10c.6 2-1.1 4.2-3.4 4.2c-1.3 0-2.6-.64-3.6-1.7l-1 1.5c.7 1.8 1 3.6 1 6h-4c0-2.4.3-4.2 1-6l-1-1.5C8 13.56 6.7 14.2 5.4 14.2C3.1 14.2 2.4 12 3 10Z"
 const FLOWER_PATH =
   "M12 5a3 3 0 1 1 3 3m-3-3a3 3 0 1 0-3 3m3-3v1M9 8a3 3 0 1 0 3 3M9 8h1m5 0a3 3 0 1 1-3 3m3-3h-1m-2 3v-1"
@@ -89,7 +89,7 @@ export function AmbientBackground({ className = "fixed inset-0 w-full h-full z-0
 
     const leafShape = new Path2D(LEAF_PATH)
     const leafVein = new Path2D(LEAF_VEIN_PATH)
-    const BirdShape = new Path2D(Bird_PATH)
+    const birdShape = new Path2D(BIRD_PATH)
     const flowerShape = new Path2D(FLOWER_PATH)
     const sparkleShape = new Path2D(SPARKLES_PATH)
 
@@ -215,7 +215,7 @@ export function AmbientBackground({ className = "fixed inset-0 w-full h-full z-0
           wingGradient.addColorStop(0, "rgba(173, 108, 255, 0.8)")
           wingGradient.addColorStop(1, "rgba(255, 189, 120, 0.65)")
           ctx.fillStyle = wingGradient
-          ctx.fill(BirdShape)
+          ctx.fill(birdShape)
           ctx.restore()
 
           bf.y -= bf.speed
@@ -280,12 +280,12 @@ export function AmbientBackground({ className = "fixed inset-0 w-full h-full z-0
 
     rafId = requestAnimationFrame(render)
 
-    const resizeObserver = new ResizeObserver(() => setSize())
-    resizeObserver.observe(canvas)
+    const handleResize = () => setSize()
+    window.addEventListener('resize', handleResize)
 
     return () => {
       cancelAnimationFrame(rafId)
-      resizeObserver.disconnect()
+      window.removeEventListener('resize', handleResize)
     }
   }, [])
 

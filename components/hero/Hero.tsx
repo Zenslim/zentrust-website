@@ -15,8 +15,8 @@ export function Hero() {
   }, [])
 
   return (
-    <section className="relative flex items-center justify-center text-center overflow-hidden pt-24 md:pt-32 min-h-[75vh] md:min-h-screen">
-      {/* Mobile ambient background - full viewport canvas */}
+    <section className="relative flex items-center justify-center text-center pt-24 md:pt-32 min-h-[75vh] md:min-h-screen">
+      {/* Mobile ambient background - full viewport fixed canvas */}
       <AmbientBackground className="fixed inset-0 w-full h-full z-0 block md:hidden pointer-events-none" />
 
       {/* Desktop parallax forest background */}
@@ -39,23 +39,23 @@ export function Hero() {
         </div>
 
         <h1 className="font-bold leading-tight space-y-2">
-          <span className="hero-heading block text-4xl sm:text-5xl md:text-6xl text-emerald-900 dark:text-white">
+          <span className="block text-4xl sm:text-5xl md:text-6xl text-emerald-900 dark:text-white">
             Healing Land.
           </span>
-          <span className="hero-subheading block text-4xl sm:text-5xl md:text-6xl text-emerald-800 dark:text-white">
+          <span className="block text-4xl sm:text-5xl md:text-6xl text-emerald-800 dark:text-white">
             Elevating Humanity.
           </span>
-          <span className="hero-heading block text-4xl sm:text-5xl md:text-6xl text-emerald-900 dark:text-white">
+          <span className="block text-4xl sm:text-5xl md:text-6xl text-emerald-700 dark:text-white">
             Science for Regeneration.
           </span>
         </h1>
 
-        <p className="hero-body mt-2 text-lg md:text-xl font-medium max-w-2xl mx-auto text-emerald-800 dark:text-gray-100">
+        <p className="mt-2 text-lg md:text-xl font-medium max-w-2xl mx-auto text-emerald-800 dark:text-gray-100">
           ZenTrust is a <strong>501(c)(3) public charity (EIN 33-4318487)</strong> advancing
           regenerative ecology, BPSS-integrative wellness research, and open scientific education.
         </p>
 
-        <p className="hero-body text-sm text-emerald-700/90 dark:text-gray-200/90 mt-2">
+        <p className="text-sm text-emerald-700/90 dark:text-gray-200/90 mt-2">
           Recognized by the IRS as a 170(b)(1)(A)(vi) public charity.
           <a
             href="https://apps.irs.gov/pub/epostcard/dl/FinalLetter_33-4318487_ZENTRUSTINC_04072025_00.pdf"
