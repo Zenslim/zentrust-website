@@ -14,7 +14,6 @@ import { Footer } from "@/components/layout/Footer";
 import { TrackPageView } from "@/components/analytics/TrackPageView";
 
 // 🌿 GLOBAL AMBIENT BACKGROUND (mobile only)
-import { AmbientBackground } from "@/components/global/AmbientBackground";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -149,11 +148,6 @@ export default function RootLayout({
         </Suspense>
 
         {/* ------------------------------ */}
-        {/* GLOBAL MOBILE AMBIENT BACKGROUND */}
-        {/* ------------------------------ */}
-        <AmbientBackground />
-
-        {/* ------------------------------ */}
         {/* MAIN APP STRUCTURE */}
         {/* ------------------------------ */}
         <ThemeProvider
@@ -162,7 +156,7 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <div className="min-h-screen bg-background text-foreground relative z-10">
+          <div className="min-h-screen text-foreground relative z-10">
             <Navbar />
             <main className="flex-1">{children}</main>
             <Footer />
