@@ -1,7 +1,7 @@
 // app/page.tsx
 
 import { Hero } from '@/components/hero/Hero'
-import { MissionSection } from "@/components/mission/MissionSection"
+import { Mission} from "@/components/mission/MissionSection"
 import { ImpactCounters } from '@/components/impact/ImpactCounters'
 import { DonationCalculator } from '@/components/impact/DonationCalculator'
 import { ProgramsSection } from '@/components/programs/ProgramsSection'
