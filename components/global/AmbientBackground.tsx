@@ -1,210 +1,224 @@
 "use client"
+
 import { useEffect, useRef } from "react"
 
-export function AmbientBackground() {
+type AmbientBackgroundProps = {
+  className?: string
+}
+
+export function AmbientBackground({ className = "absolute inset-0 w-full h-full -z-10 md:hidden pointer-events-none" }: AmbientBackgroundProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
 
   useEffect(() => {
-    if (window.innerWidth >= 768) return // MOBILE ONLY
+    if (typeof window === "undefined" || window.innerWidth >= 768) return
 
     const canvas = canvasRef.current
-    if (!canvas) return
-    const ctx = canvas.getContext("2d")!
+    const ctx = canvas?.getContext("2d")
+    if (!canvas || !ctx) return
 
-    let width = (canvas.width = window.innerWidth)
-    let height = (canvas.height = window.innerHeight)
-
-    const isDark = () =>
-      document.documentElement.classList.contains("dark")
-
-    /* TOUCH PARALLAX STATE */
-    let touchX = 0
-    let touchY = 0
-
-    const handleTouch = (e: TouchEvent) => {
-      const t = e.touches[0]
-      touchX = (t.clientX / width - 0.5) * 20
-      touchY = (t.clientY / height - 0.5) * 20
+    const setSize = () => {
+      const dpr = window.devicePixelRatio || 1
+      const { width, height } = canvas.getBoundingClientRect()
+      canvas.width = width * dpr
+      canvas.height = height * dpr
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
     }
-    window.addEventListener("touchmove", handleTouch, { passive: true })
 
-    /* LIGHT MODE ELEMENTS */
-    const pollenCount = 45
-    const leafCount = 10
-    const butterflyCount = 4
-    const fogLayer = new Image()
-    fogLayer.src = "/images/fog-layer.png" // simple 1024px transparent mist image
+    setSize()
 
-    const pollen = Array.from({ length: pollenCount }, () => ({
-      x: Math.random() * width,
-      y: Math.random() * height,
-      r: Math.random() * 1.6 + 0.5,
-      s: Math.random() * 0.5 + 0.1,
+    const isDark = () => document.documentElement.classList.contains("dark")
+
+    const leafPath = new Path2D(
+      "M0,-24 C12,-22 24,-8 18,10 C14,22 4,32 0,38 C-4,32 -14,22 -18,10 C-24,-8 -12,-22 0,-24 z",
+    )
+    const wingPath = new Path2D(
+      "M0,-16 C10,-20 22,-12 24,0 C22,12 12,22 0,18 C-12,22 -22,12 -24,0 C-22,-12 -10,-20 0,-16 z",
+    )
+
+    const leaves = Array.from({ length: 12 }, () => ({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      scale: Math.random() * 0.4 + 0.7,
+      drift: Math.random() * 0.6 + 0.3,
+      spin: Math.random() * 0.01 + 0.004,
+      angle: Math.random() * Math.PI * 2,
+      hue: 120 + Math.random() * 40,
+      sway: Math.random() * 18 + 12,
     }))
 
-    const leaves = Array.from({ length: leafCount }, () => ({
-      x: Math.random() * width,
-      y: Math.random() * height,
-      size: Math.random() * 18 + 12,
-      drift: Math.random() * 0.5 + 0.2,
-      rot: Math.random() * 360,
-      rotSpeed: Math.random() * 0.4 + 0.05,
-    }))
-
-    const butterflies = Array.from({ length: butterflyCount }, () => ({
-      x: Math.random() * width,
-      y: Math.random() * height,
-      s: Math.random() * 0.8 + 0.4,
+    const butterflies = Array.from({ length: 5 }, () => ({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      amplitude: Math.random() * 18 + 10,
+      speed: Math.random() * 0.8 + 0.4,
       phase: Math.random() * Math.PI * 2,
-      color: ["#FF8FD5", "#FFA74D", "#74D7FF", "#A6FF9F"][
-        Math.floor(Math.random() * 4)
-      ],
+      hue: 280 + Math.random() * 80,
+      size: Math.random() * 0.35 + 0.65,
     }))
 
-    /* DARK MODE STARS + AURORA */
-    const stars = Array.from({ length: 95 }, () => ({
-      x: Math.random() * width,
-      y: Math.random() * height,
-      r: Math.random() * 1.3 + 0.4,
-      twinkle: Math.random() * 0.6 + 0.4,
+    const pollen = Array.from({ length: 60 }, () => ({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      r: Math.random() * 1.5 + 0.8,
+      driftX: Math.random() * 0.2 - 0.1,
+      driftY: Math.random() * 0.4 + 0.3,
+      noise: Math.random() * Math.PI * 2,
     }))
 
-    let t = 0
+    const stars = Array.from({ length: 140 }, () => ({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      r: Math.random() * 1.2 + 0.4,
+      twinkle: Math.random() * 0.6 + 0.3,
+      offset: Math.random() * Math.PI * 2,
+    }))
 
-    const animate = () => {
+    let frame = 0
+    let rafId: number
+
+    const drawAurora = (time: number) => {
+      const { width, height } = canvas
+      const gradient = ctx.createLinearGradient(0, height * 0.25, width, height * 0.8)
+      gradient.addColorStop(0, "rgba(120, 80, 255, 0.18)")
+      gradient.addColorStop(0.35, "rgba(80, 200, 255, 0.15)")
+      gradient.addColorStop(0.7, "rgba(60, 255, 200, 0.18)")
+      gradient.addColorStop(1, "rgba(180, 120, 255, 0.16)")
+
+      ctx.save()
+      ctx.globalCompositeOperation = "screen"
+      const wave = Math.sin(time * 0.0006) * 40
+      ctx.translate(Math.sin(time * 0.0004) * 30, 0)
+      ctx.beginPath()
+      ctx.moveTo(0, height * 0.4)
+      for (let x = 0; x <= width; x += 10) {
+        const y = height * 0.45 + Math.sin(x * 0.01 + wave) * 30 + Math.cos(time * 0.0008 + x * 0.008) * 12
+        ctx.lineTo(x, y)
+      }
+      ctx.lineTo(width, height)
+      ctx.lineTo(0, height)
+      ctx.closePath()
+      ctx.fillStyle = gradient
+      ctx.fill()
+      ctx.restore()
+    }
+
+    const render = () => {
+      const { width, height } = canvas
       ctx.clearRect(0, 0, width, height)
 
       if (!isDark()) {
-        // ---------------------------
-        // 🌿 LIGHT MODE BACKGROUND
-        // ---------------------------
-        const lg = ctx.createLinearGradient(0, 0, 0, height)
-        lg.addColorStop(0, "rgba(248,255,245,1)")
-        lg.addColorStop(1, "rgba(235,245,235,1)")
-        ctx.fillStyle = lg
+        const bg = ctx.createLinearGradient(0, 0, 0, height)
+        bg.addColorStop(0, "#f6fff6")
+        bg.addColorStop(1, "#e7f6ea")
+        ctx.fillStyle = bg
         ctx.fillRect(0, 0, width, height)
 
-        // 🍃 POLLEN
         pollen.forEach((p) => {
-          ctx.beginPath()
-          ctx.arc(p.x + touchX * 0.2, p.y + touchY * 0.2, p.r, 0, Math.PI * 2)
-          ctx.fillStyle = "rgba(255,255,200,0.25)"
-          ctx.fill()
-          p.y -= p.s
-          if (p.y < -10) p.y = height + 10
-        })
-
-        // 🍃 LEAVES (soft parallax and rotation)
-        leaves.forEach((l) => {
           ctx.save()
-          ctx.translate(l.x + touchX * 0.4, l.y + touchY * 0.4)
-          ctx.rotate((l.rot * Math.PI) / 180)
-          ctx.fillStyle = "rgba(40,140,40,0.35)"
+          ctx.shadowColor = "rgba(255, 247, 200, 0.5)"
+          ctx.shadowBlur = 6
+          ctx.fillStyle = "rgba(255, 255, 210, 0.65)"
+          const wobbleX = Math.sin(frame * 0.01 + p.noise) * 0.6
+          const wobbleY = Math.cos(frame * 0.008 + p.noise) * 0.4
           ctx.beginPath()
-          ctx.ellipse(0, 0, l.size, l.size * 0.45, 0, 0, Math.PI * 2)
+          ctx.arc(p.x + wobbleX, p.y + wobbleY, p.r, 0, Math.PI * 2)
           ctx.fill()
           ctx.restore()
 
-          l.y -= l.drift
-          l.rot += l.rotSpeed
-          if (l.y < -30) {
-            l.y = height + 40
-            l.x = Math.random() * width
+          p.y -= p.driftY
+          p.x += p.driftX
+          if (p.y < -6) p.y = height + 6
+          if (p.x > width + 6) p.x = -6
+          if (p.x < -6) p.x = width + 6
+        })
+
+        leaves.forEach((leaf) => {
+          ctx.save()
+          ctx.translate(leaf.x / 1.5, leaf.y / 1.5)
+          ctx.rotate(leaf.angle)
+          ctx.scale(leaf.scale, leaf.scale)
+          const gradient = ctx.createRadialGradient(0, -6, 4, 0, 0, 28)
+          gradient.addColorStop(0, `hsla(${leaf.hue}, 45%, 55%, 0.9)`)
+          gradient.addColorStop(1, `hsla(${leaf.hue - 18}, 60%, 35%, 0.85)`)
+          ctx.fillStyle = gradient
+          ctx.filter = "drop-shadow(0px 4px 6px rgba(0,0,0,0.08))"
+          ctx.fill(leafPath)
+          ctx.restore()
+
+          leaf.y -= leaf.drift
+          leaf.angle += leaf.spin
+          leaf.x += Math.sin(frame * 0.01) * 0.2 + Math.sin(frame * 0.02) * 0.1
+
+          if (leaf.y < -40) {
+            leaf.y = height + 30
+            leaf.x = Math.random() * width
           }
         })
 
-        // 🦋 BUTTERFLIES (colorful drift)
-        butterflies.forEach((b) => {
-          const flap = Math.sin(t * 3 + b.phase) * 5
+        butterflies.forEach((bf) => {
+          ctx.save()
+          const wave = Math.sin(frame * 0.02 + bf.phase) * bf.amplitude
+          const flutter = Math.sin(frame * 0.25 + bf.phase) * 0.6
+          ctx.translate(bf.x + wave, bf.y)
+          ctx.scale(bf.size, bf.size)
+          ctx.rotate(Math.sin(frame * 0.01 + bf.phase) * 0.1)
+
+          const wingGradient = ctx.createRadialGradient(0, 0, 2, 0, 0, 26)
+          wingGradient.addColorStop(0, `hsla(${bf.hue}, 90%, 70%, 0.8)`)
+          wingGradient.addColorStop(1, `hsla(${bf.hue + 30}, 80%, 55%, 0.65)`)
+          ctx.fillStyle = wingGradient
 
           ctx.save()
-          ctx.translate(b.x + touchX * 0.6, b.y + touchY * 0.6)
+          ctx.scale(1 + flutter, 1)
+          ctx.fill(wingPath)
+          ctx.restore()
 
-          ctx.fillStyle = b.color + "CC"
-          ctx.beginPath()
-          ctx.ellipse(-6, 0, 10 + flap, 14, 0, 0, Math.PI * 2)
-          ctx.ellipse(6, 0, 10 - flap, 14, 0, 0, Math.PI * 2)
-          ctx.fill()
+          ctx.save()
+          ctx.scale(-(1 + flutter), 1)
+          ctx.fill(wingPath)
+          ctx.restore()
 
           ctx.restore()
 
-          b.y -= b.s
-          b.x += Math.sin(t + b.phase) * 0.9
-
-          if (b.y < -20) {
-            b.y = height + 30
-            b.x = Math.random() * width
+          bf.y -= bf.speed
+          bf.x += Math.sin(frame * 0.01 + bf.phase) * 0.6
+          if (bf.y < -30) {
+            bf.y = height + 30
+            bf.x = Math.random() * width
           }
         })
-
-        // 🌫 FOG LAYER (volumetric depth)
-        ctx.globalAlpha = 0.12
-        ctx.drawImage(fogLayer, touchX * 1.5, touchY * 1.5, width * 1.2, height)
-        ctx.globalAlpha = 1
-      }
-
-      else {
-        // ---------------------------
-        // 🌌 DARK MODE COSMOS
-        // ---------------------------
-        const dg = ctx.createRadialGradient(
-          width / 2,
-          height / 2,
-          30,
-          width / 2,
-          height / 2,
-          height * 0.9
-        )
-        dg.addColorStop(0, "rgba(8,8,20,1)")
-        dg.addColorStop(1, "rgba(2,2,10,1)")
-        ctx.fillStyle = dg
+      } else {
+        const deep = ctx.createRadialGradient(width / 2, height / 2, 20, width / 2, height / 2, height * 0.9)
+        deep.addColorStop(0, "#0a0b20")
+        deep.addColorStop(1, "#050510")
+        ctx.fillStyle = deep
         ctx.fillRect(0, 0, width, height)
 
-        // ✨ STARS (twinkling)
-        stars.forEach((s) => {
+        stars.forEach((star) => {
+          const twinkle = 0.6 + Math.sin(frame * 0.03 + star.offset) * 0.25
           ctx.beginPath()
-          ctx.arc(s.x, s.y, s.r * (0.6 + Math.sin(t + s.twinkle) * 0.2), 0, Math.PI * 2)
-          ctx.fillStyle = `rgba(200,180,255,${s.twinkle})`
+          ctx.arc(star.x / 1.4, star.y / 1.4, star.r * twinkle, 0, Math.PI * 2)
+          ctx.fillStyle = `rgba(220, 220, 255, ${star.twinkle})`
           ctx.fill()
         })
 
-        // 🌈 AURORA STREAMS
-        const aurora = ctx.createLinearGradient(0, height * 0.3, width, height * 0.7)
-        aurora.addColorStop(0, "rgba(120,70,255,0.15)")
-        aurora.addColorStop(0.5, "rgba(60,180,255,0.12)")
-        aurora.addColorStop(1, "rgba(0,255,180,0.15)")
-        ctx.fillStyle = aurora
-        ctx.fillRect(touchX * 1.2, 0, width, height)
-
-        const aurora2 = ctx.createLinearGradient(0, height * 0.6, width, height)
-        aurora2.addColorStop(0, "rgba(255,100,200,0.12)")
-        aurora2.addColorStop(1, "rgba(80,140,255,0.12)")
-        ctx.fillStyle = aurora2
-        ctx.fillRect(-touchX * 1.0, 0, width, height)
+        drawAurora(frame)
       }
 
-      t += 0.01
-      requestAnimationFrame(animate)
+      frame += 1
+      rafId = requestAnimationFrame(render)
     }
 
-    animate()
+    rafId = requestAnimationFrame(render)
 
-    const resize = () => {
-      width = canvas.width = window.innerWidth
-      height = canvas.height = window.innerHeight
-    }
-    window.addEventListener("resize", resize)
+    const onResize = () => setSize()
+    window.addEventListener("resize", onResize)
 
     return () => {
-      window.removeEventListener("resize", resize)
-      window.removeEventListener("touchmove", handleTouch)
+      cancelAnimationFrame(rafId)
+      window.removeEventListener("resize", onResize)
     }
   }, [])
 
-  return (
-    <canvas
-      ref={canvasRef}
-      className="fixed inset-0 w-full h-full -z-20 pointer-events-none block md:hidden"
-    />
-  )
+  return <canvas ref={canvasRef} className={className} />
 }
