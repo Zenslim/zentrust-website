@@ -4,7 +4,15 @@ import { useState, useEffect, useRef } from "react"
 import { motion, useInView } from "framer-motion"
 import { Leaf, Users, TreePine, BookOpen, Microscope } from "lucide-react"
 
-const impactMetrics = [
+interface Metric {
+  icon: React.ComponentType<React.SVGProps<SVGSVGElement>>
+  value: number
+  suffix: string
+  label: string
+  text: string
+}
+
+const impactMetrics: Metric[] = [
   {
     icon: TreePine,
     value: 50000,
@@ -42,7 +50,13 @@ const impactMetrics = [
   },
 ]
 
-function AnimatedCounter({ end, isInView, suffix = "" }) {
+interface AnimatedCounterProps {
+  end: number
+  suffix?: string
+  isInView: boolean
+}
+
+function AnimatedCounter({ end, suffix = "", isInView }: AnimatedCounterProps) {
   const [count, setCount] = useState(0)
 
   useEffect(() => {
@@ -73,22 +87,22 @@ export function ImpactCounters() {
   return (
     <section ref={ref} className="w-full py-20 bg-background overflow-hidden">
 
-      {/* Intro Caption */}
+      {/* INTRO */}
       <motion.div
         className="max-w-[1500px] mx-auto px-6 text-center mb-12"
         initial={{ opacity: 0, y: 14 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, amount: 0.2 }}
-        transition={{ duration: 0.7, ease: "easeOut" }}
+        transition={{ duration: 0.7 }}
       >
-        <p className="text-[20px] md:text-[22px] text-muted-foreground leading-snug md:leading-normal font-medium">
+        <p className="text-[20px] md:text-[22px] text-muted-foreground font-medium leading-snug md:leading-normal">
           Regeneration is not charity — it is a return to relationship.
           These milestones reflect landscapes remembering how to heal
           and communities rising into sovereignty.
         </p>
       </motion.div>
 
-      {/* Metric Cards */}
+      {/* CARDS */}
       <motion.div
         className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8 max-w-[1700px] mx-auto px-6"
         initial="hidden"
@@ -104,7 +118,7 @@ export function ImpactCounters() {
           return (
             <motion.div
               key={i}
-              className="relative p-8 rounded-2xl bg-card border border-border/30 shadow-sm text-center cursor-default"
+              className="p-8 rounded-2xl bg-card border border-border/30 shadow-sm text-center cursor-default"
               variants={{
                 hidden: { opacity: 0, y: 35, filter: "brightness(0.7)" },
                 visible: {
@@ -114,10 +128,7 @@ export function ImpactCounters() {
                   transition: { duration: 0.55, ease: "easeOut" }
                 },
               }}
-              whileHover={{
-                scale: 1.04,
-                boxShadow: "0 12px 32px rgba(0,0,0,0.15)",
-              }}
+              whileHover={{ scale: 1.04, boxShadow: "0 12px 32px rgba(0,0,0,0.15)" }}
               transition={{ type: "spring", stiffness: 220, damping: 18 }}
             >
               <motion.div
@@ -128,27 +139,25 @@ export function ImpactCounters() {
                 <Icon className="h-8 w-8 text-primary" />
               </motion.div>
 
-              <div className="text-4xl font-bold mb-2 text-foreground">
+              <div className="text-4xl font-bold mb-2">
                 <AnimatedCounter end={metric.value} suffix={metric.suffix} isInView={isInView} />
               </div>
 
               <h3 className="text-lg font-semibold mb-3">{metric.label}</h3>
 
-              <p className="text-sm text-muted-foreground leading-relaxed">
-                {metric.text}
-              </p>
+              <p className="text-sm text-muted-foreground leading-relaxed">{metric.text}</p>
             </motion.div>
           )
         })}
       </motion.div>
 
-      {/* Statement */}
+      {/* OUTRO */}
       <motion.div
         className="max-w-[1500px] mx-auto px-6 text-center mt-16"
-        initial={{ opacity: 0, y: 14 }}
+        initial={{ opacity: 0, y: 12 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, amount: 0.2 }}
-        transition={{ duration: 0.75, ease: "easeOut" }}
+        transition={{ duration: 0.75 }}
       >
         <p className="text-xl md:text-2xl font-semibold">
           Land heals through relationship — and so do we.
@@ -158,6 +167,7 @@ export function ImpactCounters() {
           </span>
         </p>
       </motion.div>
+
     </section>
   )
 }
