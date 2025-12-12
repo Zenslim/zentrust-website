@@ -1,4 +1,6 @@
-// /app/blog/[slug]/page.tsx
+// 🚨 IMPORTANT: Disable static caching for blog posts
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
 
 import fs from "fs";
 import path from "path";
@@ -16,14 +18,14 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
     data = await client.queries.blog({
       relativePath: `${slug}.mdx`,
     });
-  } catch (e) {
+  } catch {
     return notFound();
   }
 
   const post = data?.data?.blog;
   if (!post) return notFound();
 
-  // Fetch all posts for related posts + next/prev
+  // Fetch all posts
   let allPostsRes;
   try {
     allPostsRes = await client.queries.blogConnection();
@@ -65,12 +67,11 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
       })
       .slice(0, 3) ?? [];
 
-  // NEXT / PREVIOUS POSTS
+  // NEXT / PREVIOUS
   const currentIndex = allPosts.findIndex((p) => p?._sys?.filename === slug);
   const prevPost = currentIndex >= 0 ? allPosts[currentIndex + 1] : null;
   const nextPost = currentIndex > 0 ? allPosts[currentIndex - 1] : null;
 
-  // ⭐ FIX: Add padding so hero image does not go under navbar
   return (
     <div className="pt-[110px] md:pt-[130px]">
       <TinaBlogClient
@@ -90,7 +91,7 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
   );
 }
 
-// Generate static params for prerendering blog posts
+// ⚠️ KEEP THIS — still needed for routing, but no longer cached
 export async function generateStaticParams() {
   const blogDir = path.join(process.cwd(), "content", "blog");
   const files = fs.existsSync(blogDir) ? fs.readdirSync(blogDir) : [];
