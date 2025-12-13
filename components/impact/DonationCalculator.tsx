@@ -154,7 +154,10 @@ export function DonationCalculator() {
                 )}
               </div>
 
-              <Button className="w-full mt-8" onClick={() => window.open("/donate/checkout", "_blank")}>
+              <Button
+                className="w-full mt-8"
+                onClick={() => window.open("https://www.zentrust.world/stewardship", "_blank")}
+              >
                 Proceed to Stewardship Portal
               </Button>
             </motion.div>
