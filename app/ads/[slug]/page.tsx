@@ -143,13 +143,7 @@ export default function AdsSlugPage({
         <ChoicePaths paths={page.choicePaths} />
       </section>
 
-      {/* Small implementation tip */}
-      <div className="text-xs text-zinc-500 dark:text-zinc-400">
-        Tip: Use distinct Google Ad groups pointing to distinct slugs for high-fidelity scent matching:
-        <span className="ml-2 font-mono">/ads/regenerative-ecology</span>,{" "}
-        <span className="font-mono">/ads/integrative-wellbeing</span>,{" "}
-        <span className="font-mono">/ads/community-restoration</span>.
-      </div>
+      {/* Implementation detail: distinct ad groups should route to distinct slugs for scent matching. */}
     </div>
   );
 }
