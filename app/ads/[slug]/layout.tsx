@@ -25,9 +25,8 @@ export default function AdsSlugLayout({
           >
             ZenTrust
           </Link>
-          <div className="text-xs text-zinc-500 dark:text-zinc-400">
-            Ads sanctuary · no popups · no urgency
-          </div>
+          {/* Preserve spacing while keeping acquisition language out of the UI */}
+          <div aria-hidden className="text-xs text-zinc-500 dark:text-zinc-400" />
         </div>
       </div>
 

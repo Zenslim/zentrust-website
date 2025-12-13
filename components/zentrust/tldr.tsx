@@ -27,11 +27,6 @@ export function TLDR({
   return (
     <section className="grid gap-6 lg:grid-cols-[1.2fr_0.8fr] lg:gap-10">
       <div>
-        <div className="inline-flex items-center gap-2 rounded-full border border-zinc-200/70 bg-white/70 px-3 py-1 text-xs text-zinc-700 shadow-sm backdrop-blur dark:border-zinc-800/70 dark:bg-zinc-950/40 dark:text-zinc-300">
-          <span className="h-1.5 w-1.5 rounded-full bg-zinc-900/50 dark:bg-zinc-100/50" />
-          <span>Ads sanctuary page</span>
-        </div>
-
         <h1 className="mt-4 text-balance text-3xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-50 sm:text-4xl">
           Topic: <span className="text-zinc-700 dark:text-zinc-200">{topicLabel}</span>
         </h1>
