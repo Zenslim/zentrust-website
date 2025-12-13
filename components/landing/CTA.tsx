@@ -30,7 +30,7 @@ export function CTA() {
                 </FadeIn>
                 <div className="flex flex-col gap-4 sm:flex-row sm:justify-end">
                   <MotionButton
-                    href="/donate"
+                    href="https://www.zentrust.world/stewardship"
                     pulse
                     className="inline-flex items-center justify-center rounded-full bg-primary px-6 py-3 text-base font-semibold text-primary-foreground shadow-lg shadow-emerald-500/20"
                   >

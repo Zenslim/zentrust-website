@@ -22,7 +22,7 @@ const footerLinks = {
     { name: 'Accessibility', href: '/accessibility' },
   ],
   support: [
-    { name: 'Stewardship Portal', href: '/donate' },
+    { name: 'Stewardship Portal', href: 'https://www.zentrust.world/stewardship' },
     { name: 'Partnership', href: '/partner' },
     { name: 'General Inquiries', href: '/contact' },
   ],

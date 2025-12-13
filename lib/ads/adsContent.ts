@@ -6,7 +6,8 @@ export const TRUST = {
   ein: "33-4318487",
   statusLine: "IRS-recognized 501(c)(3) public charity",
   publicCharity: "170(b)(1)(A)(vi)",
-  determinationHref: "/docs/irs-determination-letter",
+  determinationHref:
+    "https://apps.irs.gov/pub/epostcard/dl/FinalLetter_33-4318487_ZENTRUSTINC_04072025_00.pdf",
   privacyHref: "/privacy",
   financialsHref: "/financials",
   contactHref: "/contact",
@@ -128,7 +129,7 @@ export const ADS_PAGES: Record<string, AdsPageContent> = {
         title: "Long-term stewardship",
         description:
           "Some people support this work over time so it can remain open, independent, and slow enough to be done well.",
-        href: "/donate",
+        href: "https://www.zentrust.world/stewardship",
         ctaLabel: "Support (optional)",
       },
     ],
@@ -236,7 +237,7 @@ export const ADS_PAGES: Record<string, AdsPageContent> = {
       {
         title: "Long-term stewardship",
         description: "Support open research and education so it stays independent.",
-        href: "/donate",
+        href: "https://www.zentrust.world/stewardship",
         ctaLabel: "Support (optional)",
       },
     ],
@@ -339,7 +340,7 @@ export const ADS_PAGES: Record<string, AdsPageContent> = {
       {
         title: "Long-term stewardship",
         description: "Support open education and transparent research.",
-        href: "/donate",
+        href: "https://www.zentrust.world/stewardship",
         ctaLabel: "Support (optional)",
       },
     ],
