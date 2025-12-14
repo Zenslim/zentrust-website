@@ -75,13 +75,27 @@ export function TaxDeductionInfo() {
                 </select>
               </div>
 
-              <div className="pt-3 border-t text-foreground">
-                Estimated federal tax savings
-                <div className="text-lg font-semibold">
-                  ${estimatedSavings.toLocaleString()}
-                </div>
-              </div>
-            </div>
+             <div className="pt-3 border-t space-y-3">
+  <div className="text-foreground">
+    Estimated federal tax savings
+    <div className="text-lg font-semibold">
+      ${estimatedSavings.toLocaleString()}
+    </div>
+  </div>
+
+  {/* Clarity line */}
+  <div className="rounded-lg bg-muted/50 px-3 py-2 text-xs text-muted-foreground">
+    Your donation remains{" "}
+    <span className="font-medium text-foreground">
+      ${donation.toLocaleString()}
+    </span>
+    . After estimated tax savings, the cost to you is about{" "}
+    <span className="font-medium text-foreground">
+      ${(donation - estimatedSavings).toLocaleString()}
+    </span>
+    .
+  </div>
+</div>
 
             {/* Legal clarity */}
             <p className="mt-3 text-[11px] text-muted-foreground">
