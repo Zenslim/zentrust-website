@@ -6,126 +6,14 @@ import { useEffect, useMemo, useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import Link from "next/link";
 
-import { loadStripe } from "@stripe/stripe-js";
-import {
-  Elements,
-  useStripe,
-  useElements,
-  PaymentElement,
-} from "@stripe/react-stripe-js";
-
-import {
-  Lock,
-  ShieldCheck,
-  ArrowLeft,
-  ArrowRight,
-} from "lucide-react";
-
+import { Lock, ShieldCheck, ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
-// -----------------------------------------------------------------------------
-// Stripe setup
-// -----------------------------------------------------------------------------
-
-const stripePromise = loadStripe(
-  process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY || ""
-);
-
 type Frequency = "once" | "monthly";
-type Status = "loading" | "idle" | "submitting" | "error";
+type Status = "loading" | "error";
 
 // -----------------------------------------------------------------------------
-// Payment Form (FIXED: clientSecret is REQUIRED)
-// -----------------------------------------------------------------------------
-
-function PaymentForm({
-  amount,
-  frequency,
-  clientSecret,
-  onSuccess,
-  setError,
-  setStatus,
-}: {
-  amount: number;
-  frequency: Frequency;
-  clientSecret: string;
-  onSuccess: () => void;
-  setError: (msg: string | null) => void;
-  setStatus: (s: Status) => void;
-}) {
-  const stripe = useStripe();
-  const elements = useElements();
-  const [processing, setProcessing] = useState(false);
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setError(null);
-
-    if (!stripe || !elements) {
-      setError("Payment system is not ready. Please try again.");
-      return;
-    }
-
-    try {
-      setProcessing(true);
-      setStatus("submitting");
-
-      const { error } = await stripe.confirmPayment({
-        clientSecret, // 🔥 REQUIRED FOR SUBSCRIPTIONS
-        elements,
-        confirmParams: {
-          return_url: `${window.location.origin}/stewardship/thank-you`,
-        },
-        redirect: "if_required",
-      });
-
-      if (error) {
-        console.error("Stripe confirm error:", error);
-
-        const friendlyMessage =
-          error.code === "card_declined"
-            ? "Your card was declined. Please enter a valid card."
-            : error.message || "Payment failed. Please try another card.";
-
-        setError(friendlyMessage);
-        setProcessing(false);
-        setStatus("idle");
-        return;
-      }
-
-      onSuccess();
-    } catch (err) {
-      console.error("Unexpected confirm error:", err);
-      setError("Unexpected error occurred. Please try again.");
-      setProcessing(false);
-      setStatus("idle");
-    }
-  };
-
-  return (
-    <form onSubmit={handleSubmit} className="space-y-4">
-      <div className="rounded-xl border border-border/60 bg-muted/40 p-4">
-        <PaymentElement options={{ layout: "tabs" }} />
-      </div>
-
-      <Button
-        type="submit"
-        className="w-full inline-flex items-center justify-center gap-2"
-        disabled={processing}
-      >
-        {processing
-          ? "Processing…"
-          : `Confirm $${amount.toLocaleString()} ${
-              frequency === "monthly" ? "/month" : "one-time"
-            }`}
-        <ArrowRight className="h-4 w-4" />
-      </Button>
-    </form>
-  );
-}
-
-// -----------------------------------------------------------------------------
-// Main Page
+// Page
 // -----------------------------------------------------------------------------
 
 export default function StewardshipPaymentPage() {
@@ -143,16 +31,15 @@ export default function StewardshipPaymentPage() {
   const frequency: Frequency =
     rawFrequency === "monthly" ? "monthly" : "once";
 
-  const [clientSecret, setClientSecret] = useState<string | null>(null);
   const [status, setStatus] = useState<Status>("loading");
   const [error, setError] = useState<string | null>(null);
 
   // ---------------------------------------------------------------------------
-  // Create PaymentIntent / Subscription
+  // Create Stripe Checkout Session → Redirect
   // ---------------------------------------------------------------------------
 
   useEffect(() => {
-    const createIntent = async () => {
+    const startCheckout = async () => {
       try {
         setStatus("loading");
         setError(null);
@@ -165,24 +52,22 @@ export default function StewardshipPaymentPage() {
 
         const data = await res.json();
 
-        if (!res.ok) {
-          throw new Error(data?.error || "Unable to create payment session.");
+        if (!res.ok || !data.url) {
+          throw new Error(
+            data?.error || "Unable to start secure checkout."
+          );
         }
 
-        if (!data.clientSecret) {
-          throw new Error("Missing Stripe client secret.");
-        }
-
-        setClientSecret(data.clientSecret);
-        setStatus("idle");
+        // 🔥 STRIPE REDIRECT (THIS IS THE FIX)
+        window.location.href = data.url;
       } catch (err: any) {
-        console.error("Create intent error:", err);
-        setError(err.message || "Unable to create payment session.");
+        console.error("Checkout error:", err);
+        setError(err.message || "Unable to start checkout.");
         setStatus("error");
       }
     };
 
-    createIntent();
+    startCheckout();
   }, [amount, frequency]);
 
   return (
@@ -202,9 +87,8 @@ export default function StewardshipPaymentPage() {
         </div>
       </div>
 
-      {/* Page Body */}
+      {/* Body */}
       <div className="container mx-auto px-4 py-12 max-w-xl">
-
         <Link
           href="/stewardship/checkout"
           className="inline-flex items-center gap-2 text-xs text-muted-foreground hover:text-foreground"
@@ -213,63 +97,35 @@ export default function StewardshipPaymentPage() {
           Back to amount selection
         </Link>
 
-        <div className="mt-8 space-y-6">
-          <div>
-            <h1 className="text-3xl font-bold">
-              Finalize Stewardship Exchange
-            </h1>
-            <p className="text-muted-foreground mt-1">
-              Confirming ${amount.toLocaleString()}{" "}
-              {frequency === "monthly" ? "per month" : "one-time"}.
-            </p>
-          </div>
+        <div className="mt-10 glass-card p-8 rounded-2xl space-y-6 text-center">
+          <h1 className="text-2xl font-bold">
+            Finalizing Stewardship Exchange
+          </h1>
 
-          <div className="glass-card p-8 rounded-2xl space-y-6">
+          <p className="text-muted-foreground">
+            Preparing secure Stripe checkout for{" "}
+            <strong>
+              ${amount.toLocaleString()}
+              {frequency === "monthly" ? "/month" : ""}
+            </strong>
+          </p>
 
-            <div className="text-sm">
-              <p className="text-xs uppercase text-muted-foreground">
-                Summary
-              </p>
-              <p className="font-semibold">
-                {frequency === "monthly"
-                  ? `$${amount}/month resource flow`
-                  : `$${amount} one-time resource flow`}
-              </p>
+          {status === "loading" && (
+            <div className="rounded-xl bg-muted/40 px-4 py-6 text-sm text-muted-foreground">
+              Redirecting to secure payment…
             </div>
+          )}
 
-            {status === "loading" && (
-              <div className="rounded-xl bg-muted/40 px-4 py-6 text-sm text-muted-foreground">
-                Preparing secure payment session…
-              </div>
-            )}
-
-            {error && (
+          {error && (
+            <>
               <div className="rounded-xl bg-destructive/10 border border-destructive/40 px-4 py-3 text-sm text-destructive">
                 {error}
               </div>
-            )}
-
-            {clientSecret && status !== "error" && (
-              <Elements
-                stripe={stripePromise}
-                options={{
-                  clientSecret,
-                  appearance: { theme: "flat" },
-                }}
-              >
-                <PaymentForm
-                  amount={amount}
-                  frequency={frequency}
-                  clientSecret={clientSecret}
-                  onSuccess={() =>
-                    router.push("/stewardship/thank-you")
-                  }
-                  setError={setError}
-                  setStatus={setStatus}
-                />
-              </Elements>
-            )}
-          </div>
+              <Button onClick={() => router.push("/stewardship/checkout")}>
+                Try again
+              </Button>
+            </>
+          )}
         </div>
       </div>
     </div>
