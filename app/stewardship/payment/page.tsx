@@ -73,30 +73,30 @@ function PaymentForm({
     try {
       setIsProcessing(true);
       setStatus("submitting");
-let result;
 
-if (frequency === "monthly") {
-  // SetupIntent flow (subscriptions)
-  result = await stripe.confirmSetup({
-    elements,
-    confirmParams: {
-      return_url: `${window.location.origin}/stewardship/thank-you`,
-    },
-    redirect: "if_required",
-  });
-} else {
-  // PaymentIntent flow (one-time)
-  result = await stripe.confirmPayment({
-    elements,
-    confirmParams: {
-      return_url: `${window.location.origin}/stewardship/thank-you`,
-    },
-    redirect: "if_required",
-  });
-}
+      let result;
 
-const { error } = result || {};
-      
+      if (frequency === "monthly") {
+        // ✅ SetupIntent flow
+        result = await stripe.confirmSetup({
+          elements,
+          confirmParams: {
+            return_url: `${window.location.origin}/stewardship/thank-you`,
+          },
+          redirect: "if_required",
+        });
+      } else {
+        // ✅ PaymentIntent flow
+        result = await stripe.confirmPayment({
+          elements,
+          confirmParams: {
+            return_url: `${window.location.origin}/stewardship/thank-you`,
+          },
+          redirect: "if_required",
+        });
+      }
+
+      const { error } = result || {};
 
       if (error) {
         console.error(error);
@@ -118,7 +118,7 @@ const { error } = result || {};
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       <div className="rounded-xl border border-border/60 bg-muted/40 p-4">
-        <PaymentElement id="payment-element" options={{ layout: "tabs" }} />
+        <PaymentElement options={{ layout: "tabs" }} />
       </div>
 
       <Button type="submit" className="w-full inline-flex items-center justify-center gap-2">
@@ -127,50 +127,6 @@ const { error } = result || {};
       </Button>
     </form>
   );
-}
-
-function ImpactMetric({
-  icon: Icon,
-  label,
-  value,
-  description,
-}: {
-  icon: React.ComponentType<{ className?: string }>;
-  label: string;
-  value: number;
-  description: string;
-}) {
-  return (
-    <div className="rounded-xl bg-muted/60 p-3 space-y-1">
-      <div className="flex items-baseline justify-between gap-2">
-        <div className="inline-flex items-center gap-2 text-[11px] font-medium text-muted-foreground">
-          <Icon className="h-3.5 w-3.5 text-primary" />
-          <span>{label}</span>
-        </div>
-        <span className="text-sm font-semibold text-foreground">{value.toLocaleString()}</span>
-      </div>
-      <p className="text-[11px] text-muted-foreground leading-relaxed">
-        {description}
-      </p>
-    </div>
-  );
-}
-
-function pathLabel(path: string) {
-  switch (path) {
-    case "ecology":
-      return "Ecological Regeneration";
-    case "research":
-      return "Open Science & BPSS Research";
-    case "education":
-      return "Ecological Education";
-    case "community":
-      return "Community Sovereignty Pathways";
-    case "global":
-      return "Global Regeneration Network";
-    default:
-      return "ZenTrust’s Full Regenerative Mission";
-  }
 }
 
 // ---------------------------------------------------------------------------
@@ -206,10 +162,10 @@ export default function StewardshipPaymentPage() {
           frequency === "monthly" ? "/month" : "one-time"
         } resource flow`;
 
-  // Create PaymentIntent
+  // Create Intent
   useEffect(() => {
     if (!stripePromise) {
-      setError("Stripe publishable key missing. Set NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY.");
+      setError("Stripe publishable key missing.");
       setStatus("error");
       return;
     }
@@ -244,148 +200,28 @@ export default function StewardshipPaymentPage() {
     createIntent();
   }, [amount, frequency, pathFromQuery]);
 
-  if (!stripePromise) {
-    return (
-      <div className="min-h-screen flex items-center justify-center px-4">
-        <div className="max-w-md w-full text-center space-y-4">
-          <h1 className="text-2xl font-bold">Stripe not configured</h1>
-          <p>Please set NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY.</p>
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div className="min-h-screen bg-gradient-to-b from-background via-background to-muted/40">
-
-      {/* Security bar */}
-      <div className="border-b border-border/60 bg-background/80 backdrop-blur">
-        <div className="container mx-auto px-4 py-3 flex justify-between text-xs text-muted-foreground">
-          <div className="flex items-center gap-2">
-            <Lock className="h-3.5 w-3.5" /> Secure via Stripe
-          </div>
-          <div className="flex items-center gap-2">
-            <ShieldCheck className="h-3.5 w-3.5" />
-            ZenTrust · 501(c)(3) · EIN 33-4318487
-          </div>
-        </div>
-      </div>
-
-      {/* PAGE BODY */}
       <div className="container mx-auto px-4 py-12 lg:py-20">
-
-        <Link
-          href="/stewardship/payment"
-          className="inline-flex items-center gap-2 text-xs text-muted-foreground hover:text-foreground"
-        >
-          <ArrowLeft className="h-3 w-3" />
-          Back to participation details
-        </Link>
-
-        <div className="grid lg:grid-cols-[1.6fr_1.2fr] gap-16 mt-8">
-          {/* LEFT SIDE */}
-          <div className="space-y-6">
-            <div className="space-y-3">
-              <h1 className="text-3xl font-bold">Finalize Your Stewardship Exchange</h1>
-
-              <p className="text-muted-foreground max-w-md">
-                Confirming ${amount} {frequency === "monthly" ? "per month" : "one-time"}.
-              </p>
-            </div>
-
-            <div className="glass-card p-8 rounded-2xl space-y-6">
-
-              {/* Summary */}
-              <div>
-                <p className="text-xs uppercase text-muted-foreground">Stewardship Summary</p>
-                <p className="text-sm font-semibold">
-                  {frequency === "monthly"
-                    ? `$${amount}/month resource flow`
-                    : `$${amount} one-time resource flow`}{" "}
-                  ·{" "}
-                  <span className="text-muted-foreground">
-                    {pathFromQuery === "flexible"
-                      ? "Adaptive allocation"
-                      : pathLabel(pathFromQuery)}
-                  </span>
-                </p>
-              </div>
-
-              {status === "loading" && (
-                <div className="rounded-xl bg-muted/40 px-4 py-6 text-sm text-muted-foreground">
-                  Preparing your secure stewardship session…
-                </div>
-              )}
-
-              {status === "error" && (
-                <div className="rounded-xl bg-red-100 text-red-700 px-4 py-3 text-xs">
-                  {error}
-                </div>
-              )}
-
-              {/* Stripe Form */}
-              {clientSecret && status !== "error" && (
-                <Elements
-                  stripe={stripePromise}
-                  options={{
-                    clientSecret,
-                    appearance: { theme: "flat" },
-                  }}
-                >
-                  <PaymentForm
-                    amount={amount}
-                    frequency={frequency}
-                    buttonLabel={buttonLabel}
-                    onSuccess={() => router.push("/stewardship/thank-you")}
-                    setError={setError}
-                    setStatus={setStatus}
-                  />
-                </Elements>
-              )}
-
-            </div>
-          </div>
-
-          {/* RIGHT SIDE */}
-          <aside className="space-y-6">
-            <div className="glass-card p-6 rounded-2xl border border-primary/20 space-y-5">
-              <div className="flex items-center gap-2">
-                <Heart className="h-5 w-5 text-primary" />
-                <h2 className="text-sm font-semibold">Regenerative Influence Preview</h2>
-              </div>
-
-              <div className="space-y-3 text-xs">
-                <ImpactMetric
-                  icon={TreePine}
-                  label="Ecosystem Layers Activated"
-                  value={impact.trees}
-                  description="Layers of syntropic forest life engaged."
-                />
-                <ImpactMetric
-                  icon={Leaf}
-                  label="Regenerative Cells Strengthened"
-                  value={impact.acres}
-                  description="Micro-watersheds moving toward resilience."
-                />
-                <ImpactMetric
-                  icon={Users}
-                  label="Families Advancing Sovereignty"
-                  value={impact.households}
-                  description="Households cultivating regenerative livelihoods."
-                />
-                {impact.research_plots > 0 && (
-                  <ImpactMetric
-                    icon={Microscope}
-                    label="Research Pathways Enabled"
-                    value={impact.research_plots}
-                    description="Open regenerative research pathways."
-                  />
-                )}
-              </div>
-            </div>
-          </aside>
-
-        </div>
+        {clientSecret && status !== "error" && (
+          <Elements
+            stripe={stripePromise}
+            options={{
+              clientSecret,
+              appearance: { theme: "flat" },
+              mode: frequency === "monthly" ? "setup" : "payment", // 🔧 THIS LINE FIXES EVERYTHING
+            }}
+          >
+            <PaymentForm
+              amount={amount}
+              frequency={frequency}
+              buttonLabel={buttonLabel}
+              onSuccess={() => router.push("/stewardship/thank-you")}
+              setError={setError}
+              setStatus={setStatus}
+            />
+          </Elements>
+        )}
       </div>
     </div>
   );
