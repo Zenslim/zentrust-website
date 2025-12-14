@@ -13,7 +13,7 @@ type Frequency = "once" | "monthly";
 type Status = "loading" | "error";
 
 // -----------------------------------------------------------------------------
-// Page
+// Stewardship Payment → Stripe Checkout Redirect
 // -----------------------------------------------------------------------------
 
 export default function StewardshipPaymentPage() {
@@ -52,13 +52,13 @@ export default function StewardshipPaymentPage() {
 
         const data = await res.json();
 
-        if (!res.ok || !data.url) {
+        if (!res.ok || !data?.url) {
           throw new Error(
             data?.error || "Unable to start secure checkout."
           );
         }
 
-        // 🔥 STRIPE REDIRECT (THIS IS THE FIX)
+        // ✅ Stripe-hosted checkout redirect (most stable)
         window.location.href = data.url;
       } catch (err: any) {
         console.error("Checkout error:", err);
