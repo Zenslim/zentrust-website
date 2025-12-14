@@ -14,11 +14,9 @@ import {
 } from "@stripe/react-stripe-js";
 
 import {
-  Lock,
-  ShieldCheck,
-  Heart,
   ArrowLeft,
   ArrowRight,
+  Heart,
   Leaf,
   TreePine,
   Users,
@@ -29,29 +27,27 @@ import { Button } from "@/components/ui/button";
 import { calculateDonationImpact } from "@/lib/calculator";
 
 // ---------------------------------------------------------------------------
-// Stripe Setup
+// Stripe setup
 // ---------------------------------------------------------------------------
 
-const stripePublicKey = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!;
-const stripePromise = loadStripe(stripePublicKey);
+const stripePromise = loadStripe(
+  process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!
+);
 
-type Frequency = "once" | "monthly";
 type PaymentStatus = "idle" | "loading" | "submitting" | "error";
 
 // ---------------------------------------------------------------------------
-// Payment Form
+// Payment Form (FIXED)
 // ---------------------------------------------------------------------------
 
 function PaymentForm({
-  amount,
-  frequency,
+  clientSecret,
   buttonLabel,
   onSuccess,
   setError,
   setStatus,
 }: {
-  amount: number;
-  frequency: Frequency;
+  clientSecret: string;
   buttonLabel: (processing: boolean) => string;
   onSuccess: () => void;
   setError: (msg: string | null) => void;
@@ -66,7 +62,14 @@ function PaymentForm({
     setError(null);
 
     if (!stripe || !elements) {
-      setError("Payment system not ready. Please try again.");
+      setError("Payment system not ready.");
+      return;
+    }
+
+    // 🔒 Ensure PaymentElement is mounted
+    const paymentElement = elements.getElement(PaymentElement);
+    if (!paymentElement) {
+      setError("Payment form still loading. Please wait a moment.");
       return;
     }
 
@@ -74,29 +77,34 @@ function PaymentForm({
       setProcessing(true);
       setStatus("submitting");
 
-      let result;
-
-      if (frequency === "monthly") {
-        // ✅ SetupIntent confirmation
-        result = await stripe.confirmSetup({
-          elements,
-          confirmParams: {
-            return_url: `${window.location.origin}/stewardship/thank-you`,
-          },
-          redirect: "if_required",
-        });
-      } else {
-        // ✅ PaymentIntent confirmation
-        result = await stripe.confirmPayment({
-          elements,
-          confirmParams: {
-            return_url: `${window.location.origin}/stewardship/thank-you`,
-          },
-          redirect: "if_required",
-        });
+      // ✅ REQUIRED by Stripe
+      const { error: submitError } = await elements.submit();
+      if (submitError) {
+        setError(submitError.message ?? "Invalid payment details.");
+        setProcessing(false);
+        setStatus("idle");
+        return;
       }
 
-      if (result?.error) {
+      const isSetupIntent = clientSecret.startsWith("seti_");
+
+      const result = isSetupIntent
+        ? await stripe.confirmSetup({
+            elements,
+            confirmParams: {
+              return_url: `${window.location.origin}/stewardship/thank-you`,
+            },
+            redirect: "if_required",
+          })
+        : await stripe.confirmPayment({
+            elements,
+            confirmParams: {
+              return_url: `${window.location.origin}/stewardship/thank-you`,
+            },
+            redirect: "if_required",
+          });
+
+      if (result.error) {
         setError(result.error.message ?? "Payment failed.");
         setProcessing(false);
         setStatus("idle");
@@ -106,7 +114,7 @@ function PaymentForm({
       onSuccess();
     } catch (err) {
       console.error(err);
-      setError("Unexpected error occurred.");
+      setError("Unexpected payment error.");
       setProcessing(false);
       setStatus("idle");
     }
@@ -120,7 +128,7 @@ function PaymentForm({
 
       <Button
         type="submit"
-        disabled={processing}
+        disabled={!stripe || !elements || processing}
         className="w-full flex items-center justify-center gap-2"
       >
         {buttonLabel(processing)}
@@ -138,12 +146,9 @@ export default function StewardshipPaymentPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  const amountFromQuery = Number(searchParams.get("amount") || "50");
-  const frequencyQuery = (searchParams.get("frequency") as Frequency) || "once";
-  const pathFromQuery = searchParams.get("path") || "flexible";
-
-  const amount = amountFromQuery > 0 ? amountFromQuery : 50;
-  const frequency: Frequency = frequencyQuery === "monthly" ? "monthly" : "once";
+  const amount = Math.max(Number(searchParams.get("amount") ?? 50), 1);
+  const frequency = searchParams.get("frequency") === "monthly" ? "monthly" : "once";
+  const impactPath = searchParams.get("path") ?? "flexible";
 
   const impact = useMemo(() => calculateDonationImpact(amount), [amount]);
 
@@ -154,12 +159,10 @@ export default function StewardshipPaymentPage() {
   const buttonLabel = (processing: boolean) =>
     processing
       ? "Processing…"
-      : `Confirm $${amount} ${
-          frequency === "monthly" ? "/month" : "one-time"
-        } resource flow`;
+      : `Confirm $${amount} ${frequency === "monthly" ? "/month" : "one-time"} resource flow`;
 
   // ---------------------------------------------------------------------------
-  // Create Intent
+  // Create intent
   // ---------------------------------------------------------------------------
 
   useEffect(() => {
@@ -173,26 +176,26 @@ export default function StewardshipPaymentPage() {
           body: JSON.stringify({
             amount,
             frequency,
-            impactPath: pathFromQuery,
+            impactPath,
           }),
         });
 
-        if (!res.ok) throw new Error("Failed to create Stripe session");
+        if (!res.ok) throw new Error("Failed to create payment session");
 
         const data = await res.json();
-        if (!data.clientSecret) throw new Error("Missing client secret");
+        if (!data.clientSecret) throw new Error("Missing Stripe client secret");
 
         setClientSecret(data.clientSecret);
         setStatus("idle");
       } catch (err: any) {
         console.error(err);
-        setError(err.message || "Unable to prepare payment.");
+        setError(err.message ?? "Unable to initialize payment.");
         setStatus("error");
       }
     };
 
     createIntent();
-  }, [amount, frequency, pathFromQuery]);
+  }, [amount, frequency, impactPath]);
 
   // ---------------------------------------------------------------------------
   // Render
@@ -231,12 +234,9 @@ export default function StewardshipPaymentPage() {
                 }}
               >
                 <PaymentForm
-                  amount={amount}
-                  frequency={frequency}
+                  clientSecret={clientSecret}
                   buttonLabel={buttonLabel}
-                  onSuccess={() =>
-                    router.push("/stewardship/thank-you")
-                  }
+                  onSuccess={() => router.push("/stewardship/thank-you")}
                   setError={setError}
                   setStatus={setStatus}
                 />
@@ -253,18 +253,16 @@ export default function StewardshipPaymentPage() {
                 </h2>
               </div>
 
-              <div className="space-y-3 text-xs">
-                <Metric icon={TreePine} label="Trees" value={impact.trees} />
-                <Metric icon={Leaf} label="Acres" value={impact.acres} />
-                <Metric icon={Users} label="Households" value={impact.households} />
-                {impact.research_plots > 0 && (
-                  <Metric
-                    icon={Microscope}
-                    label="Research Plots"
-                    value={impact.research_plots}
-                  />
-                )}
-              </div>
+              <Metric icon={TreePine} label="Trees" value={impact.trees} />
+              <Metric icon={Leaf} label="Acres" value={impact.acres} />
+              <Metric icon={Users} label="Households" value={impact.households} />
+              {impact.research_plots > 0 && (
+                <Metric
+                  icon={Microscope}
+                  label="Research Plots"
+                  value={impact.research_plots}
+                />
+              )}
             </div>
           </aside>
         </div>
@@ -274,7 +272,7 @@ export default function StewardshipPaymentPage() {
 }
 
 // ---------------------------------------------------------------------------
-// Metric Component
+// Metric
 // ---------------------------------------------------------------------------
 
 function Metric({
@@ -287,7 +285,7 @@ function Metric({
   value: number;
 }) {
   return (
-    <div className="flex justify-between items-center">
+    <div className="flex justify-between items-center text-sm py-1">
       <div className="flex items-center gap-2 text-muted-foreground">
         <Icon className="h-4 w-4 text-primary" />
         {label}
