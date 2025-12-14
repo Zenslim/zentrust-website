@@ -35,18 +35,20 @@ type Frequency = "once" | "monthly";
 type Status = "loading" | "idle" | "submitting" | "error";
 
 // -----------------------------------------------------------------------------
-// Payment Form (handles Stripe-confirm errors correctly)
+// Payment Form (FIXED: clientSecret is REQUIRED)
 // -----------------------------------------------------------------------------
 
 function PaymentForm({
   amount,
   frequency,
+  clientSecret,
   onSuccess,
   setError,
   setStatus,
 }: {
   amount: number;
   frequency: Frequency;
+  clientSecret: string;
   onSuccess: () => void;
   setError: (msg: string | null) => void;
   setStatus: (s: Status) => void;
@@ -69,6 +71,7 @@ function PaymentForm({
       setStatus("submitting");
 
       const { error } = await stripe.confirmPayment({
+        clientSecret, // 🔥 REQUIRED FOR SUBSCRIPTIONS
         elements,
         confirmParams: {
           return_url: `${window.location.origin}/stewardship/thank-you`,
@@ -77,7 +80,6 @@ function PaymentForm({
       });
 
       if (error) {
-        // 🔑 DO NOT MASK STRIPE ERRORS
         console.error("Stripe confirm error:", error);
 
         const friendlyMessage =
@@ -146,7 +148,7 @@ export default function StewardshipPaymentPage() {
   const [error, setError] = useState<string | null>(null);
 
   // ---------------------------------------------------------------------------
-  // Create PaymentIntent / Subscription session
+  // Create PaymentIntent / Subscription
   // ---------------------------------------------------------------------------
 
   useEffect(() => {
@@ -158,30 +160,24 @@ export default function StewardshipPaymentPage() {
         const res = await fetch("/api/stewardship/create-intent", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            amount,
-            frequency,
-          }),
+          body: JSON.stringify({ amount, frequency }),
         });
-
-        if (!res.ok) {
-          const data = await res.json().catch(() => null);
-          throw new Error(
-            data?.error || "Unable to create secure payment session."
-          );
-        }
 
         const data = await res.json();
 
+        if (!res.ok) {
+          throw new Error(data?.error || "Unable to create payment session.");
+        }
+
         if (!data.clientSecret) {
-          throw new Error("Missing payment session details.");
+          throw new Error("Missing Stripe client secret.");
         }
 
         setClientSecret(data.clientSecret);
         setStatus("idle");
       } catch (err: any) {
         console.error("Create intent error:", err);
-        setError(err.message || "Unable to create secure payment session.");
+        setError(err.message || "Unable to create payment session.");
         setStatus("error");
       }
     };
@@ -264,6 +260,7 @@ export default function StewardshipPaymentPage() {
                 <PaymentForm
                   amount={amount}
                   frequency={frequency}
+                  clientSecret={clientSecret}
                   onSuccess={() =>
                     router.push("/stewardship/thank-you")
                   }
