@@ -101,7 +101,7 @@ function CheckoutForm({
       return;
     }
 
-    // Check if PaymentElement is ready with more robust validation
+    // Check if PaymentElement is ready with robust validation
     const paymentElement = elements.getElement("payment");
     if (!paymentElement) {
       const error = "Payment form not initialized. Please wait for it to load.";
@@ -110,9 +110,8 @@ function CheckoutForm({
       return;
     }
 
-    // Additional validation: check if PaymentElement is actually mounted
-    const paymentElementState = paymentElement._getState?.() || paymentElement.state;
-    if (!paymentElementState?.mounted && !isElementReady) {
+    // Check if PaymentElement is ready using our state
+    if (!isElementReady) {
       const error = "Payment form is still loading. Please wait a moment and try again.";
       console.error("PaymentElement not fully mounted");
       setError(error);
