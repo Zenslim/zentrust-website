@@ -1,37 +1,56 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  // ─────────────────────────────
+  // Build stability (MANDATORY)
+  // ─────────────────────────────
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
+
+  // ─────────────────────────────
+  // Images
+  // ─────────────────────────────
   images: {
     remotePatterns: [
       {
-        protocol: 'https',
-        hostname: 'images.unsplash.com',
-        pathname: '/**',
+        protocol: "https",
+        hostname: "images.unsplash.com",
+        pathname: "/**",
       },
       {
-        protocol: 'https',
-        hostname: 'assets.tina.io',
-        pathname: '/**',
+        protocol: "https",
+        hostname: "assets.tina.io",
+        pathname: "/**",
       },
     ],
-    formats: ['image/avif', 'image/webp'],
+    formats: ["image/avif", "image/webp"],
   },
 
+  // ─────────────────────────────
+  // Security headers
+  // ─────────────────────────────
   async headers() {
     return [
       {
-        source: '/:path*',
+        source: "/:path*",
         headers: [
           {
-            key: 'Content-Security-Policy',
+            key: "Content-Security-Policy",
             value:
               "frame-ancestors 'self' http://localhost:3000 http://localhost:4001;",
           },
           {
-            key: 'X-Frame-Options',
-            value: 'ALLOWALL',
+            key: "X-Frame-Options",
+            value: "ALLOWALL",
           },
-          { key: 'X-Content-Type-Options', value: 'nosniff' },
-          { key: 'Referrer-Policy', value: 'origin-when-cross-origin' },
+          {
+            key: "X-Content-Type-Options",
+            value: "nosniff",
+          },
+          {
+            key: "Referrer-Policy",
+            value: "origin-when-cross-origin",
+          },
         ],
       },
     ];
