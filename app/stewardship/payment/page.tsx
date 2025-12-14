@@ -38,7 +38,7 @@ type Frequency = "once" | "monthly";
 type PaymentStatus = "idle" | "loading" | "submitting" | "error";
 
 // ─────────────────────────────────────────────
-// Payment Form
+// Payment Form (CRITICAL FIX HERE)
 // ─────────────────────────────────────────────
 
 function PaymentForm({
@@ -56,14 +56,17 @@ function PaymentForm({
 }) {
   const stripe = useStripe();
   const elements = useElements();
+
   const [processing, setProcessing] = useState(false);
+  const [elementsReady, setElementsReady] = useState(false); // 🔑 REQUIRED
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
 
-    if (!stripe || !elements) {
-      setError("Stripe not ready.");
+    // 🔒 HARD GATE (this prevents your error)
+    if (!stripe || !elements || !elementsReady) {
+      setError("Payment form is still loading. Please wait.");
       return;
     }
 
@@ -107,12 +110,15 @@ function PaymentForm({
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       <div className="rounded-xl border border-border/60 bg-muted/40 p-4">
-        <PaymentElement options={{ layout: "tabs" }} />
+        <PaymentElement
+          options={{ layout: "tabs" }}
+          onReady={() => setElementsReady(true)} // 🔑 THIS IS THE FIX
+        />
       </div>
 
       <Button
         type="submit"
-        disabled={processing}
+        disabled={!elementsReady || processing}
         className="w-full flex items-center justify-center gap-2"
       >
         {buttonLabel(processing)}
