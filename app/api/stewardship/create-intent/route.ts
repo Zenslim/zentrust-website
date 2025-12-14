@@ -3,8 +3,6 @@ import Stripe from "stripe";
 
 // -----------------------------------------------------------------------------
 // Stripe initialization
-// IMPORTANT: Do NOT set apiVersion manually.
-// Let the SDK use the version it was generated for.
 // -----------------------------------------------------------------------------
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
@@ -58,7 +56,7 @@ export async function POST(req: Request) {
     const amountInCents = Math.round(amount * 100);
 
     // -------------------------------------------------------------------------
-    // Create PaymentIntent (one-time)
+    // ONE-TIME PAYMENT
     // -------------------------------------------------------------------------
 
     if (frequency === "once") {
@@ -78,10 +76,7 @@ export async function POST(req: Request) {
     }
 
     // -------------------------------------------------------------------------
-    // Create Subscription (monthly)
-    // NOTE:
-    // - We create a Customer + Subscription
-    // - Stripe Elements handles the first payment
+    // MONTHLY SUBSCRIPTION
     // -------------------------------------------------------------------------
 
     const customer = await stripe.customers.create({
@@ -114,8 +109,29 @@ export async function POST(req: Request) {
       },
     });
 
-    const latestInvoice = subscription.latest_invoice as Stripe.Invoice;
-    const paymentIntent = latestInvoice.payment_intent as Stripe.PaymentIntent;
+    // -------------------------------------------------------------------------
+    // SAFELY EXTRACT PAYMENT INTENT (TypeScript-correct)
+    // -------------------------------------------------------------------------
+
+    const invoice = subscription.latest_invoice;
+
+    if (
+      !invoice ||
+      typeof invoice !== "object" ||
+      !("payment_intent" in invoice)
+    ) {
+      throw new Error("Missing invoice payment intent.");
+    }
+
+    const paymentIntent = invoice.payment_intent;
+
+    if (
+      !paymentIntent ||
+      typeof paymentIntent !== "object" ||
+      !("client_secret" in paymentIntent)
+    ) {
+      throw new Error("Invalid payment intent on invoice.");
+    }
 
     return NextResponse.json({
       clientSecret: paymentIntent.client_secret,
