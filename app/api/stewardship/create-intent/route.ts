@@ -44,7 +44,8 @@ export async function POST(req: Request) {
       typeof amount !== "number" ||
       Number.isNaN(amount) ||
       amount < MIN_AMOUNT_USD ||
-      amount > MAX_AMOUNT_USD
+      amount > MAX_AMOUNT_USD ||
+      !Number.isInteger(amount)
     ) {
       return NextResponse.json(
         { error: "Invalid amount." },
@@ -59,7 +60,7 @@ export async function POST(req: Request) {
       );
     }
 
-    const amountInCents = Math.round(amount * 100);
+    const amountInCents = amount * 100;
 
     // -------------------------------------------------------------------------
     // ONE-TIME PAYMENT (PaymentIntent)
@@ -83,14 +84,14 @@ export async function POST(req: Request) {
     }
 
     // -------------------------------------------------------------------------
-    // MONTHLY SUBSCRIPTION (NO dynamic price creation)
+    // MONTHLY SUBSCRIPTION ($1 price × quantity)
     // -------------------------------------------------------------------------
 
     if (!MONTHLY_PRICE_ID) {
       throw new Error("Missing STRIPE_MONTHLY_PRICE_ID");
     }
 
-    // Create customer (lightweight, fine to do per checkout)
+    // Create customer
     const customer = await stripe.customers.create({
       metadata: {
         purpose: "zentrust_stewardship",
@@ -98,8 +99,7 @@ export async function POST(req: Request) {
       },
     });
 
-    // Create subscription using:
-    // $1/month price × quantity = slider amount
+    // Create subscription
     const subscription = await stripe.subscriptions.create({
       customer: customer.id,
       items: [
@@ -108,8 +108,10 @@ export async function POST(req: Request) {
           quantity: amount,         // e.g. 5 → $5/month
         },
       ],
+      collection_method: "charge_automatically", // 🔑 REQUIRED
       payment_behavior: "default_incomplete",
       payment_settings: {
+        payment_method_types: ["card"], // 🔑 REQUIRED
         save_default_payment_method: "on_subscription",
       },
       expand: ["latest_invoice.payment_intent"],
@@ -121,27 +123,14 @@ export async function POST(req: Request) {
     });
 
     // -------------------------------------------------------------------------
-    // Extract client_secret safely
+    // Extract PaymentIntent safely
     // -------------------------------------------------------------------------
 
-    const invoice = subscription.latest_invoice;
+    const invoice = subscription.latest_invoice as Stripe.Invoice | null;
+    const paymentIntent = invoice?.payment_intent as Stripe.PaymentIntent | null;
 
-    if (
-      !invoice ||
-      typeof invoice !== "object" ||
-      !("payment_intent" in invoice)
-    ) {
-      throw new Error("Missing invoice payment intent.");
-    }
-
-    const paymentIntent = invoice.payment_intent;
-
-    if (
-      !paymentIntent ||
-      typeof paymentIntent !== "object" ||
-      !("client_secret" in paymentIntent)
-    ) {
-      throw new Error("Invalid payment intent on invoice.");
+    if (!paymentIntent?.client_secret) {
+      throw new Error("Missing subscription payment intent.");
     }
 
     return NextResponse.json({
