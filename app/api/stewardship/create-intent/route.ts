@@ -63,7 +63,7 @@ export async function POST(req: Request) {
     const amountInCents = amount * 100;
 
     // -------------------------------------------------------------------------
-    // ONE-TIME PAYMENT (PaymentIntent)
+    // ONE-TIME PAYMENT
     // -------------------------------------------------------------------------
 
     if (frequency === "once") {
@@ -84,14 +84,13 @@ export async function POST(req: Request) {
     }
 
     // -------------------------------------------------------------------------
-    // MONTHLY SUBSCRIPTION ($1 price × quantity)
+    // MONTHLY SUBSCRIPTION ($1 × quantity)
     // -------------------------------------------------------------------------
 
     if (!MONTHLY_PRICE_ID) {
       throw new Error("Missing STRIPE_MONTHLY_PRICE_ID");
     }
 
-    // Create customer
     const customer = await stripe.customers.create({
       metadata: {
         purpose: "zentrust_stewardship",
@@ -99,19 +98,18 @@ export async function POST(req: Request) {
       },
     });
 
-    // Create subscription
     const subscription = await stripe.subscriptions.create({
       customer: customer.id,
       items: [
         {
-          price: MONTHLY_PRICE_ID, // $1/month
-          quantity: amount,         // e.g. 5 → $5/month
+          price: MONTHLY_PRICE_ID,
+          quantity: amount, // e.g. 5 → $5/month
         },
       ],
-      collection_method: "charge_automatically", // 🔑 REQUIRED
+      collection_method: "charge_automatically",
       payment_behavior: "default_incomplete",
       payment_settings: {
-        payment_method_types: ["card"], // 🔑 REQUIRED
+        payment_method_types: ["card"],
         save_default_payment_method: "on_subscription",
       },
       expand: ["latest_invoice.payment_intent"],
@@ -123,11 +121,19 @@ export async function POST(req: Request) {
     });
 
     // -------------------------------------------------------------------------
-    // Extract PaymentIntent safely
+    // TS-SAFE PaymentIntent extraction (THIS FIXES YOUR BUILD)
     // -------------------------------------------------------------------------
 
-    const invoice = subscription.latest_invoice as Stripe.Invoice | null;
-    const paymentIntent = invoice?.payment_intent as Stripe.PaymentIntent | null;
+    const latestInvoice = subscription.latest_invoice as
+      | Stripe.Invoice
+      | null;
+
+    const paymentIntent =
+      typeof latestInvoice === "object" &&
+      latestInvoice !== null &&
+      "payment_intent" in latestInvoice
+        ? (latestInvoice.payment_intent as Stripe.PaymentIntent | null)
+        : null;
 
     if (!paymentIntent?.client_secret) {
       throw new Error("Missing subscription payment intent.");
