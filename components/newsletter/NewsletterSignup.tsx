@@ -1,36 +1,59 @@
 // components/newsletter/NewsletterSignup.tsx
 
-import { Button } from '@/components/ui/button'
+"use client"
+
+import { Button } from "@/components/ui/button"
+import { motion } from "framer-motion"
 
 export function NewsletterSignup() {
   return (
-    <section className="py-24">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="max-w-2xl mx-auto text-center">
-          <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-6">
-            Stay Connected
-          </h2>
-          <p className="text-lg text-muted-foreground mb-8">
-             Receive reflections on regenerative initiatives, ecological research, 
-  and community-led transformations as they emerge across our network.
-          </p>
+    <section className="w-full pt-10 md:pt-12">
+      <motion.div
+        className="max-w-[720px] mx-auto px-6 text-center"
+        initial={{ opacity: 0, y: 6 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.5, ease: "easeOut" }}
+      >
+        {/* HEADING */}
+        <h2 className="text-2xl md:text-3xl font-semibold text-foreground mb-4">
+          Stay Connected
+        </h2>
 
-          <div className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
-            <input
-              type="email"
-              placeholder="Enter your email"
-              className="flex-1 px-4 py-3 bg-background
-              text-foreground placeholder:text-muted-foreground
-              focus:outline-none focus:ring-2 focus:ring-primary"
-            />
-            <Button>Subscribe</Button>
-          </div>
+        {/* DESCRIPTION */}
+        <p className="text-[16px] md:text-[17px] text-muted-foreground leading-relaxed mb-6">
+          Receive reflections on regenerative initiatives, ecological research,
+          and community-led transformations as they emerge across our network.
+        </p>
 
-          <p className="text-xs text-muted-foreground mt-4">
-            We respect your privacy. Unsubscribe anytime.
-          </p>
+        {/* INPUT + ACTION — grounded, visible outline */}
+        <div className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
+          <input
+            type="email"
+            placeholder="Enter your email"
+            className="
+              flex-1
+              px-4 py-3
+              bg-background
+              text-foreground
+              placeholder:text-muted-foreground
+              border border-border
+              rounded-lg
+              focus:outline-none
+              focus:ring-2 focus:ring-primary
+              focus:ring-offset-0
+            "
+          />
+          <Button className="px-6 py-3">
+            Subscribe
+          </Button>
         </div>
-      </div>
+
+        {/* PRIVACY LINE */}
+        <p className="text-xs text-muted-foreground mt-4">
+          We respect your privacy. Unsubscribe anytime.
+        </p>
+      </motion.div>
     </section>
   )
 }
