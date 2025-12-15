@@ -1,15 +1,17 @@
-/* Import Tailwind CSS */
+/* =========================================
+   Tailwind base
+   ========================================= */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* ============================
-   BASE THEME TOKENS
-   ============================ */
+/* =========================================
+   THEME TOKENS
+   ========================================= */
 @layer base {
   :root {
-    /* --- CANONICAL LIGHT MODE CANVAS --- */
-    /* #F6F0E6 */
+    /* ---------- LIGHT MODE (CANONICAL) ---------- */
+    /* #F6F0E6 — paper / parchment */
     --background: 39 33% 93%;
     --foreground: 222.2 84% 4.9%;
 
@@ -39,23 +41,17 @@
     --ring: 142.1 70.6% 45.3%;
 
     --radius: 0.75rem;
-
-    /* Hero / headline color helpers */
-    --hero-light-head: #064e3b;
-    --hero-light-body: #047857;
   }
 
-  /* ============================
-     DARK MODE (UNCHANGED)
-     ============================ */
+  /* ---------- DARK MODE (CANONICAL SKY) ---------- */
   .dark {
-    --background: 222.2 84% 4.9%;
+    --background: 222 30% 6%; /* base under sky */
     --foreground: 210 40% 98%;
 
-    --card: 222.2 84% 4.9%;
+    --card: 222 30% 6%;
     --card-foreground: 210 40% 98%;
 
-    --popover: 222.2 84% 4.9%;
+    --popover: 222 30% 6%;
     --popover-foreground: 210 40% 98%;
 
     --primary: 142.1 70.6% 45.3%;
@@ -76,92 +72,66 @@
     --border: 217.2 32.6% 17.5%;
     --input: 217.2 32.6% 17.5%;
     --ring: 142.1 70.6% 45.3%;
-
-    --hero-light-head: #ffffff;
-    --hero-light-body: #e5ffef;
   }
 
-  /* ============================
-     GLOBAL ELEMENT NORMALIZATION
-     ============================ */
+  /* ---------- GLOBAL NORMALIZATION ---------- */
   * {
     border-color: hsl(var(--border));
   }
 
-  html {
-    background-color: hsl(var(--background));
-  }
-
+  html,
   body {
     background-color: hsl(var(--background));
     color: hsl(var(--foreground));
+  }
+
+  body {
     overflow-x: hidden;
     scroll-behavior: smooth;
   }
 }
 
-/* ============================
-   UTILITIES (EXISTING + SAFE)
-   ============================ */
-@layer utilities {
-  .glass-card {
-    backdrop-filter: blur(4px);
-    background: rgba(255, 255, 255, 0.08);
-    border: 1px solid rgba(0, 0, 0, 0.08);
-  }
+/* =========================================
+   DARK MODE — CANONICAL SKY
+   ========================================= */
+.dark .bg-dark-sky {
+  background: radial-gradient(
+    ellipse at top,
+    #0b1220 0%,
+    #05080f 45%,
+    #02040a 100%
+  );
+}
 
-  .dark .glass-card {
-    background: rgba(0, 0, 0, 0.2);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-  }
+/* =========================================
+   DARK MODE — STARFIELD (SUBTLE)
+   ========================================= */
+.dark .starfield {
+  background-image:
+    radial-gradient(1px 1px at 15% 25%, rgba(255,255,255,0.35), transparent 40%),
+    radial-gradient(1px 1px at 45% 15%, rgba(255,255,255,0.25), transparent 40%),
+    radial-gradient(1px 1px at 65% 35%, rgba(255,255,255,0.30), transparent 40%),
+    radial-gradient(1px 1px at 25% 55%, rgba(255,255,255,0.22), transparent 40%),
+    radial-gradient(1px 1px at 75% 65%, rgba(255,255,255,0.28), transparent 40%),
+    radial-gradient(1px 1px at 55% 85%, rgba(255,255,255,0.20), transparent 40%);
+  animation: starTwinkle 16s ease-in-out infinite;
+}
 
-  .gradient-text {
-    background: linear-gradient(
-      to right,
-      hsl(var(--primary)),
-      #10b981
-    );
-    background-clip: text;
-    -webkit-background-clip: text;
-    color: transparent;
+/* Extremely slow, low-contrast breathing */
+@keyframes starTwinkle {
+  0%, 100% {
+    opacity: 0.85;
   }
-
-  /* Button helpers (kept intact) */
-  .btn-primary {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: var(--radius);
-    background-color: hsl(var(--primary));
-    color: hsl(var(--primary-foreground));
-    padding: 0.75rem 1.5rem;
-    font-size: 0.875rem;
-    font-weight: 500;
-    transition: background-color 0.15s ease-in-out;
-    border: none;
-    cursor: pointer;
+  50% {
+    opacity: 1;
   }
+}
 
-  .btn-primary:hover {
-    background-color: hsl(var(--primary) / 0.9);
-  }
-
-  .btn-secondary {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: var(--radius);
-    background-color: hsl(var(--background));
-    color: hsl(var(--foreground));
-    padding: 0.75rem 1.5rem;
-    font-size: 0.875rem;
-    font-weight: 500;
-    border: 1px solid hsl(var(--input));
-    cursor: pointer;
-  }
-
-  .btn-secondary:hover {
-    background-color: hsl(var(--accent));
-    color: hsl(var(--accent-foreground));
+/* =========================================
+   ACCESSIBILITY SAFETY
+   ========================================= */
+@media (prefers-reduced-motion: reduce) {
+  .starfield {
+    animation: none;
   }
 }
