@@ -169,6 +169,32 @@ export default function AboutPage() {
         </div>
       </section>
 
+      {/* OPERATING DISCIPLINE */}
+      <section className="pt-4 md:pt-6 pb-12">
+        <div className="max-w-4xl mx-auto px-6 space-y-4 text-left">
+          <h2 className="text-2xl md:text-3xl font-semibold text-foreground text-center mb-2">
+            How We Work, Who We Answer To
+          </h2>
+          <p className="text-base leading-relaxed text-foreground/80">
+            ZenTrust operates with a simple mandate: every action must strengthen ecological integrity and human dignity at the same time. Our board reviews program charters quarterly, and community advisors from partner watersheds participate in those reviews. If a pathway does not serve local residents or the land in front of us, it does not ship, no matter how elegant the proposal may be on paper.
+          </p>
+          <p className="text-base leading-relaxed text-foreground/80">
+            Governance is handled with calm discipline. Stewardship teams publish narrative field notes alongside financials so donors, regulators, and neighbors can see how resources are moving. Independent auditors and pro bono legal counsel verify filings, and our public benefit statement is revisited annually to ensure alignment with evolving ecological and social realities. Transparency is treated as a daily practice, not a marketing line.
+          </p>
+          <p className="text-base leading-relaxed text-foreground/80">
+            The public benefit we pursue is tangible: healthier soils, safer water tables, and resilient families who can stay rooted where they belong. Research partnerships with universities and local clinics track outcomes across the Bio-Psycho-Social-Spiritual spectrum, pairing qualitative community testimony with quantitative ecological indicators. This is how we know the work is honest, adaptive, and worthy of support.
+          </p>
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-2">
+            <Button asChild>
+              <Link href="/financials">View financials</Link>
+            </Button>
+            <Button asChild variant="outline">
+              <Link href="/contact">Contact the board</Link>
+            </Button>
+          </div>
+        </div>
+      </section>
+
       {/* INVITATION */}
       <section className="pt-12 md:pt-16 pb-20 text-center">
         <div className="max-w-3xl mx-auto px-6">

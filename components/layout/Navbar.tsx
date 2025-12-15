@@ -87,9 +87,11 @@ export function Navbar() {
 
             <button
               onClick={() => setIsOpen(!isOpen)}
-              className="md:hidden inline-flex items-center justify-center p-2 rounded-md 
-                text-foreground/70 hover:text-foreground hover:bg-accent 
+              className="md:hidden inline-flex items-center justify-center p-2 rounded-md
+                text-foreground/70 hover:text-foreground hover:bg-accent
                 focus:outline-none focus:ring-2 focus:ring-primary"
+              aria-label={isOpen ? "Close main menu" : "Open main menu"}
+              aria-expanded={isOpen}
             >
               {isOpen ? (
                 <X className="h-6 w-6" aria-hidden="true" />

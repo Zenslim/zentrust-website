@@ -32,6 +32,38 @@ export default function ProgramsPage() {
         </div>
       </section>
 
+      {/* DELIVERY MODEL */}
+      <section className="pb-12">
+        <div className="max-w-5xl mx-auto px-6 space-y-4">
+          <h2 className="text-2xl md:text-3xl font-semibold text-center text-foreground">
+            How Programs Become Real
+          </h2>
+          <p className="text-base text-foreground/80 leading-relaxed">
+            Each program begins with a listening period led by local partners and watershed stewards. Baseline ecological readings, cultural priorities, and livelihood needs are mapped together before any intervention is proposed. This keeps the work accountable to the people who live with the outcomes and prevents extractive, outsider-driven experimentation.
+          </p>
+          <p className="text-base text-foreground/80 leading-relaxed">
+            Funding is released in deliberate phases. Community assemblies review milestones, and scientific advisors validate methods for soil regeneration, water retention, and Bio-Psycho-Social-Spiritual wellbeing. If a milestone fails to serve the land or the community, the next phase waits until conditions are corrected. This rhythm keeps us humble and responsive rather than hurried.
+          </p>
+          <p className="text-base text-foreground/80 leading-relaxed">
+            Oversight is shared: board members, regional scientists, youth apprentices, and indigenous knowledge holders all hold seats at the table. Their perspectives shape curricula, research protocols, and safety standards. The goal is not speed; it is integrity. When a program finally surfaces, it is because enough voices have said yes.
+          </p>
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-2">
+            <a
+              href="/research"
+              className="px-5 py-3 rounded-lg bg-foreground text-background font-medium hover:bg-foreground/90 transition-colors"
+            >
+              Read the research approach
+            </a>
+            <a
+              href="/contact"
+              className="px-5 py-3 rounded-lg border border-border text-foreground font-medium hover:bg-accent transition-colors"
+            >
+              Share community priorities
+            </a>
+          </div>
+        </div>
+      </section>
+
       {/* FEATURED PROGRAM */}
       <section className="pb-12">
         <div className="max-w-4xl mx-auto px-6">
