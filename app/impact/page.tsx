@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button"
 
 export default function ImpactPage() {
   return (
-    <div className="min-h-screen pt-16">
+    <div className="pt-16">
 
       {/* HERO */}
       <section className="pt-10 md:pt-12 pb-6 text-center">
@@ -31,28 +31,17 @@ export default function ImpactPage() {
         </div>
       </section>
 
-      {/* VIDEO (spine) */}
-      <section className="pb-8 md:pb-10">
-        <div className="max-w-6xl mx-auto px-6">
-          <div className="aspect-video rounded-2xl overflow-hidden border border-border/40">
-            <video
-              className="w-full h-full object-cover"
-              src="/video/impact/bpss-roots-60s.mp4"
-              autoPlay
-              muted
-              loop
-              playsInline
-            />
-          </div>
-
-          <p className="text-sm text-muted-foreground text-center mt-3 max-w-3xl mx-auto">
+      {/* TRANSITION LINE (replaces video for now) */}
+      <section className="pb-8 text-center">
+        <div className="max-w-3xl mx-auto px-6">
+          <p className="text-sm text-muted-foreground">
             Healing begins underground. When one root is damaged, the whole system weakens.
             When care is restored, healing propagates naturally.
           </p>
         </div>
       </section>
 
-      {/* WHAT IS ALREADY MOVING (tight grid) */}
+      {/* WHAT IS ALREADY MOVING */}
       <section className="pb-10 md:pb-12">
         <div className="max-w-6xl mx-auto px-6">
           <h2 className="text-xl md:text-2xl font-semibold text-center mb-5">
@@ -64,7 +53,8 @@ export default function ImpactPage() {
               <TreePine className="h-7 w-7 mx-auto mb-3 text-muted-foreground" strokeWidth={1} />
               <h3 className="font-semibold mb-2">The Land</h3>
               <p className="text-sm text-muted-foreground leading-relaxed">
-                Baselines established. Watersheds read carefully. Soil understood before intervention.
+                Baselines established. Watersheds read carefully.
+                Soil understood before intervention.
               </p>
             </div>
 
@@ -72,7 +62,8 @@ export default function ImpactPage() {
               <Users className="h-7 w-7 mx-auto mb-3 text-muted-foreground" strokeWidth={1} />
               <h3 className="font-semibold mb-2">The People</h3>
               <p className="text-sm text-muted-foreground leading-relaxed">
-                Trust forms before programs. Youth pathways are not built. They are cleared.
+                Trust forms before programs.
+                Youth pathways are not built. They are cleared.
               </p>
             </div>
 
@@ -80,14 +71,15 @@ export default function ImpactPage() {
               <Microscope className="h-7 w-7 mx-auto mb-3 text-muted-foreground" strokeWidth={1} />
               <h3 className="font-semibold mb-2">The Framework</h3>
               <p className="text-sm text-muted-foreground leading-relaxed">
-                BPSS research prepared to honor body, mind, community, and meaning together.
+                BPSS research prepared to honor body, mind,
+                community, and meaning together.
               </p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* 2026 (no big break) */}
+      {/* 2026 */}
       <section className="pb-10 md:pb-12 text-center">
         <div className="max-w-3xl mx-auto px-6">
           <Hourglass className="h-7 w-7 mx-auto mb-3 text-muted-foreground" strokeWidth={1} />
@@ -95,12 +87,13 @@ export default function ImpactPage() {
             First Measurable Outcomes in 2026
           </h2>
           <p className="text-[17px] md:text-lg text-muted-foreground leading-relaxed">
-            Foundations are already in place. Indicators will emerge in time, measured carefully and shared openly.
+            Foundations are already in place.
+            Indicators will emerge in time, measured carefully and shared openly.
           </p>
         </div>
       </section>
 
-      {/* CLOSING (tight, inevitable) */}
+      {/* CLOSING */}
       <section className="pt-2 pb-14 md:pb-16 text-center">
         <div className="max-w-3xl mx-auto px-6">
           <h2 className="text-3xl md:text-4xl font-bold mb-4">
@@ -110,7 +103,8 @@ export default function ImpactPage() {
           </h2>
 
           <p className="text-[17px] md:text-lg text-muted-foreground leading-relaxed mb-6">
-            If you believe that foundations matter more than headlines, we invite you to flow with us.
+            If you believe that foundations matter more than headlines,
+            we invite you to flow with us.
             Your stewardship ensures that this work remains quiet, patient, and true.
           </p>
 
