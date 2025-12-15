@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { Leaf, Mail, Phone, MapPin, Facebook, Twitter, Instagram, Linkedin } from 'lucide-react'
+import { Leaf, Mail, Phone, MapPin, Facebook, Twitter, Instagram } from 'lucide-react'
 
 const footerLinks = {
   programs: [
@@ -16,7 +16,7 @@ const footerLinks = {
   ],
   resources: [
     { name: 'Newsletter', href: '/newsletter' },
-    { name: 'Stewardship Rights', href: '/stewardship-rights' }, // ← Paraphrased
+    { name: 'Stewardship Rights', href: '/stewardship-rights' },
     { name: 'Privacy Policy', href: '/privacy' },
     { name: 'Terms of Service', href: '/terms' },
     { name: 'Accessibility', href: '/accessibility' },
@@ -32,7 +32,6 @@ const socialLinks = [
   { name: 'Facebook', icon: Facebook, href: 'https://facebook.com/zentrust' },
   { name: 'Twitter', icon: Twitter, href: 'https://twitter.com/zentrust' },
   { name: 'Instagram', icon: Instagram, href: 'https://instagram.com/zentrust' },
-  { name: 'LinkedIn', icon: Linkedin, href: 'https://linkedin.com/company/zentrust' },
 ]
 
 export function Footer() {
@@ -81,7 +80,7 @@ export function Footer() {
               </div>
             </div>
 
-            {/* Programs Section */}
+            {/* Programs */}
             <div>
               <h3 className="text-sm font-semibold text-foreground mb-4">Programs</h3>
               <ul className="space-y-2">
@@ -98,7 +97,7 @@ export function Footer() {
               </ul>
             </div>
 
-            {/* Organization Section */}
+            {/* Organization */}
             <div>
               <h3 className="text-sm font-semibold text-foreground mb-4">Organization</h3>
               <ul className="space-y-2">
@@ -115,7 +114,7 @@ export function Footer() {
               </ul>
             </div>
 
-            {/* Resources Section */}
+            {/* Resources */}
             <div>
               <h3 className="text-sm font-semibold text-foreground mb-4">Resources</h3>
               <ul className="space-y-2">
@@ -132,7 +131,7 @@ export function Footer() {
               </ul>
             </div>
 
-            {/* Participate Section */}
+            {/* Participation */}
             <div>
               <h3 className="text-sm font-semibold text-foreground mb-4">Participation</h3>
               <ul className="space-y-2">
@@ -160,8 +159,6 @@ export function Footer() {
               <p className="text-sm text-muted-foreground">
                 © {new Date().getFullYear()} ZenTrust. All rights reserved.
               </p>
-
-              {/* Nonprofit Compliance Line */}
               <p className="text-xs text-muted-foreground">
                 ZenTrust, Inc. is a 501(c)(3) public charity. EIN: 33-4318487.
               </p>
