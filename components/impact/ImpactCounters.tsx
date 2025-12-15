@@ -46,71 +46,80 @@ const impactMetrics: Metric[] = [
     value: 8500,
     suffix: "+",
     label: "Hours of Ecological & Inner Learning",
-    text: "Cultivating ecological literacy and inner resilience through workshops & apprenticeships.",
+    text: "Cultivating ecological literacy and inner resilience.",
   },
 ]
 
-interface AnimatedCounterProps {
+function AnimatedCounter({
+  end,
+  suffix = "",
+  isInView,
+}: {
   end: number
   suffix?: string
   isInView: boolean
-}
-
-function AnimatedCounter({ end, suffix = "", isInView }: AnimatedCounterProps) {
+}) {
   const [count, setCount] = useState(0)
 
   useEffect(() => {
     if (!isInView) return
 
     let start: number | null = null
-    const duration = 2000
+    const duration = 1800
 
     const animate = (t: number) => {
       if (!start) start = t
       const progress = Math.min((t - start) / duration, 1)
       const eased = 1 - Math.pow(1 - progress, 3)
       setCount(Math.floor(eased * end))
-
       if (progress < 1) requestAnimationFrame(animate)
     }
 
     requestAnimationFrame(animate)
   }, [end, isInView])
 
-  return <>{count.toLocaleString()}{suffix}</>
+  return (
+    <>
+      {count.toLocaleString()}
+      {suffix}
+    </>
+  )
 }
 
 export function ImpactCounters() {
   const ref = useRef(null)
-  const isInView = useInView(ref, { once: true, amount: 0.2 })
+  const isInView = useInView(ref, { once: true, amount: 0.25 })
 
   return (
-    <section ref={ref} className="w-full py-20 overflow-hidden">
-
-      {/* INTRO */}
+    <section ref={ref} className="w-full pt-10 md:pt-12">
+      {/* INTRO — tight, no section boxing */}
       <motion.div
-        className="max-w-[1500px] mx-auto px-6 text-center mb-12"
-        initial={{ opacity: 0, y: 14 }}
+        className="max-w-[1500px] mx-auto px-6 text-center mb-6"
+        initial={{ opacity: 0, y: 6 }}
         whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, amount: 0.2 }}
-        transition={{ duration: 0.7 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.5, ease: "easeOut" }}
       >
-        <p className="text-[20px] md:text-[22px] text-muted-foreground font-medium leading-snug md:leading-normal">
+        <p className="text-[18px] md:text-[20px] font-medium text-muted-foreground leading-snug">
           Regeneration is not charity — it is a return to relationship.
           These milestones reflect landscapes remembering how to heal
           and communities rising into sovereignty.
         </p>
       </motion.div>
 
-      {/* CARDS */}
+      {/* METRICS GRID — grounded objects on the global surface */}
       <motion.div
-        className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8 max-w-[1700px] mx-auto px-6"
+        className="
+          grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5
+          gap-5
+          max-w-[1600px] mx-auto px-6
+        "
         initial="hidden"
         whileInView="visible"
-        viewport={{ once: true, amount: 0.2 }}
+        viewport={{ once: true, amount: 0.25 }}
         variants={{
           hidden: {},
-          visible: { transition: { staggerChildren: 0.12 } },
+          visible: { transition: { staggerChildren: 0.08 } },
         }}
       >
         {impactMetrics.map((metric, i) => {
@@ -118,56 +127,67 @@ export function ImpactCounters() {
           return (
             <motion.div
               key={i}
-              className="p-8 rounded-2xl bg-card border border-border/30 shadow-sm text-center cursor-default"
+              className="
+                rounded-2xl
+                bg-card
+                border border-border/40
+                px-6 py-6
+                text-center
+              "
               variants={{
-                hidden: { opacity: 0, y: 35, filter: "brightness(0.7)" },
+                hidden: { opacity: 0, y: 18 },
                 visible: {
                   opacity: 1,
                   y: 0,
-                  filter: "brightness(1)",
-                  transition: { duration: 0.55, ease: "easeOut" }
+                  transition: { duration: 0.45, ease: "easeOut" },
                 },
               }}
-              whileHover={{ scale: 1.04, boxShadow: "0 12px 32px rgba(0,0,0,0.15)" }}
-              transition={{ type: "spring", stiffness: 220, damping: 18 }}
+              whileHover={{ y: -2 }}
+              transition={{ type: "spring", stiffness: 220, damping: 22 }}
             >
-              <motion.div
-                className="flex items-center justify-center mb-4"
-                whileHover={{ y: -4 }}
-                transition={{ type: "spring", stiffness: 200, damping: 15 }}
-              >
-                <Icon className="h-8 w-8 text-primary" />
-              </motion.div>
-
-              <div className="text-4xl font-bold mb-2">
-                <AnimatedCounter end={metric.value} suffix={metric.suffix} isInView={isInView} />
+              {/* ICON */}
+              <div className="flex items-center justify-center mb-3">
+                <Icon className="h-7 w-7 text-primary" />
               </div>
 
-              <h3 className="text-lg font-semibold mb-3">{metric.label}</h3>
+              {/* VALUE */}
+              <div className="text-3xl md:text-4xl font-bold tracking-tight mb-2">
+                <AnimatedCounter
+                  end={metric.value}
+                  suffix={metric.suffix}
+                  isInView={isInView}
+                />
+              </div>
 
-              <p className="text-sm text-muted-foreground leading-relaxed">{metric.text}</p>
+              {/* LABEL */}
+              <h3 className="text-base md:text-lg font-semibold tracking-tight mb-2">
+                {metric.label}
+              </h3>
+
+              {/* DESCRIPTION */}
+              <p className="text-sm leading-relaxed text-muted-foreground">
+                {metric.text}
+              </p>
             </motion.div>
           )
         })}
       </motion.div>
 
-      {/* OUTRO */}
+      {/* OUTRO — minimal, no visual closure band */}
       <motion.div
-        className="max-w-[1500px] mx-auto px-6 text-center mt-16"
-        initial={{ opacity: 0, y: 12 }}
+        className="max-w-[1500px] mx-auto px-6 text-center mt-8"
+        initial={{ opacity: 0, y: 6 }}
         whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, amount: 0.2 }}
-        transition={{ duration: 0.75 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.5, ease: "easeOut" }}
       >
-        <p className="text-xl md:text-2xl font-semibold">
+        <p className="text-lg md:text-xl font-medium text-foreground leading-snug">
           Land heals through relationship — and so do we.
-          <br />
-          <span className="text-primary font-bold text-[22px] md:text-[24px]">
-            Each step of regeneration strengthens the whole web.
-          </span>
+        </p>
+        <p className="mt-1 text-[18px] md:text-[20px] font-semibold text-primary">
+          Each step of regeneration strengthens the whole web.
         </p>
       </motion.div>
-
     </section>
   )
 }
