@@ -2,60 +2,57 @@
 
 import { motion } from "framer-motion"
 
+const pillars = [
+  {
+    title: "Regenerative Ecology",
+    icon: "🌱",
+    text: "We restore forests, soils, and watersheds using regenerative science, supporting biodiversity and helping landscapes recover their natural resilience and self-healing capacity.",
+  },
+  {
+    title: "Holistic BPSS Wellness",
+    icon: "🧬",
+    text: "We strengthen human wellbeing through the Bio-Psycho-Social-Spiritual model, integrating body, emotion, community, and meaning into a unified healing framework.",
+  },
+  {
+    title: "Community Upliftment",
+    icon: "🤝",
+    text: "We support communities with regenerative livelihoods, shared leadership, and accessible knowledge, enabling long-term resilience and collective wellbeing.",
+  },
+  {
+    title: "Cultural Preservation",
+    icon: "🌀",
+    text: "We protect cultural memory and traditional ecological wisdom, ensuring identity, continuity, and belonging remain strong across generations.",
+  },
+  {
+    title: "Global Partnerships",
+    icon: "🌍",
+    text: "We collaborate with aligned nonprofits, researchers, and networks worldwide to scale ecological restoration and shared learning.",
+  },
+]
+
 export default function MissionSection() {
-  const pillars = [
-    {
-      title: "Regenerative Ecology",
-      icon: "🌱",
-      text: "We restore forests, soils, and watersheds using regenerative science, supporting biodiversity and helping landscapes recover their natural resilience and self-healing capacity.",
-    },
-    {
-      title: "Holistic BPSS Wellness",
-      icon: "🧬",
-      text: "We strengthen human wellbeing through the Bio-Psycho-Social-Spiritual model, integrating body, emotion, community, and meaning into a unified healing framework.",
-    },
-    {
-      title: "Community Upliftment",
-      icon: "🤝",
-      text: "We support communities with regenerative livelihoods, shared leadership, and accessible knowledge, enabling long-term resilience and collective wellbeing.",
-    },
-    {
-      title: "Cultural Preservation",
-      icon: "🌀",
-      text: "We protect cultural memory and traditional ecological wisdom, ensuring identity, continuity, and belonging remain strong across generations.",
-    },
-    {
-      title: "Global Partnerships",
-      icon: "🌍",
-      text: "We collaborate with aligned nonprofits, researchers, and networks worldwide to scale ecological restoration and shared learning.",
-    },
-  ]
-
   return (
-    <section className="relative w-full bg-background overflow-hidden">
-      {/* SUBTLE TOP GRADIENT — ties visually to Hero */}
-      <div className="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-black/5 to-transparent pointer-events-none" />
-
-      {/* INTRO */}
+    <section className="w-full pt-10 md:pt-12">
+      {/* INTRO — rhythm only, no section framing */}
       <motion.div
-        className="max-w-5xl mx-auto px-6 pt-14 md:pt-18 pb-8 md:pb-10 text-center"
-        initial={{ opacity: 0, y: 8 }}
+        className="max-w-[1500px] mx-auto px-6 text-center mb-6"
+        initial={{ opacity: 0, y: 6 }}
         whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, amount: 0.3 }}
-        transition={{ duration: 0.6, ease: "easeOut" }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.5, ease: "easeOut" }}
       >
-        <p className="text-[18px] md:text-[20px] leading-snug text-muted-foreground">
+        <p className="text-[18px] md:text-[20px] font-medium text-muted-foreground leading-snug">
           These five pillars guide ZenTrust’s work in restoring ecosystems,
           uplifting communities, protecting cultural wisdom, and advancing
           holistic human and planetary wellbeing.
         </p>
       </motion.div>
 
-      {/* PILLARS GRID */}
+      {/* PILLARS GRID — grounded on the global surface */}
       <motion.div
         className="
           grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5
-          gap-5 md:gap-6
+          gap-5
           max-w-[1600px] mx-auto px-6
         "
         initial="hidden"
@@ -63,39 +60,33 @@ export default function MissionSection() {
         viewport={{ once: true, amount: 0.25 }}
         variants={{
           hidden: {},
-          visible: { transition: { staggerChildren: 0.1 } },
+          visible: { transition: { staggerChildren: 0.08 } },
         }}
       >
-        {pillars.map((pillar, index) => (
+        {pillars.map((pillar, i) => (
           <motion.div
-            key={index}
+            key={i}
             className="
-              relative rounded-2xl
-              bg-card/90 backdrop-blur
+              rounded-2xl
+              bg-card
               border border-border/40
               px-6 py-6
-              flex flex-col items-center text-center
+              text-center
             "
             variants={{
-              hidden: { opacity: 0, y: 24 },
+              hidden: { opacity: 0, y: 18 },
               visible: {
                 opacity: 1,
                 y: 0,
-                transition: { duration: 0.5, ease: "easeOut" },
+                transition: { duration: 0.45, ease: "easeOut" },
               },
             }}
-            whileHover={{
-              y: -4,
-              boxShadow: "0 10px 28px rgba(0,0,0,0.12)",
-            }}
-            transition={{ type: "spring", stiffness: 220, damping: 20 }}
+            whileHover={{ y: -2 }}
+            transition={{ type: "spring", stiffness: 220, damping: 22 }}
           >
-            {/* ICON WITH AURA */}
-            <div className="relative mb-3">
-              <div className="absolute inset-0 rounded-full blur-xl bg-emerald-400/20" />
-              <div className="relative text-3xl">
-                {pillar.icon}
-              </div>
+            {/* ICON */}
+            <div className="text-3xl mb-3">
+              {pillar.icon}
             </div>
 
             {/* TITLE */}
@@ -103,7 +94,7 @@ export default function MissionSection() {
               {pillar.title}
             </h3>
 
-            {/* TEXT */}
+            {/* DESCRIPTION */}
             <p className="text-sm leading-relaxed text-muted-foreground">
               {pillar.text}
             </p>
@@ -111,18 +102,18 @@ export default function MissionSection() {
         ))}
       </motion.div>
 
-      {/* UNIFYING STATEMENT — tighter, calmer */}
+      {/* CLOSING LINE — minimal, no section closure */}
       <motion.div
-        className="max-w-5xl mx-auto px-6 pt-10 md:pt-12 pb-14 md:pb-16 text-center"
-        initial={{ opacity: 0, y: 8 }}
+        className="max-w-[1500px] mx-auto px-6 text-center mt-8"
+        initial={{ opacity: 0, y: 6 }}
         whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, amount: 0.3 }}
-        transition={{ duration: 0.6, ease: "easeOut" }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.5, ease: "easeOut" }}
       >
         <p className="text-lg md:text-xl font-medium text-foreground leading-snug">
           Modern life has divided us from ourselves, each other, and the Earth.
         </p>
-        <p className="mt-2 text-[19px] md:text-[21px] font-semibold text-primary">
+        <p className="mt-1 text-[18px] md:text-[20px] font-semibold text-primary">
           ZenTrust exists to gently weave these back into wholeness.
         </p>
       </motion.div>
