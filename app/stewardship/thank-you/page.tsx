@@ -1,91 +1,103 @@
 "use client";
 
-import { Suspense } from "react";
-import { useSearchParams } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { Sprout, Waves, Wind } from "lucide-react";
 
 export const dynamic = "force-dynamic";
 
-function StewardshipAcknowledgementInner() {
-  const searchParams = useSearchParams();
-  const amount = Number(searchParams.get("amount") || 0);
+export default function ThankYouPage() {
+  // Rotate only the micro-icon (Wave ↔ Wind). Text stays canonical.
+  const icons = useMemo(() => [Waves, Wind], []);
+  const [iconIndex, setIconIndex] = useState(0);
 
-  // GA event (renamed to avoid "donation" language)
   useEffect(() => {
-    if (typeof window !== "undefined" && window.gtag && amount > 0) {
-      window.gtag("event", "stewardship_exchange_completed", {
-        value: amount,
-        currency: "USD",
-      });
-    }
-  }, [amount]);
+    const t = setInterval(() => {
+      setIconIndex((i) => (i + 1) % icons.length);
+    }, 5500); // slow, calm
+    return () => clearInterval(t);
+  }, [icons.length]);
+
+  const MicroIcon = icons[iconIndex];
 
   return (
-    <div className="py-20 px-4 text-center max-w-3xl mx-auto">
-      {/* Heading */}
-      <h1 className="text-4xl font-extrabold mb-6 gradient-text">
-        Stewardship Exchange Received
-      </h1>
-
-      {/* Tao-Inspired Amount Line */}
-      <p className="text-lg text-muted-foreground leading-relaxed mb-6">
-        Your voluntary resource flow of{" "}
-        <span className="font-semibold text-foreground">
-          ${amount.toLocaleString()}
-        </span>{" "}
-        has entered the living ecosystem of ZenTrust.
-      </p>
-
-      {/* Tao-Inspired Quote + Meaning */}
-      <div className="glass-card rounded-2xl p-8 mx-auto mb-8">
-        <p className="italic text-foreground text-xl mb-3">
-          “When a river gives without effort, valleys flourish without seeking.”
-        </p>
-
-        <p className="text-sm text-muted-foreground leading-relaxed">
-          This exchange is not a transaction — it is a movement of intention.
-          A quiet alignment with regeneration, joining the long work of soil,
-          water, community, and science as they remember how to heal
-          themselves. Your offering becomes part of a widening field of
-          interdependence, where resources move where they are needed and
-          ecosystems strengthen by being seen.
-        </p>
-      </div>
-
-      {/* Receipt Notice */}
-      <p className="text-sm text-muted-foreground mb-4">
-        A stewardship receipt has been sent to your email.  
-        May this moment reflect your place in a renewing world.
-      </p>
-
-      {/* Return Button */}
-      <a
-        href="/"
-        className="inline-flex items-center gap-2 px-6 py-3 mt-4 rounded-xl text-sm font-semibold bg-primary text-primary-foreground hover:bg-primary/90 transition-all"
-      >
-        Return to ZenTrust
-      </a>
-
-      {/* Legal Footer */}
-      <p className="mt-6 text-xs text-muted-foreground">
-        ZenTrust · 501(c)(3) Public Charity · EIN 33-4318487  
-        Stewardship exchanges are voluntary and are used exclusively for
-        charitable, scientific, and educational purposes.
-      </p>
-    </div>
-  );
-}
-
-export default function Page() {
-  return (
-    <Suspense
-      fallback={
-        <div className="p-10 text-center text-muted-foreground">
-          Integrating stewardship…
+    <main className="min-h-[100svh] flex items-center justify-center px-5 py-14 bg-[#F6F0E6]">
+      <div className="w-full max-w-md text-center">
+        {/* Top mark */}
+        <div className="flex items-center justify-center mb-6">
+          <div className="rounded-3xl bg-white/60 border border-black/5 shadow-sm px-6 py-5">
+            <Sprout className="h-12 w-12 text-green-600" aria-hidden="true" />
+          </div>
         </div>
-      }
-    >
-      <StewardshipAcknowledgementInner />
-    </Suspense>
+
+        {/* Title */}
+        <p className="text-[13px] tracking-wide uppercase text-black/55 mb-3">
+          Stewardship Received
+        </p>
+
+        {/* Headline */}
+        <h1 className="text-2xl sm:text-3xl font-semibold text-black/85 leading-tight mb-6">
+          The ecosystem is stronger because you are in it.
+        </h1>
+
+        {/* Rotating micro-icon + canonical line */}
+        <div className="flex items-center justify-center gap-3 mb-8">
+          <div className="relative">
+            <MicroIcon
+              className="h-5 w-5 text-sky-700/70 transition-opacity duration-700"
+              aria-hidden="true"
+            />
+          </div>
+
+          <p className="text-[15px] sm:text-base text-black/70">
+            <span className="inline-block animate-[fadeBreath_5.5s_ease-in-out_infinite]">
+              Nothing was taken. Something began to move.
+            </span>
+          </p>
+        </div>
+
+        {/* Divider */}
+        <div className="mx-auto my-6 h-px w-24 bg-black/10" />
+
+        {/* Quote */}
+        <blockquote className="italic text-black/70 text-base sm:text-[17px] leading-relaxed mb-4">
+          “The earth remembers every hand that helps it heal.”
+        </blockquote>
+
+        {/* Footer */}
+        <p className="text-sm text-black/55 mb-7">
+          A receipt has been sent to your email.
+        </p>
+
+        {/* Button */}
+        <a
+          href="/"
+          className="inline-flex items-center justify-center rounded-full px-6 py-3 text-sm font-semibold
+                     bg-black/80 text-white hover:bg-black/90 transition
+                     shadow-sm"
+        >
+          Return to the Field
+        </a>
+
+        {/* Tiny legal line (optional but good) */}
+        <p className="mt-6 text-[11px] text-black/40">
+          ZenTrust · 501(c)(3) Public Charity · EIN 33-4318487
+        </p>
+
+        {/* Local keyframes */}
+        <style jsx>{`
+          @keyframes fadeBreath {
+            0%,
+            100% {
+              opacity: 0.85;
+              transform: translateY(0px);
+            }
+            50% {
+              opacity: 1;
+              transform: translateY(-1px);
+            }
+          }
+        `}</style>
+      </div>
+    </main>
   );
 }
