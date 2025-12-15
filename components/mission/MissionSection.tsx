@@ -17,106 +17,115 @@ export default function MissionSection() {
     {
       title: "Community Upliftment",
       icon: "🤝",
-      text: "We support communities with regenerative livelihoods, shared leadership, and accessible knowledge, enabling families to build long-term resilience and collective wellbeing.",
+      text: "We support communities with regenerative livelihoods, shared leadership, and accessible knowledge, enabling long-term resilience and collective wellbeing.",
     },
     {
       title: "Cultural Preservation",
       icon: "🌀",
-      text: "We help protect cultural memory, traditional ecological wisdom, and ancestral practices, ensuring identity, continuity, and belonging remain strong across generations.",
+      text: "We protect cultural memory and traditional ecological wisdom, ensuring identity, continuity, and belonging remain strong across generations.",
     },
     {
       title: "Global Partnerships",
       icon: "🌍",
-      text: "We collaborate with nonprofits, researchers, and regenerative networks worldwide to scale ecological restoration, scientific learning, and community resilience across borders.",
+      text: "We collaborate with aligned nonprofits, researchers, and networks worldwide to scale ecological restoration and shared learning.",
     },
   ]
 
   return (
-    <section className="w-full py-16 overflow-hidden">
+    <section className="relative w-full bg-background overflow-hidden">
+      {/* SUBTLE TOP GRADIENT — ties visually to Hero */}
+      <div className="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-black/5 to-transparent pointer-events-none" />
 
-      {/* INTRO CAPTION */}
+      {/* INTRO */}
       <motion.div
-        className="w-full px-6 text-center max-w-[1500px] mx-auto mb-12"
-        initial={{ opacity: 0, y: 10 }}
+        className="max-w-5xl mx-auto px-6 pt-14 md:pt-18 pb-8 md:pb-10 text-center"
+        initial={{ opacity: 0, y: 8 }}
         whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, amount: 0.2 }}
-        transition={{ duration: 0.7, ease: "easeOut" }}
+        viewport={{ once: true, amount: 0.3 }}
+        transition={{ duration: 0.6, ease: "easeOut" }}
       >
-        <p className="text-[20px] md:text-[22px] font-medium text-muted-foreground leading-snug md:leading-normal">
-          These five pillars guide ZenTrust’s work in restoring ecosystems, uplifting communities,
-          protecting cultural wisdom, and advancing holistic human and planetary wellbeing.
+        <p className="text-[18px] md:text-[20px] leading-snug text-muted-foreground">
+          These five pillars guide ZenTrust’s work in restoring ecosystems,
+          uplifting communities, protecting cultural wisdom, and advancing
+          holistic human and planetary wellbeing.
         </p>
       </motion.div>
 
-      {/* CARD GRID */}
+      {/* PILLARS GRID */}
       <motion.div
-        className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8 w-full mx-auto max-w-[1700px] px-6"
+        className="
+          grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5
+          gap-5 md:gap-6
+          max-w-[1600px] mx-auto px-6
+        "
         initial="hidden"
         whileInView="visible"
-        viewport={{ once: true, amount: 0.2 }}
+        viewport={{ once: true, amount: 0.25 }}
         variants={{
           hidden: {},
-          visible: { transition: { staggerChildren: 0.12 } },
+          visible: { transition: { staggerChildren: 0.1 } },
         }}
       >
         {pillars.map((pillar, index) => (
           <motion.div
             key={index}
-            className="relative p-8 rounded-2xl bg-card shadow-sm border border-border/30 flex flex-col items-center text-center cursor-default"
+            className="
+              relative rounded-2xl
+              bg-card/90 backdrop-blur
+              border border-border/40
+              px-6 py-6
+              flex flex-col items-center text-center
+            "
             variants={{
-              hidden: { opacity: 0, y: 35, filter: "brightness(0.7)" },
+              hidden: { opacity: 0, y: 24 },
               visible: {
                 opacity: 1,
                 y: 0,
-                filter: "brightness(1)",
-                transition: { duration: 0.55, ease: "easeOut" },
+                transition: { duration: 0.5, ease: "easeOut" },
               },
             }}
             whileHover={{
-              scale: 1.04,
-              boxShadow: "0 12px 32px rgba(0,0,0,0.15)",
+              y: -4,
+              boxShadow: "0 10px 28px rgba(0,0,0,0.12)",
             }}
-            transition={{ type: "spring", stiffness: 220, damping: 18 }}
+            transition={{ type: "spring", stiffness: 220, damping: 20 }}
           >
-            {/* ICON */}
-            <motion.div
-              className="text-4xl mb-4"
-              whileHover={{ y: -4 }}
-              transition={{ type: "spring", stiffness: 200, damping: 15 }}
-            >
-              {pillar.icon}
-            </motion.div>
+            {/* ICON WITH AURA */}
+            <div className="relative mb-3">
+              <div className="absolute inset-0 rounded-full blur-xl bg-emerald-400/20" />
+              <div className="relative text-3xl">
+                {pillar.icon}
+              </div>
+            </div>
 
             {/* TITLE */}
-            <h3 className="text-lg md:text-xl font-semibold mb-4 tracking-tight">
+            <h3 className="text-base md:text-lg font-semibold tracking-tight mb-2">
               {pillar.title}
             </h3>
 
-            {/* DESCRIPTION */}
-            <p className="text-sm md:text-[15px] text-muted-foreground leading-relaxed">
+            {/* TEXT */}
+            <p className="text-sm leading-relaxed text-muted-foreground">
               {pillar.text}
             </p>
           </motion.div>
         ))}
       </motion.div>
 
-      {/* UNIFYING STATEMENT */}
+      {/* UNIFYING STATEMENT — tighter, calmer */}
       <motion.div
-        className="mt-16 mb-4 w-full text-center max-w-[1500px] mx-auto px-6"
-        initial={{ opacity: 0, y: 10 }}
+        className="max-w-5xl mx-auto px-6 pt-10 md:pt-12 pb-14 md:pb-16 text-center"
+        initial={{ opacity: 0, y: 8 }}
         whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, amount: 0.2 }}
-        transition={{ duration: 0.8, ease: "easeOut" }}
+        viewport={{ once: true, amount: 0.3 }}
+        transition={{ duration: 0.6, ease: "easeOut" }}
       >
-        <p className="text-xl md:text-2xl font-semibold text-foreground leading-normal">
+        <p className="text-lg md:text-xl font-medium text-foreground leading-snug">
           Modern life has divided us from ourselves, each other, and the Earth.
-          <br />
-          <span className="text-primary font-bold text-[22px] md:text-[24px]">
-            ZenTrust exists to weave these three back into wholeness.
-          </span>
+        </p>
+        <p className="mt-2 text-[19px] md:text-[21px] font-semibold text-primary">
+          ZenTrust exists to gently weave these back into wholeness.
         </p>
       </motion.div>
-
     </section>
   )
 }
