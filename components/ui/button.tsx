@@ -11,17 +11,26 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        default: "",
-        primary: "",
-        soft: "bg-muted text-foreground hover:bg-muted/80",
+        // PRIMARY — STATIC CLASS (LCP SAFE)
+        default:
+          "bg-emerald-700 text-white hover:bg-emerald-600",
+        primary:
+          "bg-emerald-700 text-white hover:bg-emerald-600",
+
+        // SECONDARY
+        soft:
+          "bg-muted text-foreground hover:bg-muted/80",
+
         destructive:
           "bg-destructive text-destructive-foreground hover:bg-destructive/90",
         outline:
           "border border-input bg-background hover:bg-accent hover:text-accent-foreground",
         secondary:
           "bg-secondary text-secondary-foreground hover:bg-secondary/80",
-        ghost: "hover:bg-accent hover:text-accent-foreground",
-        link: "text-primary underline-offset-4 hover:underline",
+        ghost:
+          "hover:bg-accent hover:text-accent-foreground",
+        link:
+          "text-primary underline-offset-4 hover:underline",
       },
       size: {
         default: "h-10 px-4 py-2",
@@ -46,12 +55,10 @@ export interface ButtonProps
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   (
-    { className, variant, size, asChild = false, href, onClick, style, ...props },
+    { className, variant, size, asChild = false, href, onClick, ...props },
     ref
   ) => {
     const router = useRouter()
-    const resolvedVariant = variant ?? "default"
-
     const Comp = asChild && !href ? Slot : "button"
 
     function handleClick(e: React.MouseEvent<HTMLButtonElement>) {
@@ -59,29 +66,14 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       if (href) router.push(href)
     }
 
-    // 🔒 Lighthouse-proof primary styles (INLINE)
-    const isPrimary =
-      resolvedVariant === "default" || resolvedVariant === "primary"
-
-    const primaryInlineStyle = isPrimary
-      ? {
-          backgroundColor: "hsl(var(--primary-cta))",
-          color: "hsl(var(--primary-cta-foreground))",
-        }
-      : undefined
-
     return (
       <Comp
         ref={ref}
         onClick={href ? handleClick : onClick}
         className={cn(
-          buttonVariants({ variant: resolvedVariant, size }),
+          buttonVariants({ variant, size }),
           className
         )}
-        style={{
-          ...style,
-          ...primaryInlineStyle,
-        }}
         {...props}
       />
     )
