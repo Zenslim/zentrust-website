@@ -32,7 +32,15 @@ const pillars = [
 
 export default function MissionSection() {
   return (
-    <section className="w-full pt-10 md:pt-12">
+    <section
+      className="w-full pt-10 md:pt-12"
+      aria-labelledby="mission-pillars-heading"
+    >
+      {/* ✅ SEMANTIC ANCHOR — fixes Lighthouse heading order */}
+      <h2 id="mission-pillars-heading" className="sr-only">
+        ZenTrust Mission Pillars
+      </h2>
+
       {/* INTRO — rhythm only, no section framing */}
       <motion.div
         className="max-w-[1500px] mx-auto px-6 text-center mb-6"
@@ -48,7 +56,7 @@ export default function MissionSection() {
         </p>
       </motion.div>
 
-      {/* PILLARS GRID — grounded on the global surface */}
+      {/* PILLARS GRID */}
       <motion.div
         className="
           grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5
@@ -85,11 +93,11 @@ export default function MissionSection() {
             transition={{ type: "spring", stiffness: 220, damping: 22 }}
           >
             {/* ICON */}
-            <div className="text-3xl mb-3">
+            <div className="text-3xl mb-3" aria-hidden="true">
               {pillar.icon}
             </div>
 
-            {/* TITLE */}
+            {/* ✅ h3 is now VALID (nested under h2) */}
             <h3 className="text-base md:text-lg font-semibold tracking-tight mb-2">
               {pillar.title}
             </h3>
@@ -102,7 +110,7 @@ export default function MissionSection() {
         ))}
       </motion.div>
 
-      {/* CLOSING LINE — minimal, no section closure */}
+      {/* CLOSING LINE */}
       <motion.div
         className="max-w-[1500px] mx-auto px-6 text-center mt-8"
         initial={{ opacity: 0, y: 6 }}
