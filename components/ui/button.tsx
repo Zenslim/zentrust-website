@@ -1,6 +1,10 @@
+"use client"
+
 import * as React from "react"
 import { Slot } from "@radix-ui/react-slot"
 import { cva, type VariantProps } from "class-variance-authority"
+import { useRouter } from "next/navigation"
+
 import { cn } from "@/lib/utils"
 
 const buttonVariants = cva(
@@ -11,6 +15,7 @@ const buttonVariants = cva(
         default: "",
         primary: "",
 
+        // Soft-filled secondary invitation
         soft: "bg-muted text-foreground hover:bg-muted/80",
 
         destructive:
@@ -40,21 +45,40 @@ export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
     VariantProps<typeof buttonVariants> {
   asChild?: boolean
+
+  /** 
+   * If provided, the Button will navigate via router.push
+   * and render as a real <button> (NOT an <a>)
+   * This fixes Lighthouse contrast false-positives.
+   */
+  href?: string
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, variant, size, asChild = false, ...props }, ref) => {
-    const Comp = asChild ? Slot : "button"
-    const resolvedVariant = variant ?? "default"
+  (
+    { className, variant, size, asChild = false, href, onClick, ...props },
+    ref
+  ) => {
+    const router = useRouter()
 
+    const resolvedVariant = variant ?? "default"
+    const Comp = asChild && !href ? Slot : "button"
+
+    // WCAG-safe primary lock (dark green)
     const primaryLock =
       resolvedVariant === "default" || resolvedVariant === "primary"
         ? "bg-[hsl(var(--primary-cta))] text-[hsl(var(--primary-cta-foreground))] hover:bg-[hsl(var(--primary-cta)/0.9)]"
         : undefined
 
+    function handleClick(e: React.MouseEvent<HTMLButtonElement>) {
+      if (onClick) onClick(e)
+      if (href) router.push(href)
+    }
+
     return (
       <Comp
         ref={ref}
+        onClick={href ? handleClick : onClick}
         className={cn(
           buttonVariants({ variant: resolvedVariant, size }),
           className,
