@@ -1,7 +1,9 @@
 "use client"
 
 import { useEffect, useMemo, useRef, useState } from 'react'
+import Link from 'next/link'
 import { motion, AnimatePresence, Variants, useInView, useScroll, useTransform, animate } from 'framer-motion'
+import { Button, type ButtonProps } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 
 type FadeInProps = {
@@ -198,47 +200,37 @@ export function HoverLift({ children, className }: HoverMotionProps) {
   )
 }
 
-type ButtonMotionProps = {
-  children: React.ReactNode
-  className?: string
+type ButtonMotionProps = ButtonProps & {
   href?: string
   pulse?: boolean
 }
 
-export function MotionButton({ children, className, href, pulse = false }: ButtonMotionProps) {
+export function MotionButton({ children, className, href, pulse = false, ...buttonProps }: ButtonMotionProps) {
+  const motionProps = {
+    whileHover: { scale: 1.03, y: -2 },
+    whileTap: { scale: 0.98 },
+    animate: pulse ? { scale: [1, 1.03, 1] } : undefined,
+    transition: pulse
+      ? { duration: 2.4, repeat: Infinity, ease: 'easeInOut' }
+      : { type: 'spring', stiffness: 420, damping: 24 },
+  }
+
   if (href) {
     return (
-      <motion.a
-        href={href}
-        whileHover={{ scale: 1.03, y: -2 }}
-        whileTap={{ scale: 0.98 }}
-        animate={pulse ? { scale: [1, 1.03, 1] } : undefined}
-        transition={
-          pulse
-            ? { duration: 2.4, repeat: Infinity, ease: 'easeInOut' }
-            : { type: 'spring', stiffness: 420, damping: 24 }
-        }
-        className={className}
-      >
-        {children}
-      </motion.a>
+      <motion.div {...motionProps}>
+        <Button asChild className={className} {...buttonProps}>
+          <Link href={href}>{children}</Link>
+        </Button>
+      </motion.div>
     )
   }
 
   return (
-    <motion.button
-      whileHover={{ scale: 1.03, y: -2 }}
-      whileTap={{ scale: 0.98 }}
-      animate={pulse ? { scale: [1, 1.03, 1] } : undefined}
-      transition={
-        pulse
-          ? { duration: 2.4, repeat: Infinity, ease: 'easeInOut' }
-          : { type: 'spring', stiffness: 420, damping: 24 }
-      }
-      className={className}
-    >
-      {children}
-    </motion.button>
+    <motion.div {...motionProps}>
+      <Button className={className} {...buttonProps}>
+        {children}
+      </Button>
+    </motion.div>
   )
 }
 

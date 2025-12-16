@@ -188,7 +188,7 @@ export default function AboutPage() {
             <Button asChild>
               <Link href="/financials">View financials</Link>
             </Button>
-            <Button asChild variant="outline">
+            <Button asChild variant="soft">
               <Link href="/contact">Contact the board</Link>
             </Button>
           </div>
@@ -220,7 +220,7 @@ export default function AboutPage() {
                 the ongoing work of regeneration.
                 No pressure. No urgency.
               </p>
-              <Button asChild variant="outline">
+              <Button asChild variant="soft">
                 <Link href="/stewardship">
                   Enter the Flow
                 </Link>
@@ -234,7 +234,7 @@ export default function AboutPage() {
                 Infrequent, thoughtful dispatches
                 from the field and the science of living systems.
               </p>
-              <Button asChild variant="outline">
+              <Button asChild variant="soft">
                 <Link href="/newsletter">
                   Listen With Us
                 </Link>

@@ -10,6 +10,7 @@ const buttonVariants = cva(
     variants: {
       variant: {
         default: "bg-primary text-primary-foreground hover:bg-primary/90",
+        primary: "bg-primary text-primary-foreground hover:bg-primary/90",
         destructive:
           "bg-destructive text-destructive-foreground hover:bg-destructive/90",
         outline:
@@ -42,9 +43,15 @@ export interface ButtonProps
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant, size, asChild = false, ...props }, ref) => {
     const Comp = asChild ? Slot : "button"
+    const resolvedVariant = variant ?? "default"
+    const variantClasses = buttonVariants({ variant: resolvedVariant, size })
+    const primaryLock =
+      resolvedVariant === "default" || resolvedVariant === "primary"
+        ? "bg-primary text-primary-foreground hover:bg-primary/90"
+        : undefined
     return (
       <Comp
-        className={cn(buttonVariants({ variant, size, className }))}
+        className={cn(variantClasses, className, primaryLock)}
         ref={ref}
         {...props}
       />
