@@ -1,7 +1,6 @@
 import * as React from "react"
 import { Slot } from "@radix-ui/react-slot"
 import { cva, type VariantProps } from "class-variance-authority"
-
 import { cn } from "@/lib/utils"
 
 const buttonVariants = cva(
@@ -9,20 +8,11 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        // ─────────────────────────────
-        // PRIMARY (LOCKED – CANONICAL GREEN)
-        // ─────────────────────────────
-        default: "bg-primary text-primary-foreground hover:bg-primary/90",
-        primary: "bg-primary text-primary-foreground hover:bg-primary/90",
+        default: "",
+        primary: "",
 
-        // ─────────────────────────────
-        // SECONDARY (SOFT-FILLED INVITATION)
-        // ─────────────────────────────
         soft: "bg-muted text-foreground hover:bg-muted/80",
 
-        // ─────────────────────────────
-        // OTHER VARIANTS
-        // ─────────────────────────────
         destructive:
           "bg-destructive text-destructive-foreground hover:bg-destructive/90",
         outline:
@@ -55,28 +45,21 @@ export interface ButtonProps
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant, size, asChild = false, ...props }, ref) => {
     const Comp = asChild ? Slot : "button"
-
-    // Resolve variant explicitly
     const resolvedVariant = variant ?? "default"
 
-    // Base variant classes
-    const variantClasses = buttonVariants({
-      variant: resolvedVariant,
-      size,
-    })
-
-    // ─────────────────────────────
-    // HARD LOCK: primary stays green
-    // ─────────────────────────────
     const primaryLock =
       resolvedVariant === "default" || resolvedVariant === "primary"
-        ? "bg-primary text-primary-foreground hover:bg-primary/90"
+        ? "bg-[hsl(var(--primary-cta))] text-[hsl(var(--primary-cta-foreground))] hover:bg-[hsl(var(--primary-cta)/0.9)]"
         : undefined
 
     return (
       <Comp
         ref={ref}
-        className={cn(variantClasses, className, primaryLock)}
+        className={cn(
+          buttonVariants({ variant: resolvedVariant, size }),
+          className,
+          primaryLock
+        )}
         {...props}
       />
     )
