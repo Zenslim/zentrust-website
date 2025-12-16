@@ -47,11 +47,10 @@ export default function QuietMirrorHeroMedia({
 
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const [videoDone, setVideoDone] = useState(false);
-  const [videoError, setVideoError] = useState(false);
 
   const shouldUseVideo = useMemo(
-    () => isMobile && !prefersReducedMotion && !videoError,
-    [isMobile, prefersReducedMotion, videoError]
+    () => isMobile && !prefersReducedMotion,
+    [isMobile, prefersReducedMotion]
   );
 
   useEffect(() => {
@@ -60,25 +59,16 @@ export default function QuietMirrorHeroMedia({
     if (!v) return;
 
     const onEnded = () => setVideoDone(true);
-    const onError = () => setVideoError(true);
-
     v.addEventListener("ended", onEnded);
-    v.addEventListener("error", onError);
 
-    const p = v.play();
-    if (p && typeof p.catch === "function") {
-      p.catch(() => setVideoError(true));
-    }
+    v.play().catch(() => setVideoDone(true));
 
-    return () => {
-      v.removeEventListener("ended", onEnded);
-      v.removeEventListener("error", onError);
-    };
+    return () => v.removeEventListener("ended", onEnded);
   }, [shouldUseVideo]);
 
   return (
     <div className="relative h-[100svh] w-full overflow-hidden bg-black">
-      {/* Base image (fallback + final still state) */}
+      {/* Always-present static image */}
       <Image
         src={heroImageSrc}
         alt={heroImageAlt}
@@ -88,7 +78,7 @@ export default function QuietMirrorHeroMedia({
         sizes="100vw"
       />
 
-      {/* Mobile run-once video */}
+      {/* Mobile: run-once muted video */}
       {shouldUseVideo && !videoDone && (
         <video
           ref={videoRef}
@@ -99,26 +89,11 @@ export default function QuietMirrorHeroMedia({
           preload="auto"
           autoPlay
           loop={false}
-          controls={false}
         />
       )}
 
-      {/* Bi-directional neutral scrim */}
-      <div
-        className="pointer-events-none absolute inset-0"
-        style={{
-          background:
-            "linear-gradient(to bottom, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.35) 35%, rgba(0,0,0,0.25) 55%, rgba(0,0,0,0.45) 100%)",
-        }}
-      />
-
-      {/* Subtle vignette */}
-      <div
-        className="pointer-events-none absolute inset-0"
-        style={{
-          boxShadow: "inset 0 0 140px rgba(0,0,0,0.45)",
-        }}
-      />
+      {/* GLOBAL contrast plane */}
+      <div className="hero-contrast-plane" />
     </div>
   );
 }
