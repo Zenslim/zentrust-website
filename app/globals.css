@@ -97,10 +97,11 @@
     overflow-x: hidden;
     scroll-behavior: smooth;
   }
+} /* ✅ CLOSES @layer base */
+
 /* =========================================
    HERO CONTRAST SYSTEM (GLOBAL INVARIANT)
    ========================================= */
-
 @layer components {
   /* HERO CONTRAST PLANE
      Guarantees minimum luminance regardless of media
@@ -109,14 +110,14 @@
     position: absolute;
     inset: 0;
     pointer-events: none;
-    background: rgba(0, 0, 0, 0.55); /* deterministic luminance floor */
+    background: rgba(0, 0, 0, 0.55);
   }
 
   /* HERO TEXT (GLOBAL STANDARD) */
   .hero-text {
     position: relative;
     z-index: 2;
-    color: #ffffff; /* always white */
+    color: #ffffff;
     text-shadow: 0 2px 12px rgba(0, 0, 0, 0.7);
   }
 
