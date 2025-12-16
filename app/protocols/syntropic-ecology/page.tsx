@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
-import QuietMirrorHeroMedia from "./quiet-mirror-hero-media";
+import QuietMirrorHeroMedia from "@/components/hero/QuietMirrorHeroMedia";
 
 export const metadata: Metadata = {
   title: "Syntropic Ecology: The Regeneration Protocol",
@@ -232,3 +232,4 @@ export default function SyntropicEcologyPage() {
     </main>
   );
 }
+
