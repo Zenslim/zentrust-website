@@ -108,7 +108,7 @@ export default function ImpactPage() {
             Your stewardship ensures that this work remains quiet, patient, and true.
           </p>
 
-          <Button asChild variant="outline">
+          <Button asChild size="lg">
             <Link href="/stewardship">Enter the Flow</Link>
           </Button>
         </div>

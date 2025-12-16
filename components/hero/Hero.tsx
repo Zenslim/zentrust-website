@@ -60,11 +60,7 @@ export function Hero() {
         <div className="flex justify-center mt-8">
           <Button
             size="lg"
-            className="
-              bg-black/85 text-white hover:bg-black transition
-              dark:bg-white/90 dark:text-black dark:hover:bg-white
-              px-8 py-5 text-lg rounded-xl
-            "
+            className="px-8 py-5 text-lg rounded-xl"
             asChild
           >
             <Link href="/stewardship">Enter the Stewardship Portal</Link>

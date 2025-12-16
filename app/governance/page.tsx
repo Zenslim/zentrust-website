@@ -306,7 +306,7 @@ export default function GovernancePage() {
               All governance documents are available upon request to donors, grantors, 
               and other stakeholders for transparency and accountability.
             </p>
-            <Button asChild>
+            <Button asChild size="lg">
               <Link href="/contact">Request Governance Documents</Link>
             </Button>
           </div>
@@ -391,12 +391,12 @@ export default function GovernancePage() {
       </div>
 
       <div className="flex flex-col sm:flex-row gap-4 justify-center">
-        <Button asChild>
+        <Button asChild size="lg">
           <Link href="/stewardship-rights">
             View Full Stewardship Rights
           </Link>
         </Button>
-        <Button variant="outline" asChild>
+        <Button variant="outline" size="lg" asChild>
           <Link href="/contact">
             Contact Us About Governance or Rights
           </Link>

@@ -37,7 +37,8 @@ export function Hero() {
             <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:gap-6">
               <MotionButton
                 href="https://www.zentrust.world/stewardship"
-                className="inline-flex items-center justify-center rounded-full bg-gradient-to-r from-primary to-emerald-500 px-6 py-3 text-base font-semibold text-white shadow-lg shadow-emerald-500/25"
+                size="lg"
+                className="rounded-full"
               >
                 <div className="flex items-center gap-2">
                   Donate to restore earth
@@ -46,7 +47,9 @@ export function Hero() {
               </MotionButton>
               <MotionButton
                 href="/impact"
-                className="inline-flex items-center justify-center rounded-full border border-border bg-card px-6 py-3 text-base font-semibold text-foreground backdrop-blur transition hover:border-primary/60 hover:text-primary"
+                variant="outline"
+                size="lg"
+                className="rounded-full"
               >
                 <div className="flex items-center gap-2">
                   Explore our research

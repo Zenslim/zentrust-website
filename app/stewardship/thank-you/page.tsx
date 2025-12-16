@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { Sprout, Waves, Wind } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 export const dynamic = "force-dynamic";
 
@@ -76,15 +77,9 @@ export default function ThankYouPage() {
         </p>
 
         {/* Button */}
-        <a
-          href="/"
-          className="inline-flex items-center justify-center rounded-full
-                     px-7 py-3 text-sm font-semibold
-                     bg-black/85 text-white hover:bg-black transition
-                     dark:bg-white/90 dark:text-black dark:hover:bg-white"
-        >
-          Return to the Field
-        </a>
+        <Button asChild className="rounded-full px-7 py-3 text-sm font-semibold">
+          <a href="/">Return to the Field</a>
+        </Button>
 
         {/* Legal */}
         <p className="mt-6 text-[11px] text-black/40 dark:text-white/40">

@@ -1,6 +1,8 @@
 "use client"
 
+import Link from "next/link"
 import { Eye, Waves, Sparkles, Microscope } from "lucide-react"
+import { Button } from "@/components/ui/button"
 
 export default function ProgramsPage() {
   return (
@@ -48,18 +50,12 @@ export default function ProgramsPage() {
             Oversight is shared: board members, regional scientists, youth apprentices, and indigenous knowledge holders all hold seats at the table. Their perspectives shape curricula, research protocols, and safety standards. The goal is not speed; it is integrity. When a program finally surfaces, it is because enough voices have said yes.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-2">
-            <a
-              href="/research"
-              className="px-5 py-3 rounded-lg bg-foreground text-background font-medium hover:bg-foreground/90 transition-colors"
-            >
-              Read the research approach
-            </a>
-            <a
-              href="/contact"
-              className="px-5 py-3 rounded-lg border border-border text-foreground font-medium hover:bg-accent transition-colors"
-            >
-              Share community priorities
-            </a>
+            <Button asChild size="lg">
+              <Link href="/research">Read the research approach</Link>
+            </Button>
+            <Button asChild variant="outline" size="lg">
+              <Link href="/contact">Share community priorities</Link>
+            </Button>
           </div>
         </div>
       </section>

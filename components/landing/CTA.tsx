@@ -32,13 +32,16 @@ export function CTA() {
                   <MotionButton
                     href="https://www.zentrust.world/stewardship"
                     pulse
-                    className="inline-flex items-center justify-center rounded-full bg-primary px-6 py-3 text-base font-semibold text-primary-foreground shadow-lg shadow-emerald-500/20"
+                    size="lg"
+                    className="rounded-full"
                   >
                     <span className="flex items-center gap-2">Donate now</span>
                   </MotionButton>
                   <MotionButton
                     href="/impact"
-                    className="inline-flex items-center justify-center rounded-full border border-border bg-background px-6 py-3 text-base font-semibold text-foreground backdrop-blur"
+                    variant="outline"
+                    size="lg"
+                    className="rounded-full"
                   >
                     <span className="flex items-center gap-2">View impact data</span>
                   </MotionButton>
