@@ -28,11 +28,16 @@ export default function BPSSHealthPage() {
             <div className="flex-1" />
 
             <div className="pb-8 sm:pb-10">
-              <div className="max-w-3xl">
-                <h1 className="text-3xl font-semibold leading-tight tracking-tight sm:text-5xl text-white">
-                  Why does treatment succeed? <br />
-                  Yet many still don’t feel fully well.
-                </h1>
+  <div className="max-w-3xl">
+    <h1 className="text-3xl font-semibold leading-tight tracking-tight sm:text-5xl">
+      <span className="text-white">
+        Why does treatment work?
+      </span>
+      <br />
+      <span className="text-amber-200">
+        Yet many still don’t feel fully well.
+      </span> 
+    </h1>
 
                 <p className="mt-4 text-base leading-relaxed sm:text-lg text-white/90">
                   This page explores why, without judgment.
