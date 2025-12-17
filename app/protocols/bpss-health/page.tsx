@@ -28,29 +28,28 @@ export default function BPSSHealthPage() {
 
             <div className="flex-1" />
 
-           {/* Hero copy */}
-<div className="pb-8 sm:pb-10">
-  <div className="hero-text max-w-3xl">
-    <h1 className="text-3xl font-semibold leading-tight tracking-tight sm:text-5xl text-white">
-      Yet many people still don’t feel whole.
-    </h1>
+            {/* Hero copy — ALL WHITE */}
+            <div className="pb-8 sm:pb-10">
+              <div className="hero-text max-w-3xl">
+                <h1 className="text-3xl font-semibold leading-tight tracking-tight sm:text-5xl text-white">
+                  Yet many people still don’t feel whole.
+                </h1>
 
-    <p className="mt-4 text-base leading-relaxed sm:text-lg text-white/90">
-      This page explores why — without blame.
-    </p>
+                <p className="mt-4 text-base leading-relaxed sm:text-lg text-white/90">
+                  This page explores why — without blame.
+                </p>
 
-    {/* Orientation FIRST */}
-    <p className="mt-4 text-sm sm:text-base text-white/80">
-      ⏱ About a 3-minute exploration
-    </p>
+                {/* Orientation FIRST */}
+                <p className="mt-4 text-sm sm:text-base text-white/80">
+                  ⏱ About a 3-minute exploration
+                </p>
 
-    {/* Permission SECOND */}
-    <p className="mt-2 text-sm sm:text-base text-white/80">
-      If you’d like to continue, the map is below.
-    </p>
-  </div>
-</div>
-           </div>
+                {/* Permission SECOND */}
+                <p className="mt-2 text-sm sm:text-base text-white/80">
+                  If you’d like to continue, the map is below.
+                </p>
+              </div>
+            </div>
           </div>
         </QuietMirrorHeroMedia>
       </section>
