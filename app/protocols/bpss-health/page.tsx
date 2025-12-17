@@ -32,6 +32,7 @@ export default function BPSSHealthPage() {
             <div className="pb-8 sm:pb-10">
               <div className="hero-text max-w-3xl">
                 <h1 className="text-3xl font-semibold leading-tight tracking-tight sm:text-5xl text-white">
+                  Many treatments work.<br />
                   Yet many people still don’t feel whole.
                 </h1>
 
