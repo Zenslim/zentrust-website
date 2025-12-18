@@ -48,6 +48,8 @@ export default function QuietMirrorHeroMedia({
   const isMobile = useIsMobile();
 
   const videoRef = useRef<HTMLVideoElement | null>(null);
+
+  const [hasInteracted, setHasInteracted] = useState(false);
   const [videoDone, setVideoDone] = useState(false);
 
   const shouldUseVideo = useMemo(
@@ -55,22 +57,28 @@ export default function QuietMirrorHeroMedia({
     [isMobile, prefersReducedMotion]
   );
 
+  // Attempt autoplay ONLY after interaction OR where browser allows it
   useEffect(() => {
     if (!shouldUseVideo) return;
+    if (!hasInteracted) return;
+
     const v = videoRef.current;
     if (!v) return;
 
     const onEnded = () => setVideoDone(true);
     v.addEventListener("ended", onEnded);
 
-    v.play().catch(() => setVideoDone(true));
+    v.play().catch(() => {
+      // If playback fails, we simply keep the still frame
+      setVideoDone(true);
+    });
 
     return () => v.removeEventListener("ended", onEnded);
-  }, [shouldUseVideo]);
+  }, [shouldUseVideo, hasInteracted]);
 
   return (
     <div className="relative h-[100svh] w-full overflow-hidden bg-black">
-      {/* Always-present static image */}
+      {/* Always-present static image (fallback + first frame) */}
       <Image
         src={heroImageSrc}
         alt={heroImageAlt}
@@ -80,7 +88,7 @@ export default function QuietMirrorHeroMedia({
         sizes="100vw"
       />
 
-      {/* Mobile: run-once muted video */}
+      {/* Mobile inline video */}
       {shouldUseVideo && !videoDone && (
         <video
           ref={videoRef}
@@ -88,10 +96,22 @@ export default function QuietMirrorHeroMedia({
           src={mobileVideoSrc}
           muted
           playsInline
-          preload="auto"
-          autoPlay
-          loop={false}
+          preload="metadata"
         />
+      )}
+
+      {/* Tap-to-Continue Overlay (mobile only, before interaction) */}
+      {shouldUseVideo && !hasInteracted && (
+        <button
+          type="button"
+          onClick={() => setHasInteracted(true)}
+          className="absolute inset-0 z-10 flex items-center justify-center bg-black/20 text-white"
+          aria-label="Tap to continue"
+        >
+          <span className="rounded-full bg-black/60 px-5 py-2 text-sm tracking-wide backdrop-blur">
+            Tap to Continue
+          </span>
+        </button>
       )}
 
       {/* GLOBAL contrast plane */}
