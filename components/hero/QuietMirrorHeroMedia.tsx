@@ -37,19 +37,19 @@ export default function QuietMirrorHeroMedia({
   const timerRef = useRef<number | null>(null);
 
   const [isPaused, setIsPaused] = useState(false);
+  const [hasPausedOnce, setHasPausedOnce] = useState(false);
 
   const canPause = useMemo(
-    () => !!pauseVideoSrc && !prefersReducedMotion,
-    [pauseVideoSrc, prefersReducedMotion]
+    () => !!pauseVideoSrc && !prefersReducedMotion && !hasPausedOnce,
+    [pauseVideoSrc, prefersReducedMotion, hasPausedOnce]
   );
 
-  // Handle entering pause
   const enterPause = () => {
     if (!canPause) return;
     setIsPaused(true);
+    setHasPausedOnce(true);
   };
 
-  // Handle exiting pause
   const exitPause = () => {
     setIsPaused(false);
   };
@@ -58,9 +58,7 @@ export default function QuietMirrorHeroMedia({
   useEffect(() => {
     if (!isPaused) return;
 
-    timerRef.current = window.setTimeout(() => {
-      exitPause();
-    }, pauseDurationMs);
+    timerRef.current = window.setTimeout(exitPause, pauseDurationMs);
 
     return () => {
       if (timerRef.current) {
@@ -70,7 +68,7 @@ export default function QuietMirrorHeroMedia({
     };
   }, [isPaused, pauseDurationMs]);
 
-  // Play video when paused
+  // Play video only when pause is active
   useEffect(() => {
     if (!isPaused) return;
     const v = videoRef.current;
@@ -78,14 +76,13 @@ export default function QuietMirrorHeroMedia({
 
     v.currentTime = 0;
     v.play().catch(() => {
-      // If playback fails, immediately restore default view
       exitPause();
     });
   }, [isPaused]);
 
   return (
     <div className="relative h-[100svh] w-full overflow-hidden bg-black">
-      {/* Default hero state */}
+      {/* Default hero state — always visible */}
       {!isPaused && (
         <>
           <Image
@@ -97,20 +94,23 @@ export default function QuietMirrorHeroMedia({
             sizes="100vw"
           />
 
-          {/* Optional subtle pause trigger */}
+          {/* Optional, subtle micro-pause trigger */}
           {canPause && (
             <button
               type="button"
               onClick={enterPause}
-              className="absolute inset-0 z-10"
+              className="absolute bottom-4 right-4 z-10 text-xs text-white/70 hover:text-white/90"
               aria-label="Tap to continue"
             >
-              <span className="sr-only">Tap to continue</span>
+              Tap to continue
             </button>
           )}
 
-          {/* Hero foreground */}
-          {children && <div className="hero-foreground">{children}</div>}
+          {children && (
+            <div className="relative z-10 hero-foreground">
+              {children}
+            </div>
+          )}
         </>
       )}
 
@@ -127,7 +127,7 @@ export default function QuietMirrorHeroMedia({
             src={pauseVideoSrc}
             muted
             playsInline
-            preload="auto"
+            preload="metadata"
           />
         </div>
       )}
