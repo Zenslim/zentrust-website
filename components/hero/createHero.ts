@@ -1,5 +1,11 @@
+import type { LucideIcon } from "lucide-react";
+import { Sprout } from "lucide-react";
+
+export type HeroIconName = "sprout";
+
 export type HeroDefinition = {
   identity?: string;
+  icon?: HeroIconName;
   headlineLines?: string[];
   orientation?: string[];
   trustVerification?: {
@@ -16,6 +22,7 @@ export const ritualSpec = {
 
 export const defaultHero: HeroDefinition = {
   identity: "ZenTrust · 501(c)(3) Public Charity · EIN 33-4318487",
+  icon: "sprout",
   headlineLines: [
     "Healing land.",
     "Supporting people.",
@@ -37,18 +44,29 @@ export const defaultHero: HeroDefinition = {
   },
 };
 
+const iconRegistry: Record<HeroIconName, LucideIcon> = {
+  sprout: Sprout,
+};
+
+export const resolveHeroIcon = (name?: HeroIconName) =>
+  name ? iconRegistry[name] ?? null : null;
+
 export function resolveHero(hero?: HeroDefinition) {
+  const source = hero ?? {};
+  const usingDefault = !hero;
+
   return {
-    identity: hero?.identity ?? defaultHero.identity,
+    identity: source.identity ?? defaultHero.identity,
+    icon: source.icon ?? defaultHero.icon,
     headlineLines:
-      hero?.headlineLines && hero.headlineLines.length > 0
-        ? hero.headlineLines
+      source.headlineLines && source.headlineLines.length > 0
+        ? source.headlineLines
         : defaultHero.headlineLines,
     orientation:
-      hero?.orientation && hero.orientation.length > 0
-        ? hero.orientation
+      source.orientation && source.orientation.length > 0
+        ? source.orientation
         : defaultHero.orientation,
-    trustVerification: hero?.trustVerification ?? defaultHero.trustVerification,
-    cta: hero?.cta,
+    trustVerification: source.trustVerification ?? defaultHero.trustVerification,
+    cta: source.cta ?? (usingDefault ? defaultHero.cta : undefined),
   } satisfies HeroDefinition;
 }

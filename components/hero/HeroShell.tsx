@@ -1,7 +1,8 @@
 "use client";
 
+import Link from "next/link";
 import type { ReactNode } from "react";
-import { type HeroDefinition } from "./createHero";
+import { resolveHeroIcon, type HeroDefinition } from "./createHero";
 
 export function HeroShell({
   hero,
@@ -12,9 +13,11 @@ export function HeroShell({
   hidden?: boolean;
   ritualAffordance: ReactNode;
 }) {
+  const Icon = resolveHeroIcon(hero.icon);
+
   return (
     <section
-      className="relative flex min-h-[100svh] max-h-[100svh] items-center justify-center overflow-hidden px-6"
+      className="relative flex min-h-[100svh] max-h-[100svh] items-center justify-center overflow-hidden px-6 bg-[#F6F0E6] text-foreground dark:bg-[#0f1110]"
       aria-live="polite"
     >
       <div
@@ -23,6 +26,10 @@ export function HeroShell({
         }`}
         aria-hidden={hidden}
       >
+        {Icon && (
+          <Icon className="mx-auto h-10 w-10 text-foreground/70" aria-hidden />
+        )}
+
         <p className="text-xs tracking-[0.18em] uppercase text-foreground/70">
           {hero.identity}
         </p>
@@ -55,6 +62,15 @@ export function HeroShell({
               </a>
             )}
           </p>
+        )}
+
+        {hero.cta && (
+          <Link
+            href={hero.cta.href}
+            className="inline-flex items-center justify-center rounded-xl bg-primary px-6 py-3 text-primary-foreground shadow-md transition hover:shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50"
+          >
+            {hero.cta.label}
+          </Link>
         )}
       </div>
 

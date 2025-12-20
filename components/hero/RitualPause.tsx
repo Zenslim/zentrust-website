@@ -59,7 +59,7 @@ export function RitualPause({ active, used, onStart, onEnd }: Props) {
 
       {active && (
         <div
-          className="fixed inset-0 z-[9999] bg-background"
+          className="fixed inset-0 z-[9999] bg-[#F6F0E6] dark:bg-[#0f1110]"
           role="button"
           aria-label="Pause active. Tap to exit."
           tabIndex={-1}
