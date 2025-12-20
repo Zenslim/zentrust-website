@@ -148,7 +148,12 @@ export default function QuietMirrorHeroMedia({
             }
           }}
         >
-          <div className="relative mx-auto h-full aspect-[9/16] max-w-[56vh]">
+     <div
+  className="
+    relative mx-auto h-full w-full
+    sm:aspect-[9/16] sm:max-w-[56vh]
+  "
+>
             <video
               ref={videoRef}
               className="absolute inset-0 h-full w-full object-cover"
