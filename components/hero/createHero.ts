@@ -3,6 +3,14 @@ import { Sprout } from "lucide-react";
 
 export type HeroIconName = "sprout";
 
+export type HeroRitual = {
+  label?: string;
+  description?: string;
+  timeoutMs?: number;
+  videoSrc?: string;
+  poster?: string;
+};
+
 export type HeroDefinition = {
   identity?: string;
   icon?: HeroIconName;
@@ -13,11 +21,21 @@ export type HeroDefinition = {
     link?: { label: string; href: string };
   };
   cta?: { label: string; href: string };
+  ritual?: HeroRitual;
 };
 
 export const ritualSpec = {
   label: "Pause here ▷ tap",
   timeoutMs: 15000,
+};
+
+export const defaultRitual: HeroRitual = {
+  label: ritualSpec.label,
+  description:
+    "Take a brief pause. Tap anywhere or press Esc, Enter, or Space to return.",
+  timeoutMs: ritualSpec.timeoutMs,
+  videoSrc: "/video/syntropic-food-forest.mp4",
+  poster: "/images/desktop-syntropy-v1-quiet-mirror.jpg",
 };
 
 export const defaultHero: HeroDefinition = {
@@ -42,6 +60,7 @@ export const defaultHero: HeroDefinition = {
     label: "Enter the Stewardship Portal",
     href: "/stewardship",
   },
+  ritual: defaultRitual,
 };
 
 const iconRegistry: Record<HeroIconName, LucideIcon> = {
@@ -50,6 +69,20 @@ const iconRegistry: Record<HeroIconName, LucideIcon> = {
 
 export const resolveHeroIcon = (name?: HeroIconName) =>
   name ? iconRegistry[name] ?? null : null;
+
+const resolveRitual = (ritual?: HeroRitual, usingDefault?: boolean) => {
+  const base = usingDefault ? defaultRitual : undefined;
+
+  if (!ritual && !base) return undefined;
+
+  return {
+    label: ritual?.label ?? base?.label ?? ritualSpec.label,
+    description: ritual?.description ?? base?.description,
+    timeoutMs: ritual?.timeoutMs ?? base?.timeoutMs ?? ritualSpec.timeoutMs,
+    videoSrc: ritual?.videoSrc ?? base?.videoSrc,
+    poster: ritual?.poster ?? base?.poster,
+  };
+};
 
 export function resolveHero(hero?: HeroDefinition) {
   const source = hero ?? {};
@@ -67,6 +100,7 @@ export function resolveHero(hero?: HeroDefinition) {
         ? source.orientation
         : defaultHero.orientation,
     trustVerification: source.trustVerification ?? defaultHero.trustVerification,
-    cta: source.cta ?? (usingDefault ? defaultHero.cta : undefined),
+    cta: source.cta ?? defaultHero.cta,
+    ritual: resolveRitual(source.ritual, usingDefault),
   } satisfies HeroDefinition;
 }

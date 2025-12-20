@@ -8,7 +8,7 @@ import { notFound } from "next/navigation";
 import client from "../../../tina/__generated__/client";
 import TinaBlogClient from "./TinaBlogClient";
 import { UniversalHero } from "@/components/hero/UniversalHero";
-import type { HeroDefinition } from "@/components/hero/createHero";
+import { defaultHero, type HeroDefinition } from "@/components/hero/createHero";
 
 export default async function BlogPostPage({ params }: { params: { slug: string } }) {
   const slug = params?.slug;
@@ -76,11 +76,13 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
 
   const hero: HeroDefinition = {
     identity: "ZenTrust Journal",
+    icon: "sprout",
     headlineLines: [post.title ?? "ZenTrust Journal"],
     orientation: [
       post.excerpt ||
         "Research, field notes, and stories shaping ecological restoration and holistic human wellbeing.",
     ],
+    ritual: defaultHero.ritual,
   };
 
   return (
