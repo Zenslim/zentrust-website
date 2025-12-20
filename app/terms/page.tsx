@@ -3,6 +3,8 @@
 import { Button } from '@/components/ui/button'
 import { Scale, Shield, FileText, Globe, Users, AlertTriangle } from 'lucide-react'
 import Link from 'next/link'
+import { UniversalHero } from '@/components/hero/UniversalHero'
+import type { HeroDefinition } from '@/components/hero/createHero'
 
 const keyTerms = [
   {
@@ -58,47 +60,18 @@ const liabilityLimitations = [
 ]
 
 export default function TermsPage() {
-  return (
-    <div className="min-h-screen pt-16">
-      {/* Hero Section */}
-      <section className="py-24">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-4xl mx-auto text-center">
-            <h1 className="text-4xl md:text-6xl font-bold text-foreground mb-6">
-              Terms of <span className="gradient-text">Service</span>
-            </h1>
-            <p className="text-xl text-muted-foreground mb-8 max-w-3xl mx-auto">
-              These terms govern your use of ZenTrust's website and services. By accessing 
-              our site, you agree to these terms and our commitment to ethical, transparent operations.
-            </p>
-            
-            <div className="bg-primary/10 rounded-2xl p-6 mb-8 max-w-2xl mx-auto">
-              <p className="text-foreground font-medium">
-                "Clear terms build trust. We believe in transparency not just in our programs, 
-                but in how we engage with our community online."
-              </p>
-              <p className="text-sm text-muted-foreground mt-2">
-                — ZenTrust Digital Ethics Commitment
-              </p>
-            </div>
+  const hero: HeroDefinition = {
+    identity: "ZenTrust Terms",
+    headlineLines: ["Terms of Service"],
+    orientation: [
+      "These terms guide how you interact with ZenTrust online and describe our commitment to transparent operations.",
+      "Clear expectations build trust and protect the community we serve.",
+    ],
+  }
 
-            <div className="flex items-center justify-center space-x-8 text-sm text-muted-foreground">
-              <div className="flex items-center space-x-2">
-                <Scale className="h-4 w-4" />
-                <span>Effective July 1, 2025</span>
-              </div>
-              <div className="flex items-center space-x-2">
-                <Shield className="h-4 w-4" />
-                <span>Legal Compliance</span>
-              </div>
-              <div className="flex items-center space-x-2">
-                <FileText className="h-4 w-4" />
-                <span>Transparent Terms</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+  return (
+    <div className="min-h-screen">
+      <UniversalHero hero={hero} />
 
       {/* Key Terms Overview */}
       <section className="py-24">

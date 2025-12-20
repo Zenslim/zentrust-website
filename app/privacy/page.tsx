@@ -3,6 +3,8 @@
 import { Button } from '@/components/ui/button'
 import { Shield, Lock, Eye, Users, Database, Globe, Phone, Mail } from 'lucide-react'
 import Link from 'next/link'
+import { UniversalHero } from '@/components/hero/UniversalHero'
+import type { HeroDefinition } from '@/components/hero/createHero'
 
 const dataCategories = [
   {
@@ -111,48 +113,18 @@ const thirdParties = [
 ]
 
 export default function PrivacyPage() {
-  return (
-    <div className="min-h-screen pt-16">
-      {/* Hero Section */}
-      <section className="py-24">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-4xl mx-auto text-center">
-            <h1 className="text-4xl md:text-6xl font-bold text-foreground mb-6">
-              Privacy <span className="gradient-text">Policy</span>
-            </h1>
-            <p className="text-xl text-muted-foreground mb-8 max-w-3xl mx-auto">
-              ZenTrust is committed to protecting your privacy and personal information. 
-              This policy explains how we collect, use, and safeguard your data in accordance 
-              with GDPR principles and best practices.
-            </p>
-            
-            <div className="bg-primary/10 rounded-2xl p-6 mb-8 max-w-2xl mx-auto">
-              <p className="text-foreground font-medium">
-                "Your trust is fundamental to our mission. We protect your privacy 
-                with the same care we bring to regenerating ecosystems."
-              </p>
-              <p className="text-sm text-muted-foreground mt-2">
-                — ZenTrust Privacy Commitment
-              </p>
-            </div>
+  const hero: HeroDefinition = {
+    identity: "ZenTrust Privacy",
+    headlineLines: ["Privacy Policy"],
+    orientation: [
+      "We protect your information with the same care we bring to regenerating ecosystems.",
+      "This page outlines how we collect, use, and safeguard data with calm transparency.",
+    ],
+  }
 
-            <div className="flex items-center justify-center space-x-8 text-sm text-muted-foreground">
-              <div className="flex items-center space-x-2">
-                <Lock className="h-4 w-4" />
-                <span>Data Protection</span>
-              </div>
-              <div className="flex items-center space-x-2">
-                <Shield className="h-4 w-4" />
-                <span>GDPR Compliant</span>
-              </div>
-              <div className="flex items-center space-x-2">
-                <Eye className="h-4 w-4" />
-                <span>Transparent</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+  return (
+    <div className="min-h-screen">
+      <UniversalHero hero={hero} />
 
       {/* Data Collection */}
       <section className="py-24">

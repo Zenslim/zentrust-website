@@ -1,17 +1,5 @@
-import { Sprout } from "lucide-react";
-import type { LucideIcon } from "lucide-react";
-
-export type HeroRitual = {
-  label?: string;
-  description?: string;
-  timeoutMs?: number;
-  videoSrc?: string;
-  poster?: string;
-};
-
 export type HeroDefinition = {
-  identity: string;
-  icon?: "sprout";
+  identity?: string;
   headlineLines?: string[];
   orientation?: string[];
   trustVerification?: {
@@ -19,28 +7,15 @@ export type HeroDefinition = {
     link?: { label: string; href: string };
   };
   cta?: { label: string; href: string };
-  ritual: HeroRitual;
 };
 
-export const iconRegistry: Record<string, LucideIcon> = {
-  sprout: Sprout,
-};
-
-export const resolveHeroIcon = (name?: string) =>
-  name ? iconRegistry[name] ?? null : null;
-
-export const defaultRitual: HeroRitual = {
+export const ritualSpec = {
   label: "Pause here ▷ tap",
-  description:
-    "Take a brief pause. Tap anywhere or press Esc, Enter, or Space to return.",
   timeoutMs: 15000,
-  videoSrc: "/video/syntropic-food-forest.mp4",
-  poster: "/images/desktop-syntropy-v1-quiet-mirror.jpg",
 };
 
 export const defaultHero: HeroDefinition = {
   identity: "ZenTrust · 501(c)(3) Public Charity · EIN 33-4318487",
-  icon: "sprout",
   headlineLines: [
     "Healing land.",
     "Supporting people.",
@@ -60,5 +35,20 @@ export const defaultHero: HeroDefinition = {
     label: "Enter the Stewardship Portal",
     href: "/stewardship",
   },
-  ritual: defaultRitual,
 };
+
+export function resolveHero(hero?: HeroDefinition) {
+  return {
+    identity: hero?.identity ?? defaultHero.identity,
+    headlineLines:
+      hero?.headlineLines && hero.headlineLines.length > 0
+        ? hero.headlineLines
+        : defaultHero.headlineLines,
+    orientation:
+      hero?.orientation && hero.orientation.length > 0
+        ? hero.orientation
+        : defaultHero.orientation,
+    trustVerification: hero?.trustVerification ?? defaultHero.trustVerification,
+    cta: hero?.cta,
+  } satisfies HeroDefinition;
+}

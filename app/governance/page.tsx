@@ -3,6 +3,8 @@
 import { Button } from '@/components/ui/button'
 import { Shield, Scale, Users, FileText, Eye, Heart } from 'lucide-react'
 import Link from 'next/link'
+import { UniversalHero } from '@/components/hero/UniversalHero'
+import type { HeroDefinition } from '@/components/hero/createHero'
 
 const governancePrinciples = [
   {
@@ -70,32 +72,18 @@ const policies = [
 ]
 
 export default function GovernancePage() {
+  const hero: HeroDefinition = {
+    identity: "ZenTrust Governance",
+    headlineLines: ["Governance & Policies"],
+    orientation: [
+      "We practice clear, ethical stewardship so every action advances mission and trust.",
+      "These policies keep the organization accountable to public benefit.",
+    ],
+  }
+
   return (
-    <div className="min-h-screen pt-16">
-      {/* Hero Section */}
-      <section className="py-24">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-4xl mx-auto text-center">
-            <h1 className="text-4xl md:text-6xl font-bold text-foreground mb-6">
-              Governance & <span className="gradient-text">Policies</span>
-            </h1>
-            <p className="text-xl text-muted-foreground mb-8 max-w-3xl mx-auto">
-              ZenTrust is committed to the highest standards of nonprofit governance, 
-              transparency, and ethical stewardship as we launch our foundational programs in 2025.
-            </p>
-            
-            <div className="bg-primary/10 rounded-2xl p-6 mb-8 max-w-2xl mx-auto">
-              <p className="text-foreground font-medium">
-                "Good governance is not just about compliance—it's about building trust 
-                with our community and ensuring every dollar advances our mission."
-              </p>
-              <p className="text-sm text-muted-foreground mt-2">
-                — ZenTrust Board of Directors
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
+    <div className="min-h-screen">
+      <UniversalHero hero={hero} />
 
       {/* IRS Compliance Section */}
       <section className="py-24">

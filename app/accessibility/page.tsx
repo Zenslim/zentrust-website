@@ -3,6 +3,8 @@
 import { Button } from '@/components/ui/button'
 import { Eye, Users, CheckCircle, Phone, Mail, Target, Clock, Globe } from 'lucide-react'
 import Link from 'next/link'
+import { UniversalHero } from '@/components/hero/UniversalHero'
+import type { HeroDefinition } from '@/components/hero/createHero'
 
 const accessibilityPrinciples = [
   {
@@ -111,48 +113,18 @@ const accessibilityStandards = [
 ]
 
 export default function AccessibilityPage() {
-  return (
-    <div className="min-h-screen pt-16">
-      {/* Hero Section */}
-      <section className="py-24">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-4xl mx-auto text-center">
-            <h1 className="text-4xl md:text-6xl font-bold text-foreground mb-6">
-              Accessibility <span className="gradient-text">Statement</span>
-            </h1>
-            <p className="text-xl text-muted-foreground mb-8 max-w-3xl mx-auto">
-              ZenTrust is committed to ensuring digital accessibility for all people, 
-              including those with disabilities. We continuously work to improve the 
-              accessibility of our website and services.
-            </p>
-            
-            <div className="bg-primary/10 rounded-2xl p-6 mb-8 max-w-2xl mx-auto">
-              <p className="text-foreground font-medium">
-                "Accessibility isn't just about compliance—it's about ensuring everyone 
-                can participate in the regenerative agriculture movement."
-              </p>
-              <p className="text-sm text-muted-foreground mt-2">
-                — ZenTrust Inclusion Commitment
-              </p>
-            </div>
+  const hero: HeroDefinition = {
+    identity: "ZenTrust Accessibility",
+    headlineLines: ["Accessibility Statement"],
+    orientation: [
+      "We commit to digital access for all people and continue improving every surface of our site and services.",
+      "Accessibility is how we keep the regenerative movement open, clear, and calm for everyone.",
+    ],
+  }
 
-            <div className="flex items-center justify-center space-x-8 text-sm text-muted-foreground">
-              <div className="flex items-center space-x-2">
-                <CheckCircle className="h-4 w-4" />
-                <span>WCAG 2.1 AA</span>
-              </div>
-              <div className="flex items-center space-x-2">
-                <Users className="h-4 w-4" />
-                <span>Inclusive Design</span>
-              </div>
-              <div className="flex items-center space-x-2">
-                <Target className="h-4 w-4" />
-                <span>Continuous Improvement</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+  return (
+    <div className="min-h-screen">
+      <UniversalHero hero={hero} />
 
       {/* Commitment Statement */}
       <section className="py-24">

@@ -3,6 +3,8 @@
 import { Button } from '@/components/ui/button'
 import { Users, Microscope, Building, Heart, Target, Award, Globe, BookOpen } from 'lucide-react'
 import Link from 'next/link'
+import { UniversalHero } from '@/components/hero/UniversalHero'
+import type { HeroDefinition } from '@/components/hero/createHero'
 
 const partnershipTypes = [
   {
@@ -129,46 +131,18 @@ const currentOpportunities = [
 ]
 
 export default function PartnerPage() {
+  const hero: HeroDefinition = {
+    identity: "ZenTrust Partnerships",
+    headlineLines: ["Strategic Partnerships"],
+    orientation: [
+      "We collaborate with institutions and communities to scale regenerative agriculture and ecological restoration.",
+      "Partnerships are deliberate, accountable, and rooted in shared outcomes.",
+    ],
+  }
+
   return (
-    <div className="min-h-screen pt-16">
-      {/* Hero Section */}
-      <section className="py-24">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-4xl mx-auto text-center">
-            <h1 className="text-4xl md:text-6xl font-bold text-foreground mb-6">
-              Strategic <span className="gradient-text">Partnerships</span>
-            </h1>
-            <p className="text-xl text-muted-foreground mb-8 max-w-3xl mx-auto">
-              ZenTrust collaborates with academic institutions, communities, corporations, 
-              and international organizations to scale regenerative agriculture and create 
-              meaningful ecological restoration at scale.
-            </p>
-            
-            <div className="bg-primary/10 rounded-2xl p-6 mb-8 max-w-2xl mx-auto">
-              <p className="text-foreground font-medium">
-                "The challenges we face require unprecedented collaboration. 
-                Together, we can regenerate landscapes and communities at scale."
-              </p>
-              <p className="text-sm text-muted-foreground mt-2">
-                — ZenTrust Partnership Philosophy
-              </p>
-            </div>
-            
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button size="lg" asChild>
-                <Link href="#partnership-types">
-                  Explore Partnership Types
-                </Link>
-              </Button>
-              <Button variant="outline" size="lg" asChild>
-                <Link href="/contact">
-                  Initiate Partnership Discussion
-                </Link>
-              </Button>
-            </div>
-          </div>
-        </div>
-      </section>
+    <div className="min-h-screen">
+      <UniversalHero hero={hero} />
 
       {/* Partnership Principles */}
       <section className="py-24">

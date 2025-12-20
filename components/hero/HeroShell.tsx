@@ -1,33 +1,45 @@
 "use client";
 
-import Link from "next/link";
-import { resolveHeroIcon, type HeroDefinition } from "./createHero";
+import type { ReactNode } from "react";
+import { type HeroDefinition } from "./createHero";
 
-export function HeroShell({ hero }: { hero: HeroDefinition }) {
-  const Icon = resolveHeroIcon(hero.icon);
-
+export function HeroShell({
+  hero,
+  hidden,
+  ritualAffordance,
+}: {
+  hero: HeroDefinition;
+  hidden?: boolean;
+  ritualAffordance: ReactNode;
+}) {
   return (
-    <section className="min-h-[100svh] flex items-center justify-center">
-      <div className="text-center px-6 space-y-5">
-        {Icon && <Icon className="mx-auto h-10 w-10 text-foreground/70" />}
-
+    <section
+      className="relative flex min-h-[100svh] max-h-[100svh] items-center justify-center overflow-hidden px-6"
+      aria-live="polite"
+    >
+      <div
+        className={`mx-auto w-full max-w-3xl text-center space-y-5 transition-opacity duration-150 ${
+          hidden ? "opacity-0" : "opacity-100"
+        }`}
+        aria-hidden={hidden}
+      >
         <p className="text-xs tracking-[0.18em] uppercase text-foreground/70">
           {hero.identity}
         </p>
 
         {hero.headlineLines && (
-          <h1 className="text-3xl sm:text-5xl font-semibold leading-tight">
-            {hero.headlineLines.map((l, i) => (
-              <span key={i} className="block">
-                {l}
+          <h1 className="text-balance text-3xl sm:text-4xl md:text-5xl font-semibold leading-tight">
+            {hero.headlineLines.map((line, index) => (
+              <span key={index} className="block">
+                {line}
               </span>
             ))}
           </h1>
         )}
 
-        {hero.orientation?.map((o, i) => (
-          <p key={i} className="text-foreground/80">
-            {o}
+        {hero.orientation?.map((line, index) => (
+          <p key={index} className="text-balance text-base text-foreground/80">
+            {line}
           </p>
         ))}
 
@@ -44,15 +56,10 @@ export function HeroShell({ hero }: { hero: HeroDefinition }) {
             )}
           </p>
         )}
+      </div>
 
-        {hero.cta && (
-          <Link
-            href={hero.cta.href}
-            className="inline-block rounded-xl bg-primary px-6 py-3 text-primary-foreground"
-          >
-            {hero.cta.label}
-          </Link>
-        )}
+      <div className="absolute inset-x-0 bottom-8 flex justify-center">
+        {ritualAffordance}
       </div>
     </section>
   );
