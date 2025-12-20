@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import type { HeroRitual } from "./createHero";
 
 type Props = {
@@ -14,6 +14,7 @@ type Props = {
 export function RitualPause({ active, used, ritual, onStart, onEnd }: Props) {
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
   const videoRef = useRef<HTMLVideoElement | null>(null);
+  const [showPoster, setShowPoster] = useState(false);
 
   const ritualDetails = useMemo(
     () => ({
@@ -34,6 +35,8 @@ export function RitualPause({ active, used, ritual, onStart, onEnd }: Props) {
 
   useEffect(() => {
     if (!active || !ritualDetails.videoSrc) return;
+
+    setShowPoster(Boolean(ritualDetails.poster));
 
     const handleKey = (event: KeyboardEvent) => {
       if (event.key === "Escape" || event.key === "Enter" || event.key === " ") {
@@ -58,10 +61,13 @@ export function RitualPause({ active, used, ritual, onStart, onEnd }: Props) {
     }
     timeoutRef.current = setTimeout(onEnd, ritualDetails.timeoutMs);
 
+    const posterTimer = window.setTimeout(() => setShowPoster(false), 1000);
+
     return () => {
       window.removeEventListener("keydown", handleKey);
       window.removeEventListener("click", handlePointer, { capture: true } as any);
       window.removeEventListener("touchstart", handlePointer, { capture: true } as any);
+      window.clearTimeout(posterTimer);
       if (timeoutRef.current) {
         clearTimeout(timeoutRef.current);
         timeoutRef.current = null;
@@ -70,7 +76,13 @@ export function RitualPause({ active, used, ritual, onStart, onEnd }: Props) {
         videoRef.current.pause();
       }
     };
-  }, [active, onEnd, ritualDetails.timeoutMs, ritualDetails.videoSrc]);
+  }, [active, onEnd, ritualDetails.poster, ritualDetails.timeoutMs, ritualDetails.videoSrc]);
+
+  useEffect(() => {
+    if (!active) {
+      setShowPoster(false);
+    }
+  }, [active]);
 
   return (
     <>
@@ -92,17 +104,30 @@ export function RitualPause({ active, used, ritual, onStart, onEnd }: Props) {
           tabIndex={-1}
           onClick={onEnd}
         >
-          <video
-            ref={videoRef}
-            muted
-            loop
-            playsInline
-            preload="metadata"
-            poster={ritualDetails.poster}
-            className="absolute inset-0 h-full w-full object-cover"
-          >
-            <source src={ritualDetails.videoSrc} type="video/mp4" />
-          </video>
+          <div className="relative h-screen w-screen">
+            {showPoster && ritualDetails.poster && (
+              <img
+                src={ritualDetails.poster}
+                alt=""
+                className="absolute inset-0 h-full w-full object-cover"
+              />
+            )}
+
+            <video
+              ref={videoRef}
+              muted
+              loop
+              playsInline
+              preload="metadata"
+              poster={undefined}
+              className="absolute inset-0 h-screen w-screen object-cover"
+              style={{ aspectRatio: "9 / 16" }}
+              onPlaying={() => setShowPoster(false)}
+              onLoadedData={() => setShowPoster(false)}
+            >
+              <source src={ritualDetails.videoSrc} type="video/mp4" />
+            </video>
+          </div>
         </div>
       )}
     </>
