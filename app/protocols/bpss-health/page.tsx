@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { UniversalHero } from "@/components/hero/UniversalHero";
-import type { HeroDefinition } from "@/components/hero/createHero";
+import { defaultHero, type HeroDefinition } from "@/components/hero/createHero";
 
 export const metadata: Metadata = {
   title: "BPSS Health — A Whole-System Perspective",
@@ -12,10 +12,16 @@ export const metadata: Metadata = {
 export default function BPSSHealthPage() {
   const hero: HeroDefinition = {
     identity: "ZenTrust Protocols",
+    icon: "sprout",
     headlineLines: ["BPSS Health", "A Whole-System Perspective"],
     orientation: [
       "Explore a whole-system understanding of wellbeing that integrates biology, psychology, social context, and meaning.",
     ],
+    ritual: {
+      ...defaultHero.ritual,
+      videoSrc: "/video/mobile-bpss-v1-quiet-mirror.mp4",
+      poster: "/images/desktop-bpss-v1-quiet-mirror.jpg",
+    },
   };
 
   return (

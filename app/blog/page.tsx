@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { UniversalHero } from "@/components/hero/UniversalHero";
-import type { HeroDefinition } from "@/components/hero/createHero";
+import { defaultHero, type HeroDefinition } from "@/components/hero/createHero";
 import client from "@/tina/__generated__/client";
 
 /**
@@ -9,10 +9,12 @@ import client from "@/tina/__generated__/client";
 export default async function BlogPage() {
   const hero: HeroDefinition = {
     identity: "ZenTrust Journal",
+    icon: "sprout",
     headlineLines: ["Insights from the regenerative frontier"],
     orientation: [
       "Research, field notes, and stories shaping ecological restoration and holistic human wellbeing.",
     ],
+    ritual: defaultHero.ritual,
   };
 
   const postsRes = await client.queries.blogConnection();

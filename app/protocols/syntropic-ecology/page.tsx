@@ -2,15 +2,21 @@
 
 import Link from "next/link";
 import { UniversalHero } from "@/components/hero/UniversalHero";
-import type { HeroDefinition } from "@/components/hero/createHero";
+import { defaultHero, type HeroDefinition } from "@/components/hero/createHero";
 
 export default function SyntropicEcologyPage() {
   const hero: HeroDefinition = {
     identity: "ZenTrust Protocols",
+    icon: "sprout",
     headlineLines: ["Syntropic Ecology", "From Transactional Pity to Systemic Power"],
     orientation: [
       "Restoring reciprocal relationships between life and land to regenerate ecosystems and community wealth.",
     ],
+    ritual: {
+      ...defaultHero.ritual,
+      videoSrc: "/video/mobile-syntropy-v1-quiet-mirror.mp4",
+      poster: "/images/desktop-syntropy-v1-quiet-mirror.jpg",
+    },
   };
 
   return (

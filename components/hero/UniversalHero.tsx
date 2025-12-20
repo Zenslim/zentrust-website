@@ -10,9 +10,11 @@ export function UniversalHero({ hero }: { hero?: HeroDefinition }) {
   const [used, setUsed] = useState(false);
 
   const resolvedHero = useMemo(() => resolveHero(hero), [hero]);
+  const ritual = resolvedHero.ritual;
+  const ritualAvailable = Boolean(ritual?.videoSrc);
 
   const startRitual = () => {
-    if (used || active) return;
+    if (used || active || !ritualAvailable) return;
     setActive(true);
   };
 
@@ -30,6 +32,7 @@ export function UniversalHero({ hero }: { hero?: HeroDefinition }) {
           <RitualPause
             active={active}
             used={used}
+            ritual={ritual}
             onStart={startRitual}
             onEnd={endRitual}
           />
