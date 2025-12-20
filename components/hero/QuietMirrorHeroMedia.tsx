@@ -44,7 +44,7 @@ export default function QuietMirrorHeroMedia({
   const ritualEnabled =
     Boolean(pauseVideoSrc) && !prefersReducedMotion && !ritualUsed;
 
-  /** Show invitation once, after a quiet delay */
+  /* Show invite once, intentionally delayed */
   useEffect(() => {
     if (!ritualEnabled) return;
     const t = window.setTimeout(() => setShowInvite(true), 1400);
@@ -107,27 +107,29 @@ export default function QuietMirrorHeroMedia({
         />
       )}
 
-      {/* HERO CONTENT + RITUAL INVITE (NORMAL FLOW) */}
+      {/* HERO CONTENT */}
       {!ritualActive && (
         <div className="relative z-20">
           {children}
+        </div>
+      )}
 
-          {ritualEnabled && showInvite && (
-            <div className="mt-6 flex justify-center">
-              <button
-                type="button"
-                onClick={enterRitual}
-                aria-label="Pause here"
-                className="
-                  text-sm tracking-wide
-                  text-black/60 dark:text-white/60
-                  transition-opacity duration-500
-                "
-              >
-                Pause here ▷ tap
-              </button>
-            </div>
-          )}
+      {/* RITUAL INVITATION — GUARANTEED VISIBLE */}
+      {ritualEnabled && showInvite && !ritualActive && (
+        <div className="absolute left-0 right-0 bottom-10 z-30 flex justify-center px-4">
+          <button
+            type="button"
+            onClick={enterRitual}
+            aria-label="Pause here"
+            className="
+              text-base sm:text-sm
+              tracking-wide
+              text-black/70 dark:text-white/70
+              select-none
+            "
+          >
+            Pause here ▷ tap
+          </button>
         </div>
       )}
 
@@ -140,11 +142,7 @@ export default function QuietMirrorHeroMedia({
           aria-label="Exit ritual"
           onClick={exitRitual}
           onKeyDown={(e) => {
-            if (
-              e.key === "Escape" ||
-              e.key === "Enter" ||
-              e.key === " "
-            ) {
+            if (e.key === "Escape" || e.key === "Enter" || e.key === " ") {
               e.preventDefault();
               exitRitual();
             }
