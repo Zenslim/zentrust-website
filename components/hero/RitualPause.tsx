@@ -21,7 +21,6 @@ type Props = HeroRitual;
 
 export function RitualPause({
   label = "Pause here ▷ tap",
-  description = "Take a brief pause. Tap anywhere or press Esc, Enter, or Space to return.",
   timeoutMs = 15000,
   videoSrc,
   poster,
@@ -56,8 +55,9 @@ export function RitualPause({
     vid?.play?.().catch(() => {});
 
     const timeoutId = window.setTimeout(exitRitual, cappedTimeout);
+
     const handleKey = (event: KeyboardEvent) => {
-      if (["Escape", "Enter", " "].includes(event.key)) {
+      if (event.key === "Escape" || event.key === "Enter" || event.key === " ") {
         event.preventDefault();
         exitRitual();
       }
@@ -74,77 +74,45 @@ export function RitualPause({
 
   return (
     <>
-      <div className="mt-6 flex flex-col items-center gap-2">
+      {/* Entry affordance (inline, minimal) */}
+      <div className="mt-6 flex justify-center">
         <button
           type="button"
           onClick={enterRitual}
           disabled={!ritualAvailable}
-          className="inline-flex items-center gap-2 rounded-md px-3 py-2 text-sm tracking-wide text-foreground/70 ring-offset-background transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/30 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:text-foreground/40"
           aria-pressed={active}
+          className="inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm tracking-wide text-foreground/70 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/30 disabled:cursor-not-allowed disabled:text-foreground/40"
         >
-          <span className="inline-flex h-5 w-5 items-center justify-center rounded-full border border-foreground/30 text-[10px] font-semibold text-foreground/70">
+          <span className="inline-flex h-6 w-6 items-center justify-center rounded-full border border-foreground/30 text-xs font-semibold">
             ▶
           </span>
           <span>{label}</span>
         </button>
-
-        {prefersReducedMotion && (
-          <p className="text-xs text-foreground/50">
-            Pause suppressed due to reduced-motion preference.
-          </p>
-        )}
-
-        {used && !prefersReducedMotion && (
-          <p className="text-xs text-foreground/50">Ritual completed for this visit.</p>
-        )}
       </div>
 
+      {/* Full-viewport ritual */}
       {active && (
         <div
-          className="fixed inset-0 z-[70] bg-background/95 text-foreground"
-          role="dialog"
-          aria-label="Ritual pause overlay"
-          tabIndex={-1}
+          className="fixed inset-0 z-[9999] bg-black"
           onClick={exitRitual}
         >
-          <div className="relative h-full w-full">
-            {videoSrc ? (
-              <video
-                ref={videoRef}
-                muted
-                loop
-                playsInline
-                preload="metadata"
-                poster={poster}
-                className="absolute inset-0 h-full w-full object-cover"
-              >
-                <source src={videoSrc} type="video/mp4" />
-              </video>
-            ) : (
-              <div className="absolute inset-0 flex items-center justify-center">
-                <div className="text-center space-y-3">
-                  <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-background/80 text-base font-semibold shadow">
-                    ▶
-                  </div>
-                  <p className="text-lg font-semibold tracking-tight">{label}</p>
-                  <p className="text-sm text-foreground/70">{description}</p>
-                </div>
-              </div>
-            )}
-
-            <div className="relative z-20 flex h-full w-full items-center justify-center px-6 text-center">
-              <div className="space-y-3 rounded-3xl bg-background/70 px-6 py-5 shadow-2xl backdrop-blur">
-                <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full border border-foreground/30 bg-background/70 text-sm font-semibold">
-                  ▶
-                </div>
-                <p className="text-lg font-semibold tracking-tight">{label}</p>
-                <p className="text-sm text-foreground/70">{description}</p>
-                <p className="text-xs text-foreground/60">
-                  Tap anywhere, press Esc, Enter, or Space, or wait about 15 seconds to return.
-                </p>
-              </div>
+          {videoSrc ? (
+            <video
+              ref={videoRef}
+              muted
+              loop
+              playsInline
+              preload="metadata"
+              poster={poster}
+              className="absolute inset-0 h-full w-full object-cover"
+            >
+              <source src={videoSrc} type="video/mp4" />
+            </video>
+          ) : (
+            <div className="absolute inset-0 flex items-center justify-center text-foreground/70">
+              {label}
             </div>
-          </div>
+          )}
         </div>
       )}
     </>
