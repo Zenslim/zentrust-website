@@ -54,10 +54,13 @@ export default async function BlogPage() {
           )}
 
           {posts.map((post) => {
+            /**
+             * IMPORTANT:
+             * Tina media fields resolve to STRING URLs.
+             * They are NOT objects and do NOT have `.src`.
+             */
             const heroImage =
-              typeof post?.heroImage === "string"
-                ? post.heroImage
-                : post?.heroImage?.src || null;
+              typeof post?.heroImage === "string" ? post.heroImage : null;
 
             return (
               <Link
@@ -72,18 +75,22 @@ export default async function BlogPage() {
                     className="h-48 w-full rounded-xl object-cover"
                   />
                 )}
+
                 <div className="space-y-2">
                   <p className="text-xs uppercase tracking-[0.18em] text-primary/80">
                     {post?.primaryCategory || "ZenTrust Journal"}
                   </p>
+
                   <h2 className="text-xl font-semibold leading-tight text-foreground group-hover:text-primary">
                     {post?.title}
                   </h2>
+
                   {post?.excerpt && (
                     <p className="text-sm text-foreground/70 dark:text-foreground/60">
                       {post.excerpt}
                     </p>
                   )}
+
                   <p className="text-xs text-foreground/60">
                     {post?.date
                       ? new Date(post.date).toLocaleDateString()
