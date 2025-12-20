@@ -1,26 +1,17 @@
 // app/page.tsx
 
-import { Hero } from '@/components/hero/Hero'
-import MissionSection from "@/components/mission/MissionSection"
-import { ImpactCounters } from '@/components/impact/ImpactCounters'
-import { DonationCalculator } from '@/components/impact/DonationCalculator'
-import { ProgramsSection } from '@/components/programs/ProgramsSection'
-import { StoriesSection } from '@/components/testimonials/StoriesSection'
-import { NewsletterSignup } from '@/components/newsletter/NewsletterSignup'
+import { UniversalHero } from "@/components/hero/UniversalHero";
+import MissionSection from "@/components/mission/MissionSection";
+import { ImpactCounters } from "@/components/impact/ImpactCounters";
+import { NewsletterSignup } from "@/components/newsletter/NewsletterSignup";
 
 export default function HomePage() {
   return (
     <div className="min-h-screen">
-      <Hero />
+      <UniversalHero />
       <MissionSection />
       <ImpactCounters />
-      
-      {/* Temporarily Hidden */}
-      {/* <ProgramsSection /> */}
-      {/* <StoriesSection /> */}
-       {/* <DonationCalculator /> */}
-   
       <NewsletterSignup />
     </div>
-  )
+  );
 }
