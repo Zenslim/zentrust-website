@@ -14,13 +14,14 @@ export default function BPSSHealthPage() {
   return (
     <main className="min-h-screen bg-white text-neutral-900 dark:bg-neutral-950 dark:text-neutral-50">
       <GlobalHero
-        kicker="Protocols"
-        headline="BPSS Health — a whole-system perspective."
-        dek="A calm look at how biology, psychology, social context, and meaning move together in wellbeing."
-        belowAnchorId={contentId}
-        mode="confirm"
-      />
-
+  headlineLines={[
+    "Why did things improve,",
+    "but still not feel better?",
+  ]}
+  dek="Many people assume this means they failed. This page explores why that assumption is often wrong — and what is usually missing when health is treated in parts."
+  belowAnchorId={contentId}
+  mode="confirm"
+/>
       {/* BODY */}
       <section id={contentId} className="mx-auto max-w-6xl px-4 py-12 sm:px-6 sm:py-16">
         <div className="max-w-3xl space-y-4">
