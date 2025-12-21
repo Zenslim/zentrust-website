@@ -14,10 +14,9 @@ export default function ProgramsPage() {
         dek="Everything is grown slowly—listening periods, watershed baselines, and community assemblies lead before any launch."
         belowAnchorId="content"
         mode="confirm"
-        secondaryCta={{ label: "See how programs form", href: "#content" }}
       />
 
-      <div id="content" className="pt-10">
+      <div id="content" className="pt-10 scroll-mt-24">
 
       {/* FRAMING */}
       <section className="pb-10">

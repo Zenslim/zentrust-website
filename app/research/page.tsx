@@ -16,10 +16,9 @@ export default function ResearchPage() {
         dek="Methods, findings, and field notes will publish here once they meet our clarity and rigor standards."
         belowAnchorId={contentId}
         mode="confirm"
-        secondaryCta={{ label: "Read the current status", href: `#${contentId}` }}
       />
 
-      <div id={contentId} className="mx-auto max-w-3xl px-6 py-16 sm:py-24 space-y-8">
+      <div id={contentId} className="mx-auto max-w-3xl px-6 py-16 sm:py-24 space-y-8 scroll-mt-24">
         <header className="space-y-3">
           <p className="text-sm uppercase tracking-[0.18em] text-muted-foreground">Research</p>
           <h1 className="text-4xl font-semibold text-foreground">Section status</h1>

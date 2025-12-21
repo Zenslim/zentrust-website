@@ -42,10 +42,9 @@ export default function NewsletterPage() {
         dek="A calm stream of research notes, watershed signals, and program milestones—never persuasion or urgency."
         belowAnchorId="content"
         mode="confirm"
-        secondaryCta={{ label: "Jump to subscribe", href: "#content" }}
       />
 
-      <div id="content" className="pt-10">
+      <div id="content" className="pt-10 scroll-mt-24">
         <section className="py-24 text-center">
           <div className="max-w-3xl mx-auto px-4">
             <h2 className="text-3xl md:text-4xl font-bold mb-6">

@@ -81,11 +81,10 @@ export default function GovernancePage() {
         dek="Clear, ethical stewardship guides every action. The details sit directly below."
         belowAnchorId={contentId}
         mode="confirm"
-        secondaryCta={{ label: "See governance details", href: `#${contentId}` }}
       />
 
       {/* IRS Compliance Section */}
-      <section id={contentId} className="py-24">
+      <section id={contentId} className="py-24 scroll-mt-24">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto">
             <div className="text-center mb-16">

@@ -11,10 +11,9 @@ export default function StewardshipRightsPage() {
         dek="A clear statement of rights and responsibilities within our regenerative ecosystem. The full text follows immediately below."
         belowAnchorId={contentId}
         mode="confirm"
-        secondaryCta={{ label: "Read the rights", href: `#${contentId}` }}
       />
 
-      <section id={contentId} className="py-16 md:py-20">
+      <section id={contentId} className="py-16 md:py-20 scroll-mt-24">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-4xl space-y-10">
 
           {/* 1. Purpose */}

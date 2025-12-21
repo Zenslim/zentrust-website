@@ -12,13 +12,12 @@ export default function StewardshipPortalPage() {
         kicker="Stewardship"
         headline="A quiet portal for regenerative stewardship."
         dek="Participation is voluntary and patient—like water finding its way downhill. Enter when you are ready."
-        primaryCta={{ label: "Enter the Stewardship Portal", href: "/stewardship/checkout" }}
         belowAnchorId="content"
-        mode="confirm"
-        secondaryCta={{ label: "See participation paths", href: "#content" }}
+        mode="answer"
+        showStewardshipCta
       />
 
-      <div id="content" className="pt-6">
+      <div id="content" className="pt-6 scroll-mt-24">
       {/* PATHWAYS — no new surface, no borders */}
       <section className="pt-10 md:pt-12 pb-10">
         <div className="max-w-5xl mx-auto px-6 text-center">

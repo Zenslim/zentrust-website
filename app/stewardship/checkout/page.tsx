@@ -68,10 +68,9 @@ export default function StewardshipCheckoutPage() {
         dek="Choose an amount and cadence; the checkout stays silent and direct."
         belowAnchorId="content"
         mode="confirm"
-        secondaryCta={{ label: "Begin checkout", href: "#content" }}
       />
 
-      <div id="content" className="container mx-auto px-4 py-16 max-w-2xl">
+      <div id="content" className="container mx-auto px-4 py-16 max-w-2xl scroll-mt-24">
 
         {/* Header */}
         <div className="space-y-4 mb-10">

@@ -69,11 +69,10 @@ export default function TermsPage() {
         dek="Clear expectations protect the community and keep our 501(c)(3) operations transparent. Full details are below."
         belowAnchorId={contentId}
         mode="confirm"
-        secondaryCta={{ label: "Jump to terms", href: `#${contentId}` }}
       />
 
       {/* Key Terms Overview */}
-      <section id={contentId} className="py-24">
+      <section id={contentId} className="py-24 scroll-mt-24">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-6">
