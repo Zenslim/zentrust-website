@@ -24,8 +24,7 @@ through research, learning, and long-term stewardship.`}
         primaryCta={{ label: "Enter the Stewardship Portal", href: "/stewardship" }}
         belowAnchorId={contentId}
         mode="answer"
-        showIcon
-       />
+      />
 
       <div id={contentId} className="relative z-0">
         <MissionSection />
