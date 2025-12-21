@@ -3,44 +3,22 @@
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Leaf, TreePine, Microscope, Heart } from "lucide-react"
+import { GlobalHero } from "@/components/hero/GlobalHero"
 
 export default function StewardshipPortalPage() {
   return (
-    <div className="min-h-screen pt-16">
+    <div className="min-h-screen">
+      <GlobalHero
+        kicker="Stewardship"
+        headline="A quiet portal for regenerative stewardship."
+        dek="Participation is voluntary and patient—like water finding its way downhill. Enter when you are ready."
+        primaryCta={{ label: "Enter the Stewardship Portal", href: "/stewardship/checkout" }}
+        belowAnchorId="content"
+        mode="confirm"
+        secondaryCta={{ label: "See participation paths", href: "#content" }}
+      />
 
-      {/* HERO — calm, compressed */}
-      <section className="pt-14 md:pt-18 pb-10 text-center">
-        <div className="max-w-3xl mx-auto px-6">
-
-          <h1 className="text-4xl md:text-6xl font-bold leading-tight mb-4">
-            A Quiet Portal for
-            <span className="gradient-text block">Regenerative Stewardship</span>
-          </h1>
-
-          <p className="text-[17px] md:text-lg text-muted-foreground leading-relaxed">
-            Participation is not asked for.
-            <br />
-            It arises naturally — like water finding its way downhill,
-            or roots reaching for deeper soil.
-            <span className="italic block mt-2">
-              Nature does not hurry, yet everything is accomplished.
-            </span>
-          </p>
-
-          <Button asChild size="lg" className="mt-6">
-            <Link href="/stewardship/checkout">
-              <Heart className="h-5 w-5 mr-2" />
-              Enter the Stewardship Portal
-            </Link>
-          </Button>
-
-          <p className="text-xs text-muted-foreground mt-4">
-            ZenTrust is a 501(c)(3) public charity · EIN 33-4318487
-          </p>
-
-        </div>
-      </section>
-
+      <div id="content" className="pt-6">
       {/* PATHWAYS — no new surface, no borders */}
       <section className="pt-10 md:pt-12 pb-10">
         <div className="max-w-5xl mx-auto px-6 text-center">
@@ -117,6 +95,7 @@ export default function StewardshipPortalPage() {
         </div>
       </section>
 
+      </div>
     </div>
   )
 }

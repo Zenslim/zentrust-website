@@ -3,23 +3,21 @@
 import Link from "next/link"
 import { Eye, Waves, Sparkles, Microscope } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import { GlobalHero } from "@/components/hero/GlobalHero"
 
 export default function ProgramsPage() {
   return (
-    <div className="pt-16">
+    <div className="min-h-screen">
+      <GlobalHero
+        kicker="Programs"
+        headline="Programs surface only when the land, people, and science are ready."
+        dek="Everything is grown slowly—listening periods, watershed baselines, and community assemblies lead before any launch."
+        belowAnchorId="content"
+        mode="confirm"
+        secondaryCta={{ label: "See how programs form", href: "#content" }}
+      />
 
-      {/* HERO */}
-      <section className="pt-10 md:pt-12 pb-8 text-center">
-        <div className="max-w-3xl mx-auto px-6">
-          <h1 className="text-4xl md:text-6xl font-bold mb-3">
-            Programs Arrive When They Are Ready
-          </h1>
-          <p className="text-[17px] md:text-lg text-muted-foreground leading-relaxed">
-            These programs are not being rushed. They are being grown.
-            Like forests, they form first underground.
-          </p>
-        </div>
-      </section>
+      <div id="content" className="pt-10">
 
       {/* FRAMING */}
       <section className="pb-10">
@@ -185,6 +183,8 @@ export default function ProgramsPage() {
           </p>
         </div>
       </section>
+
+      </div>
 
     </div>
   )

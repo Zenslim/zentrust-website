@@ -1,30 +1,20 @@
+import { GlobalHero } from "@/components/hero/GlobalHero";
+
 export default function StewardshipRightsPage() {
+  const contentId = "content";
+
   return (
     <div className="min-h-screen">
-      <section className="py-16 md:py-24 border-b border-border">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-4xl">
-          <p className="text-xs font-semibold tracking-[0.2em] text-primary mb-4 uppercase">
-            Governance & Ethics
-          </p>
-          <h1 className="text-3xl md:text-4xl font-bold tracking-tight mb-4">
-            Stewardship Rights & Participation Ethics
-          </h1>
-          <p className="text-lg text-muted-foreground leading-relaxed">
-            ZenTrust honors the autonomy, dignity, and sovereignty of every individual
-            who chooses to participate in our regenerative work. Whether through
-            knowledge-sharing, community engagement, or voluntary resource flows,
-            each participant is regarded as a co-steward in the living systems we
-            help restore.
-          </p>
-          <p className="mt-4 text-sm text-muted-foreground">
-            This framework is not a fundraising or “donor” policy. It is a statement
-            of rights and responsibilities within a regenerative ecosystem grounded
-            in transparency, integrity, and mutual respect.
-          </p>
-        </div>
-      </section>
+      <GlobalHero
+        kicker="Governance & Ethics"
+        headline="Stewardship Rights & Participation Ethics."
+        dek="A clear statement of rights and responsibilities within our regenerative ecosystem. The full text follows immediately below."
+        belowAnchorId={contentId}
+        mode="confirm"
+        secondaryCta={{ label: "Read the rights", href: `#${contentId}` }}
+      />
 
-      <section className="py-16 md:py-20">
+      <section id={contentId} className="py-16 md:py-20">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-4xl space-y-10">
 
           {/* 1. Purpose */}

@@ -3,8 +3,7 @@
 import { Button } from '@/components/ui/button'
 import { Shield, Lock, Eye, Users, Database, Globe, Phone, Mail } from 'lucide-react'
 import Link from 'next/link'
-import { UniversalHero } from '@/components/hero/UniversalHero'
-import type { HeroDefinition } from '@/components/hero/createHero'
+import { GlobalHero } from '@/components/hero/GlobalHero'
 
 const dataCategories = [
   {
@@ -113,21 +112,21 @@ const thirdParties = [
 ]
 
 export default function PrivacyPage() {
-  const hero: HeroDefinition = {
-    identity: "ZenTrust Privacy",
-    headlineLines: ["Privacy Policy"],
-    orientation: [
-      "We protect your information with the same care we bring to regenerating ecosystems.",
-      "This page outlines how we collect, use, and safeguard data with calm transparency.",
-    ],
-  }
+  const contentId = "content"
 
   return (
     <div className="min-h-screen">
-      <UniversalHero hero={hero} />
+      <GlobalHero
+        kicker="Privacy"
+        headline="Privacy Policy: how we collect, use, and safeguard data."
+        dek="We protect your information with the same care we bring to regenerating ecosystems. The specifics are below."
+        belowAnchorId={contentId}
+        mode="confirm"
+        secondaryCta={{ label: "Jump to policy", href: `#${contentId}` }}
+      />
 
       {/* Data Collection */}
-      <section className="py-24">
+      <section id={contentId} className="py-24">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-6">

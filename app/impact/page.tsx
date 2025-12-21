@@ -4,33 +4,21 @@ import Link from "next/link"
 import { motion } from "framer-motion"
 import { TreePine, Users, Microscope, Hourglass } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import { GlobalHero } from "@/components/hero/GlobalHero"
 
 export default function ImpactPage() {
   return (
-    <div className="pt-16">
+    <div className="min-h-screen">
+      <GlobalHero
+        kicker="Impact"
+        headline="Impact begins before results."
+        dek="Before numbers appear, work is already underway—quiet, patient, and mostly unseen. The current signals are below."
+        belowAnchorId="content"
+        mode="confirm"
+        secondaryCta={{ label: "See current signals", href: "#content" }}
+      />
 
-      {/* HERO */}
-      <section className="pt-10 md:pt-12 pb-6 text-center">
-        <div className="max-w-3xl mx-auto px-6">
-          <motion.h1
-            className="text-4xl md:text-6xl font-bold mb-3"
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-          >
-            Impact Begins Before Results
-          </motion.h1>
-
-          <motion.p
-            className="text-[17px] md:text-lg text-muted-foreground leading-relaxed"
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.12 }}
-          >
-            Before numbers appear, work is already underway. Quiet, patient, and mostly unseen.
-          </motion.p>
-        </div>
-      </section>
-
+      <div id="content" className="pt-6">
       {/* TRANSITION LINE (replaces video for now) */}
       <section className="pb-8 text-center">
         <div className="max-w-3xl mx-auto px-6">
@@ -114,6 +102,7 @@ export default function ImpactPage() {
         </div>
       </section>
 
+      </div>
     </div>
   )
 }
