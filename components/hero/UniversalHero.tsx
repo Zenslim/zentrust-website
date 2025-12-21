@@ -11,6 +11,8 @@ export function UniversalHero({ hero }: { hero?: HeroDefinition }) {
     <>
       <HeroShell
         hero={resolvedHero}
+        hidden={heroHidden}
+        onRitualActiveChange={setHeroHidden}
       />
     </>
   );
