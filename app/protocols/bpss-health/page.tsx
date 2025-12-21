@@ -19,7 +19,6 @@ export default function BPSSHealthPage() {
         dek="A calm look at how biology, psychology, social context, and meaning move together in wellbeing."
         belowAnchorId={contentId}
         mode="confirm"
-        secondaryCta={{ label: "Explore the protocol", href: `#${contentId}` }}
       />
 
       {/* BODY */}

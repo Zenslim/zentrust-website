@@ -14,7 +14,6 @@ export default function SyntropicEcologyPage() {
         dek="Restoring reciprocal relationships between life and land to regenerate ecosystems and community wealth."
         belowAnchorId={contentId}
         mode="confirm"
-        secondaryCta={{ label: "View protocol", href: `#${contentId}` }}
       />
 
       {/* BODY */}
