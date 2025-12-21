@@ -11,12 +11,11 @@ export default function HomePage() {
   return (
     <div className="relative">
       <GlobalHero
-        headlineLines={[
-          "Healing land.",
-          "Elevating humanity.",
-          "Science for regeneration.",
-        ]}
-        dek="ZenTrust is a public charity helping nature and communities heal together through research, learning, and long-term stewardship."
+         headline={`Healing land.
+Elevating humanity.
+Science for regeneration.`}
+  dek={`ZenTrust is a public charity helping nature and communities heal together
+through research, learning, and long-term stewardship.`}
         determination={{
           text: "Recognized as a 170(b)(1)(A)(vi) public charity.",
           label: "View official determination letter",
