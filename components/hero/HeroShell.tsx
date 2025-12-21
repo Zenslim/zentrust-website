@@ -2,9 +2,20 @@
 
 import Link from "next/link";
 import { RitualPause } from "./RitualPause";
-import { createHero } from "./createHero";
 
-type Hero = ReturnType<typeof createHero>;
+type Hero = {
+  title?: string;
+  description?: string;
+  cta?: {
+    href: string;
+    label: string;
+  };
+  ritual?: {
+    label?: string;
+    timeoutMs?: number;
+    videoSrc?: string;
+  };
+};
 
 type Props = {
   hero: Hero;
@@ -38,6 +49,7 @@ export function HeroShell({ hero }: Props) {
                 </Link>
               )}
 
+              {/* Ritual is ALWAYS below CTA with safe spacing */}
               {hero.ritual && (
                 <div className="mt-8">
                   <RitualPause {...hero.ritual} />
