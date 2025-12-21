@@ -3,33 +3,19 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { usePathname } from "next/navigation";
-import { cn } from "@/lib/utils";
 
 type RitualVideo = {
   src: string;
-  poster?: string;
 };
 
 const MOBILE_RITUALS: RitualVideo[] = [
-  {
-    src: "/video/mobile-syntropy-v1-quiet-mirror.mp4",
-    poster: "/images/hero-mobile.jpeg",
-  },
-  {
-    src: "/video/mobile-bpss-v1-quiet-mirror.mp4",
-    poster: "/images/zentrust-hero-image.jpeg",
-  },
+  { src: "/video/ritual/mobile/ritual-01.mp4" },
+  { src: "/video/ritual/mobile/ritual-02.mp4" },
 ];
 
 const DESKTOP_RITUALS: RitualVideo[] = [
-  {
-    src: "/video/syntropic-food-forest.mp4",
-    poster: "/images/desktop-syntropy-v1-quiet-mirror.jpg",
-  },
-  {
-    src: "/video/syntropic-food-forest.mp4",
-    poster: "/images/desktop-bpss-v1-quiet-mirror.jpg",
-  },
+  { src: "/video/ritual/desktop/ritual-01.mp4" },
+  { src: "/video/ritual/desktop/ritual-02.mp4" },
 ];
 
 type RitualPauseProps = {
@@ -60,8 +46,9 @@ export function RitualPause({
   const timerRef = useRef<number | null>(null);
   const videoRef = useRef<HTMLVideoElement | null>(null);
 
-  const cappedTimeout = Math.min(timeoutMs ?? 15000, 15000);
+  const cappedTimeout = Math.min(timeoutMs, 15000);
 
+  // viewport detection
   useEffect(() => {
     const mq = window.matchMedia("(max-width: 767px)");
     const update = () => setIsMobile(mq.matches);
@@ -70,13 +57,14 @@ export function RitualPause({
     return () => mq.removeEventListener("change", update);
   }, []);
 
+  // deterministic rotation (pathname only)
   useEffect(() => {
-    const seed = hashString(`${pathname ?? ""}-${Date.now()}`);
+    const seed = hashString(pathname ?? "");
     if (MOBILE_RITUALS.length > 0) {
       setMobileIndex(seed % MOBILE_RITUALS.length);
     }
     if (DESKTOP_RITUALS.length > 0) {
-      setDesktopIndex((seed >> 1) % DESKTOP_RITUALS.length);
+      setDesktopIndex(seed % DESKTOP_RITUALS.length);
     }
   }, [pathname]);
 
@@ -93,12 +81,10 @@ export function RitualPause({
       video.pause();
       video.currentTime = 0;
     }
-
     if (timerRef.current) {
       window.clearTimeout(timerRef.current);
       timerRef.current = null;
     }
-
     setActive(false);
     onActiveChange?.(false);
   };
@@ -113,8 +99,7 @@ export function RitualPause({
       video.pause();
       video.currentTime = 0;
       video.muted = true;
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore — iOS needs explicit flag
+      // @ts-ignore — required for iOS Safari
       video.playsInline = true;
       video.play().catch(() => {});
     }
@@ -123,35 +108,30 @@ export function RitualPause({
     timerRef.current = window.setTimeout(exitRitual, cappedTimeout);
   };
 
+  // lock body scroll
   useEffect(() => {
-    if (typeof document === "undefined") return undefined;
-    const body = document.body;
-
-    if (active) {
-      const previousOverflow = body.style.overflow;
-      body.style.overflow = "hidden";
-
-      return () => {
-        body.style.overflow = previousOverflow;
-      };
-    }
-
-    return undefined;
+    if (!active) return;
+    const previous = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = previous;
+    };
   }, [active]);
 
+  // ensure playback + close handlers
   useEffect(() => {
-    if (!active) return undefined;
-
+    if (!active) return;
     const video = videoRef.current;
-    if (!video) return undefined;
+    if (!video) return;
 
-    const ensurePlay = () => video.play().catch(() => {});
-    requestAnimationFrame(ensurePlay);
+    requestAnimationFrame(() => {
+      video.play().catch(() => {});
+    });
 
     const handleEnded = () => exitRitual();
-    const handleKey = (event: KeyboardEvent) => {
-      if (["Escape", "Enter", " "].includes(event.key)) {
-        event.preventDefault();
+    const handleKey = (e: KeyboardEvent) => {
+      if (["Escape", "Enter", " "].includes(e.key)) {
+        e.preventDefault();
         exitRitual();
       }
     };
@@ -163,60 +143,46 @@ export function RitualPause({
       video.removeEventListener("ended", handleEnded);
       window.removeEventListener("keydown", handleKey);
     };
-  }, [active, cappedTimeout, source]);
-
-  useEffect(() => () => {
-    if (timerRef.current) window.clearTimeout(timerRef.current);
-  }, []);
+  }, [active]);
 
   return (
     <>
-      <div className="flex flex-col items-start gap-2">
-        <button
-          type="button"
-          onClick={enterRitual}
-          disabled={!enabled || !source}
-          className="inline-flex items-center gap-2 rounded-full border border-foreground/25 px-3 py-2 text-sm tracking-wide text-foreground/80 transition hover:border-foreground/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/30 disabled:cursor-not-allowed disabled:opacity-50"
-          aria-pressed={active}
-        >
-          <span className="inline-flex h-5 w-5 items-center justify-center rounded-full border border-foreground/30 text-[10px] font-semibold text-foreground/70">
-            ▶
-          </span>
-          <span>Pause here ▷ tap</span>
-        </button>
-      </div>
+      <button
+        type="button"
+        onClick={enterRitual}
+        disabled={!enabled || !source}
+        className="inline-flex items-center gap-2 rounded-full border border-foreground/25 px-3 py-2 text-sm tracking-wide text-foreground/80 transition hover:border-foreground/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/30 disabled:cursor-not-allowed disabled:opacity-50"
+        aria-pressed={active}
+      >
+        <span className="inline-flex h-5 w-5 items-center justify-center rounded-full border border-foreground/30 text-[10px] font-semibold text-foreground/70">
+          ▶
+        </span>
+        <span>Pause here ▷ tap</span>
+      </button>
 
-      {active
-        ? createPortal(
-            <div
-              className={cn(
-                "fixed inset-0 z-[9999] overflow-hidden bg-black/90",
-                active ? "opacity-100" : "pointer-events-none opacity-0"
-              )}
-              aria-hidden={!active}
+      {active &&
+        createPortal(
+          <div className="fixed inset-0 z-[9999] overflow-hidden bg-black">
+            <video
+              ref={videoRef}
+              muted
+              playsInline
+              preload="auto"
+              className="h-full w-full object-cover"
             >
-              <video
-                ref={videoRef}
-                muted
-                playsInline
-                preload="auto"
-                className="h-full w-full object-cover"
-                poster={source?.poster}
-              >
-                {source ? <source src={source.src} type="video/mp4" /> : null}
-              </video>
+              <source src={source.src} type="video/mp4" />
+            </video>
 
-              <button
-                type="button"
-                onClick={exitRitual}
-                className="absolute right-4 top-4 inline-flex items-center gap-2 rounded-full bg-black/70 px-3 py-1.5 text-xs font-semibold text-white shadow-sm ring-1 ring-white/40 hover:bg-black/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
-              >
-                Close
-              </button>
-            </div>,
-            document.body
-          )
-        : null}
+            <button
+              type="button"
+              onClick={exitRitual}
+              className="absolute right-4 top-4 rounded-full bg-black/70 px-3 py-1.5 text-xs font-semibold text-white ring-1 ring-white/40 hover:bg-black/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
+            >
+              Close
+            </button>
+          </div>,
+          document.body
+        )}
     </>
   );
 }
