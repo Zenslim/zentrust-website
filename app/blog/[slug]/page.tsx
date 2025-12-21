@@ -7,8 +7,7 @@ import path from "path";
 import { notFound } from "next/navigation";
 import client from "../../../tina/__generated__/client";
 import TinaBlogClient from "./TinaBlogClient";
-import { UniversalHero } from "@/components/hero/UniversalHero";
-import { defaultHero, type HeroDefinition } from "@/components/hero/createHero";
+import { GlobalHero } from "@/components/hero/GlobalHero";
 
 export default async function BlogPostPage({ params }: { params: { slug: string } }) {
   const slug = params?.slug;
@@ -74,21 +73,21 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
   const prevPost = currentIndex >= 0 ? allPosts[currentIndex + 1] : null;
   const nextPost = currentIndex > 0 ? allPosts[currentIndex - 1] : null;
 
-  const hero: HeroDefinition = {
-    identity: "ZenTrust Journal",
-    icon: "sprout",
-    headlineLines: [post.title ?? "ZenTrust Journal"],
-    orientation: [
-      post.excerpt ||
-        "Research, field notes, and stories shaping ecological restoration and holistic human wellbeing.",
-    ],
-    ritual: defaultHero.ritual,
-  };
+  const contentId = "content";
 
   return (
     <>
-      <UniversalHero hero={hero} />
-      <div className="pt-[110px] md:pt-[130px]">
+      <GlobalHero
+        kicker="ZenTrust Journal"
+        headline={post.title ?? "ZenTrust Journal"}
+        dek={
+          post.excerpt ||
+          "Research, field notes, and stories shaping ecological restoration and holistic human wellbeing."
+        }
+        belowAnchorId={contentId}
+        mode="confirm"
+      />
+      <div id={contentId} className="pt-[110px] md:pt-[130px]">
         <TinaBlogClient
           data={{
             post: {

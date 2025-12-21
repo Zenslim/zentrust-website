@@ -1,13 +1,26 @@
+import { GlobalHero } from "@/components/hero/GlobalHero";
+
 export const metadata = {
   title: "Financials | ZenTrust",
   description:
     "Plain details about ZenTrust's financial transparency commitments and compliance filings.",
-}
+};
 
 export default function FinancialsPage() {
+  const contentId = "content";
+
   return (
     <main className="min-h-screen">
-      <div className="mx-auto max-w-3xl px-6 py-16 sm:py-24 space-y-10">
+      <GlobalHero
+        kicker="Governance"
+        headline="Financial transparency is a daily practice, not a marketing line."
+        dek="ZenTrust operates as a 501(c)(3) public charity. Filings, budgets, and stewardship details stay readable and verifiable."
+        belowAnchorId={contentId}
+        mode="confirm"
+        secondaryCta={{ label: "Review the details", href: `#${contentId}` }}
+      />
+
+      <div id={contentId} className="mx-auto max-w-3xl px-6 py-16 sm:py-24 space-y-10">
         <header className="space-y-4">
           <p className="text-sm uppercase tracking-[0.18em] text-muted-foreground">Governance</p>
           <h1 className="text-4xl font-semibold text-foreground">Financial transparency</h1>

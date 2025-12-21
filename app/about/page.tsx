@@ -3,32 +3,21 @@
 import Link from "next/link"
 import { Waves, Feather, Microscope, Users, BookOpen } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import { GlobalHero } from "@/components/hero/GlobalHero"
 
 export default function AboutPage() {
   return (
-    <div className="min-h-screen pt-16">
+    <div className="min-h-screen">
+      <GlobalHero
+        kicker="About ZenTrust"
+        headline="Regeneration begins with relationship, not urgency."
+        dek="ZenTrust is a 501(c)(3) public charity working where land, science, and human wellbeing meet. We remember living systems instead of fixing broken machines."
+        belowAnchorId="content"
+        mode="confirm"
+        secondaryCta={{ label: "Read our perspective", href: "#content" }}
+      />
 
-      {/* HERO */}
-      <section className="pt-14 md:pt-18 pb-10 text-center">
-        <div className="max-w-4xl mx-auto px-6">
-
-          <p className="text-xs tracking-widest text-primary uppercase mb-3">
-            About ZenTrust
-          </p>
-
-          <h1 className="text-3xl md:text-5xl font-bold tracking-tight mb-4">
-            Regeneration Begins With Relationship
-          </h1>
-
-          <p className="text-lg text-muted-foreground leading-relaxed max-w-3xl mx-auto">
-            ZenTrust is a 501(c)(3) public charity working where land, science,
-            and human wellbeing meet. We are not here to fix a broken machine,
-            but to remember a living system.
-          </p>
-
-        </div>
-      </section>
-
+      <div id="content" className="pt-10">
       {/* OUR PERSPECTIVE */}
       <section className="pt-10 md:pt-12 pb-10">
         <div className="max-w-4xl mx-auto px-6 text-center">
@@ -245,6 +234,8 @@ export default function AboutPage() {
 
         </div>
       </section>
+
+      </div>
 
     </div>
   )

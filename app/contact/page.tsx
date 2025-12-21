@@ -4,6 +4,7 @@ import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Mail, Phone, MapPin, MessageCircle, Newspaper, Users } from "lucide-react"
 import Link from "next/link"
+import { GlobalHero } from "@/components/hero/GlobalHero"
 
 const inquiryTypes = [
   {
@@ -62,21 +63,17 @@ export default function ContactPage() {
   }
 
   return (
-    <div className="min-h-screen pt-16">
+    <div className="min-h-screen">
+      <GlobalHero
+        kicker="Contact"
+        headline="Reach ZenTrust without urgency—every inquiry is handled calmly and directly."
+        dek="Choose the path that matches your question; we respond with clarity and no pressure."
+        belowAnchorId="content"
+        mode="confirm"
+        secondaryCta={{ label: "See contact options", href: "#content" }}
+      />
 
-      {/* Minimal Hero */}
-      <section className="py-24 text-center">
-        <div className="container mx-auto px-4 max-w-3xl">
-          <h1 className="text-4xl md:text-6xl font-bold mb-4">
-            Contact <span className="gradient-text">ZenTrust</span>
-          </h1>
-          <p className="text-lg text-muted-foreground leading-relaxed">
-            A place to begin conversations.  
-            Quietly. Clearly. Without urgency.  
-          </p>
-        </div>
-      </section>
-
+      <div id="content" className="pt-12">
       {/* Contact Methods */}
       <section className="py-20">
         <div className="container mx-auto px-4 max-w-4xl">
@@ -212,6 +209,8 @@ export default function ContactPage() {
           </div>
         </div>
       </section>
+
+      </div>
     </div>
   )
 }

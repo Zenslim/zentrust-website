@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { UniversalHero } from "@/components/hero/UniversalHero";
-import { defaultHero, type HeroDefinition } from "@/components/hero/createHero";
+import { GlobalHero } from "@/components/hero/GlobalHero";
 
 export const metadata: Metadata = {
   title: "BPSS Health — A Whole-System Perspective",
@@ -10,26 +9,21 @@ export const metadata: Metadata = {
 };
 
 export default function BPSSHealthPage() {
-  const hero: HeroDefinition = {
-    identity: "ZenTrust Protocols",
-    icon: "sprout",
-    headlineLines: ["BPSS Health", "A Whole-System Perspective"],
-    orientation: [
-      "Explore a whole-system understanding of wellbeing that integrates biology, psychology, social context, and meaning.",
-    ],
-    ritual: {
-      ...defaultHero.ritual,
-      videoSrc: "/video/mobile-bpss-v1-quiet-mirror.mp4",
-      poster: "/images/desktop-bpss-v1-quiet-mirror.jpg",
-    },
-  };
+  const contentId = "content";
 
   return (
     <main className="min-h-screen bg-white text-neutral-900 dark:bg-neutral-950 dark:text-neutral-50">
-      <UniversalHero hero={hero} />
+      <GlobalHero
+        kicker="Protocols"
+        headline="BPSS Health — a whole-system perspective."
+        dek="A calm look at how biology, psychology, social context, and meaning move together in wellbeing."
+        belowAnchorId={contentId}
+        mode="confirm"
+        secondaryCta={{ label: "Explore the protocol", href: `#${contentId}` }}
+      />
 
       {/* BODY */}
-      <section className="mx-auto max-w-6xl px-4 py-12 sm:px-6 sm:py-16">
+      <section id={contentId} className="mx-auto max-w-6xl px-4 py-12 sm:px-6 sm:py-16">
         <div className="max-w-3xl space-y-4">
           {/* 1 */}
           <details className="group rounded-2xl border border-neutral-200 p-5 dark:border-neutral-800">

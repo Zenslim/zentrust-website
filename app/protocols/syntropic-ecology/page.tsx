@@ -1,30 +1,24 @@
 'use client';
 
 import Link from "next/link";
-import { UniversalHero } from "@/components/hero/UniversalHero";
-import { defaultHero, type HeroDefinition } from "@/components/hero/createHero";
+import { GlobalHero } from "@/components/hero/GlobalHero";
 
 export default function SyntropicEcologyPage() {
-  const hero: HeroDefinition = {
-    identity: "ZenTrust Protocols",
-    icon: "sprout",
-    headlineLines: ["Syntropic Ecology", "From Transactional Pity to Systemic Power"],
-    orientation: [
-      "Restoring reciprocal relationships between life and land to regenerate ecosystems and community wealth.",
-    ],
-    ritual: {
-      ...defaultHero.ritual,
-      videoSrc: "/video/mobile-syntropy-v1-quiet-mirror.mp4",
-      poster: "/images/desktop-syntropy-v1-quiet-mirror.jpg",
-    },
-  };
+  const contentId = "content";
 
   return (
     <main className="min-h-screen bg-white text-neutral-900 dark:bg-neutral-950 dark:text-neutral-50">
-      <UniversalHero hero={hero} />
+      <GlobalHero
+        kicker="Protocols"
+        headline="Syntropic Ecology — from transactional pity to systemic power."
+        dek="Restoring reciprocal relationships between life and land to regenerate ecosystems and community wealth."
+        belowAnchorId={contentId}
+        mode="confirm"
+        secondaryCta={{ label: "View protocol", href: `#${contentId}` }}
+      />
 
       {/* BODY */}
-      <section className="mx-auto max-w-6xl px-4 py-12 sm:px-6 sm:py-16">
+      <section id={contentId} className="mx-auto max-w-6xl px-4 py-12 sm:px-6 sm:py-16">
         <div className="max-w-3xl">
           <h2 className="text-xl font-semibold tracking-tight sm:text-2xl">
             The Shift from Transactional Pity to Systemic Power.

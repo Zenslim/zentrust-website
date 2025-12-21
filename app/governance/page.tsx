@@ -3,8 +3,7 @@
 import { Button } from '@/components/ui/button'
 import { Shield, Scale, Users, FileText, Eye, Heart } from 'lucide-react'
 import Link from 'next/link'
-import { UniversalHero } from '@/components/hero/UniversalHero'
-import type { HeroDefinition } from '@/components/hero/createHero'
+import { GlobalHero } from '@/components/hero/GlobalHero'
 
 const governancePrinciples = [
   {
@@ -72,21 +71,21 @@ const policies = [
 ]
 
 export default function GovernancePage() {
-  const hero: HeroDefinition = {
-    identity: "ZenTrust Governance",
-    headlineLines: ["Governance & Policies"],
-    orientation: [
-      "We practice clear, ethical stewardship so every action advances mission and trust.",
-      "These policies keep the organization accountable to public benefit.",
-    ],
-  }
+  const contentId = "content"
 
   return (
     <div className="min-h-screen">
-      <UniversalHero hero={hero} />
+      <GlobalHero
+        kicker="ZenTrust Governance"
+        headline="Governance and policies keep the organization accountable to public benefit."
+        dek="Clear, ethical stewardship guides every action. The details sit directly below."
+        belowAnchorId={contentId}
+        mode="confirm"
+        secondaryCta={{ label: "See governance details", href: `#${contentId}` }}
+      />
 
       {/* IRS Compliance Section */}
-      <section className="py-24">
+      <section id={contentId} className="py-24">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto">
             <div className="text-center mb-16">

@@ -3,6 +3,7 @@
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Mail, Leaf } from "lucide-react"
+import { GlobalHero } from "@/components/hero/GlobalHero"
 
 export default function NewsletterPage() {
   const [email, setEmail] = useState("")
@@ -34,46 +35,49 @@ export default function NewsletterPage() {
   }
 
   return (
-    <div className="min-h-screen pt-16">
+    <div className="min-h-screen">
+      <GlobalHero
+        kicker="Newsletter"
+        headline="The Quiet Newsletter: slow, precise updates from the field."
+        dek="A calm stream of research notes, watershed signals, and program milestones—never persuasion or urgency."
+        belowAnchorId="content"
+        mode="confirm"
+        secondaryCta={{ label: "Jump to subscribe", href: "#content" }}
+      />
 
-      {/* Minimal Hero */}
-      <section className="py-24 text-center">
-        <div className="max-w-3xl mx-auto px-4">
-          <h1 className="text-4xl md:text-6xl font-bold mb-6">
-            The <span className="gradient-text">Quiet Newsletter</span>
-          </h1>
-          <p className="text-lg text-muted-foreground leading-relaxed mb-8">
-            Slow, thoughtful updates on what is forming beneath the surface—  
-            research taking shape, landscapes listening, partnerships unfolding.  
-            <span className="italic block mt-2">
-              Nature does not hurry, yet everything is accomplished.
-            </span>
-          </p>
+      <div id="content" className="pt-10">
+        <section className="py-24 text-center">
+          <div className="max-w-3xl mx-auto px-4">
+            <h2 className="text-3xl md:text-4xl font-bold mb-6">
+              Subscribe quietly
+            </h2>
+            <p className="text-lg text-muted-foreground leading-relaxed mb-8">
+              Research taking shape, landscapes listening, partnerships unfolding. No campaigns. No noise.
+            </p>
 
-          {/* Minimal Form */}
-          <div className="glass-card p-8 rounded-2xl max-w-md mx-auto">
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <div>
-                <input
-                  type="email"
-                  placeholder="your.email@example.com"
-                  required
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="w-full px-4 py-3 rounded-lg border border-border bg-background focus:ring-2 focus:ring-primary/20"
-                />
-              </div>
-              <Button type="submit" className="w-full" size="lg">
-                <Mail className="mr-2 h-4 w-4" /> Subscribe
-              </Button>
-              <p className="text-xs text-muted-foreground text-center">
-                Unsubscribe anytime. We write rarely and never send noise.
-              </p>
-            </form>
+            {/* Minimal Form */}
+            <div className="glass-card p-8 rounded-2xl max-w-md mx-auto">
+              <form onSubmit={handleSubmit} className="space-y-4">
+                <div>
+                  <input
+                    type="email"
+                    placeholder="your.email@example.com"
+                    required
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    className="w-full px-4 py-3 rounded-lg border border-border bg-background focus:ring-2 focus:ring-primary/20"
+                  />
+                </div>
+                <Button type="submit" className="w-full" size="lg">
+                  <Mail className="mr-2 h-4 w-4" /> Subscribe
+                </Button>
+                <p className="text-xs text-muted-foreground text-center">
+                  Unsubscribe anytime. We write rarely and never send noise.
+                </p>
+              </form>
+            </div>
           </div>
-        </div>
-      </section>
-
+        </section>
       {/* What to Expect */}
       <section className="py-24 text-center">
         <div className="max-w-3xl mx-auto px-4">
@@ -111,20 +115,20 @@ export default function NewsletterPage() {
         </div>
       </section>
 
-      {/* Closing */}
-      <section className="py-24 text-center">
-        <div className="max-w-3xl mx-auto px-4">
-          <h2 className="text-2xl md:text-3xl font-bold mb-4">
-            A Gentle Stream of Updates
-          </h2>
-          <p className="text-lg text-muted-foreground leading-relaxed">
-            We write only when there is something real to say—  
-            reflections from the land, the lab, or the communities we walk with.  
-            No urgency. No noise. Just movement.
-          </p>
-        </div>
-      </section>
-
+        {/* Closing */}
+        <section className="py-24 text-center">
+          <div className="max-w-3xl mx-auto px-4">
+            <h2 className="text-2xl md:text-3xl font-bold mb-4">
+              A Gentle Stream of Updates
+            </h2>
+            <p className="text-lg text-muted-foreground leading-relaxed">
+              We write only when there is something real to say—
+              reflections from the land, the lab, or the communities we walk with.
+              No urgency. No noise. Just movement.
+            </p>
+          </div>
+        </section>
+      </div>
     </div>
   )
 }

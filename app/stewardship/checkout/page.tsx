@@ -11,6 +11,7 @@ import {
   RadioGroup,
   RadioGroupItem,
 } from "@/components/ui/radio-group";
+import { GlobalHero } from "@/components/hero/GlobalHero";
 
 type Frequency = "once" | "monthly";
 
@@ -61,7 +62,16 @@ export default function StewardshipCheckoutPage() {
 
   return (
     <div className="min-h-screen">
-      <div className="container mx-auto px-4 py-16 max-w-2xl">
+      <GlobalHero
+        kicker="Stewardship"
+        headline="Steward a resource flow quietly and securely."
+        dek="Choose an amount and cadence; the checkout stays silent and direct."
+        belowAnchorId="content"
+        mode="confirm"
+        secondaryCta={{ label: "Begin checkout", href: "#content" }}
+      />
+
+      <div id="content" className="container mx-auto px-4 py-16 max-w-2xl">
 
         {/* Header */}
         <div className="space-y-4 mb-10">

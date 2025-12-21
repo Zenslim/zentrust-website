@@ -3,8 +3,7 @@
 import { Button } from '@/components/ui/button'
 import { Scale, Shield, FileText, Globe, Users, AlertTriangle } from 'lucide-react'
 import Link from 'next/link'
-import { UniversalHero } from '@/components/hero/UniversalHero'
-import type { HeroDefinition } from '@/components/hero/createHero'
+import { GlobalHero } from '@/components/hero/GlobalHero'
 
 const keyTerms = [
   {
@@ -60,21 +59,21 @@ const liabilityLimitations = [
 ]
 
 export default function TermsPage() {
-  const hero: HeroDefinition = {
-    identity: "ZenTrust Terms",
-    headlineLines: ["Terms of Service"],
-    orientation: [
-      "These terms guide how you interact with ZenTrust online and describe our commitment to transparent operations.",
-      "Clear expectations build trust and protect the community we serve.",
-    ],
-  }
+  const contentId = "content"
 
   return (
     <div className="min-h-screen">
-      <UniversalHero hero={hero} />
+      <GlobalHero
+        kicker="ZenTrust Terms"
+        headline="Terms of Service for engaging with ZenTrust online."
+        dek="Clear expectations protect the community and keep our 501(c)(3) operations transparent. Full details are below."
+        belowAnchorId={contentId}
+        mode="confirm"
+        secondaryCta={{ label: "Jump to terms", href: `#${contentId}` }}
+      />
 
       {/* Key Terms Overview */}
-      <section className="py-24">
+      <section id={contentId} className="py-24">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-6">
