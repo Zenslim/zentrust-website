@@ -10,7 +10,6 @@ type Props = {
 
 export function RitualPause({ ritual, onActiveChange }: Props) {
   const [active, setActive] = useState(false);
-  const [used, setUsed] = useState(false);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const [showPoster, setShowPoster] = useState(false);
@@ -26,7 +25,7 @@ export function RitualPause({ ritual, onActiveChange }: Props) {
   );
 
   const hasVideo = Boolean(ritualDetails.videoSrc);
-  const available = hasVideo && !used;
+  const available = hasVideo;
 
   const endRitual = useCallback(() => {
     setActive(false);
@@ -35,7 +34,6 @@ export function RitualPause({ ritual, onActiveChange }: Props) {
 
   const beginRitual = () => {
     if (!available) return;
-    setUsed(true);
     setActive(true);
     onActiveChange?.(true);
   };
@@ -91,7 +89,7 @@ export function RitualPause({ ritual, onActiveChange }: Props) {
     }
   }, [active]);
 
-  if (!hasVideo) return null;
+  const affordanceVisible = hasVideo;
 
   return (
     <>
@@ -99,8 +97,12 @@ export function RitualPause({ ritual, onActiveChange }: Props) {
         type="button"
         onClick={beginRitual}
         disabled={!available}
-        className="text-sm font-medium text-foreground/70 disabled:text-foreground/30"
+        className={`mt-2 text-sm font-medium text-foreground/70 disabled:text-foreground/30 ${
+          affordanceVisible ? "" : "hidden"
+        }`}
         aria-pressed={active}
+        aria-hidden={!affordanceVisible}
+        tabIndex={affordanceVisible ? 0 : -1}
       >
         {ritualDetails.label}
       </button>
