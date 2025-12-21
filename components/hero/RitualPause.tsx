@@ -160,29 +160,29 @@ export function RitualPause({
         <span>Pause here ▷ tap</span>
       </button>
 
-      {active &&
-        createPortal(
-          <div className="fixed inset-0 z-[9999] overflow-hidden bg-black">
-            <video
-              ref={videoRef}
-              muted
-              playsInline
-              preload="auto"
-              className="h-full w-full object-cover"
-            >
-              <source src={source.src} type="video/mp4" />
-            </video>
+      {active && source &&
+  createPortal(
+    <div className="fixed inset-0 z-[9999] overflow-hidden bg-black">
+      <video
+        ref={videoRef}
+        muted
+        playsInline
+        preload="auto"
+        className="h-full w-full object-cover"
+      >
+        <source src={source.src} type="video/mp4" />
+      </video>
 
-            <button
-              type="button"
-              onClick={exitRitual}
-              className="absolute right-4 top-4 rounded-full bg-black/70 px-3 py-1.5 text-xs font-semibold text-white ring-1 ring-white/40 hover:bg-black/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
-            >
-              Close
-            </button>
-          </div>,
-          document.body
-        )}
+      <button
+        type="button"
+        onClick={exitRitual}
+        className="absolute right-4 top-4 rounded-full bg-black/70 px-3 py-1.5 text-xs font-semibold text-white ring-1 ring-white/40 hover:bg-black/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
+      >
+        Close
+      </button>
+    </div>,
+    document.body
+  )}
     </>
   );
 }
