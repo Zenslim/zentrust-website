@@ -18,7 +18,9 @@ export default function BPSSHealthPage() {
     "Why did things improve,",
     "but still not feel better?",
   ]}
-  dek="Many people assume this means they failed. This page explores why that assumption is often wrong — and what is usually missing when health is treated in parts."
+ dek={`Many people assume this means they failed.
+That assumption quietly causes harm.
+When health is treated in parts, improvement isn’t the same as healing.`}
   belowAnchorId={contentId}
   mode="confirm"
 />
