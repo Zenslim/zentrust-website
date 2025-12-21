@@ -9,8 +9,7 @@ type RitualVideo = {
 };
 
 /* ---------------------------------
-   IMPORTANT:
-   These paths MUST match /public exactly
+   MUST MATCH /public EXACTLY
 ---------------------------------- */
 
 const MOBILE_RITUALS: RitualVideo[] = [
@@ -35,24 +34,13 @@ type RitualPauseProps = {
   onActiveChange?: (active: boolean) => void;
 };
 
-/* ---------------------------------
-   Deterministic hash (pathname only)
----------------------------------- */
-const hashString = (value: string) => {
-  let hash = 0;
-  for (let i = 0; i < value.length; i++) {
-    hash = (hash << 5) - hash + value.charCodeAt(i);
-    hash |= 0;
-  }
-  return Math.abs(hash);
-};
-
 export function RitualPause({
   enabled = true,
   timeoutMs = 15000,
   onActiveChange,
 }: RitualPauseProps) {
   const pathname = usePathname();
+
   const [isMobile, setIsMobile] = useState(false);
   const [active, setActive] = useState(false);
   const [mobileIndex, setMobileIndex] = useState(0);
@@ -75,10 +63,23 @@ export function RitualPause({
   }, []);
 
   /* ---------------------------------
-     Deterministic ritual selection
+     SESSION-BASED ROTATION (KEY PART)
   ---------------------------------- */
   useEffect(() => {
-    const seed = hashString(pathname ?? "");
+    if (typeof window === "undefined") return;
+
+    const key = `ritual-index:${pathname}`;
+    const stored = sessionStorage.getItem(key);
+
+    let seed: number;
+
+    if (stored !== null) {
+      seed = Number(stored);
+    } else {
+      seed = Math.floor(Math.random() * 1_000_000);
+      sessionStorage.setItem(key, String(seed));
+    }
+
     if (MOBILE_RITUALS.length) {
       setMobileIndex(seed % MOBILE_RITUALS.length);
     }
@@ -133,7 +134,7 @@ export function RitualPause({
   }, [active]);
 
   /* ---------------------------------
-     SAFE playback (iOS compliant)
+     SAFE PLAYBACK (iOS-SAFE)
   ---------------------------------- */
   useEffect(() => {
     if (!active || !source) return;
