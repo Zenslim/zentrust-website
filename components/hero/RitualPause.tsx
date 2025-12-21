@@ -104,7 +104,7 @@ export function RitualPause({ ritual, onActiveChange }: Props) {
         type="button"
         onClick={beginRitual}
         disabled={!available}
-        className={`mt-2 text-sm font-medium text-foreground/70 disabled:text-foreground/30 ${
+        className={`mt-1 text-sm font-medium text-foreground/70 disabled:text-foreground/30 ${
           affordanceVisible ? "" : "hidden"
         }`}
         aria-pressed={active}
