@@ -8,13 +8,17 @@ export default function SyntropicEcologyPage() {
 
   return (
     <main className="min-h-screen bg-white text-neutral-900 dark:bg-neutral-950 dark:text-neutral-50">
-      <GlobalHero
-        kicker="Protocols"
-        headline="Syntropic Ecology — from transactional pity to systemic power."
-        dek="Restoring reciprocal relationships between life and land to regenerate ecosystems and community wealth."
-        belowAnchorId={contentId}
-        mode="confirm"
-      />
+  <GlobalHero
+  headlineLines={[
+    "What if the problem",
+    "was never the thing being fixed?",
+  ]}
+  dek={`We see the same pattern beyond health.
+When land is treated in parts, regeneration stalls.
+This page explores what changes when the frame gets larger.`}
+  belowAnchorId={contentId}
+  mode="confirm"
+/>
 
       {/* BODY */}
       <section id={contentId} className="mx-auto max-w-6xl px-4 py-12 sm:px-6 sm:py-16">
