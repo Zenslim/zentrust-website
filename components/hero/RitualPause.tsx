@@ -91,7 +91,7 @@ export function RitualPause({ ritual, onActiveChange }: Props) {
     }
   }, [active]);
 
-  if (!hasVideo) return null;
+  const affordanceVisible = hasVideo;
 
   return (
     <>
@@ -99,8 +99,12 @@ export function RitualPause({ ritual, onActiveChange }: Props) {
         type="button"
         onClick={beginRitual}
         disabled={!available}
-        className="text-sm font-medium text-foreground/70 disabled:text-foreground/30"
+        className={`text-sm font-medium text-foreground/70 disabled:text-foreground/30 ${
+          affordanceVisible ? "" : "hidden"
+        }`}
         aria-pressed={active}
+        aria-hidden={!affordanceVisible}
+        tabIndex={affordanceVisible ? 0 : -1}
       >
         {ritualDetails.label}
       </button>

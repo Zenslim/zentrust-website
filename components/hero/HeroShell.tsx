@@ -1,17 +1,17 @@
 "use client";
 
 import Link from "next/link";
-import type { ReactNode } from "react";
+import { RitualPause } from "./RitualPause";
 import { resolveHeroIcon, type HeroDefinition } from "./createHero";
 
 export function HeroShell({
   hero,
   hidden,
-  ritualAffordance,
+  onRitualActiveChange,
 }: {
   hero: HeroDefinition;
   hidden?: boolean;
-  ritualAffordance: ReactNode;
+  onRitualActiveChange?: (active: boolean) => void;
 }) {
   const Icon = resolveHeroIcon(hero.icon);
 
@@ -64,20 +64,18 @@ export function HeroShell({
           </p>
         )}
 
-        {(hero.cta || ritualAffordance) && (
-          <div className="flex flex-col items-center gap-3">
-            {hero.cta && (
-              <Link
-                href={hero.cta.href}
-                className="inline-flex items-center justify-center rounded-xl bg-primary px-6 py-3 text-primary-foreground shadow-md transition hover:shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50"
-              >
-                {hero.cta.label}
-              </Link>
-            )}
+        <div className="flex flex-col items-center gap-3">
+          {hero.cta && (
+            <Link
+              href={hero.cta.href}
+              className="inline-flex items-center justify-center rounded-xl bg-primary px-6 py-3 text-primary-foreground shadow-md transition hover:shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50"
+            >
+              {hero.cta.label}
+            </Link>
+          )}
 
-            {ritualAffordance}
-          </div>
-        )}
+          <RitualPause ritual={hero.ritual} onActiveChange={onRitualActiveChange} />
+        </div>
       </div>
     </section>
   );
