@@ -14,14 +14,21 @@ export default function BPSSHealthPage() {
     <main className="min-h-screen bg-white text-neutral-900 dark:bg-neutral-950 dark:text-neutral-50">
       {/* ================= HERO (DO NOT TOUCH) ================= */}
       <GlobalHero
-        headline={`Why did things improve,
+  headline={`Why did things improve,
 but still not feel better?`}
-        dek={`Many people assume this means they failed.
+  dek={`Many people assume this means they failed.
 That assumption quietly causes harm.
-When health is treated in parts, improvement isn’t the same as healing.`}
-        belowAnchorId={contentId}
-        mode="confirm"
-      />
+
+When health is treated in parts, improvement isn’t the same as healing.
+
+*Healing often begins when the question gently shifts from:*
+**“How do I manage this?”**
+*to*
+**“Why is this still happening at all?”**`}
+  belowAnchorId={contentId}
+  mode="confirm"
+/>
+
 
       {/* ================= CONTENT ================= */}
       <section
