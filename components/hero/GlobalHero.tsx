@@ -13,8 +13,13 @@ type GlobalHeroProps = {
   /** Newline-delimited headline */
   headline: string;
 
-  /** Newline-delimited supporting text */
-  dek?: string;
+  /**
+   * Supporting text.
+   * Can be:
+   * - string (newline-delimited, legacy behavior)
+   * - ReactNode (for rich typography: italics, bold, spacing)
+   */
+  dek?: string | React.ReactNode;
 
   /** IRS / trust marker */
   determination?: {
@@ -64,19 +69,21 @@ export function GlobalHero({
             {kicker}
           </p>
 
-          {/* Headline — MULTI-LINE */}
+          {/* Headline — MULTI-LINE STRING */}
           <div className="space-y-1 text-balance text-3xl font-semibold leading-tight tracking-tight text-foreground sm:text-4xl md:text-5xl">
             {headline.split("\n").map((line) => (
               <div key={line}>{line}</div>
             ))}
           </div>
 
-          {/* Dek — MULTI-LINE */}
+          {/* Dek — STRING OR JSX */}
           {dek && (
-            <div className="space-y-1 text-pretty text-base text-foreground/80 sm:text-lg">
-              {dek.split("\n").map((line) => (
-                <p key={line}>{line}</p>
-              ))}
+            <div className="space-y-2 text-pretty text-base text-foreground/80 sm:text-lg">
+              {typeof dek === "string"
+                ? dek.split("\n").map((line, i) => (
+                    <p key={i}>{line}</p>
+                  ))
+                : dek}
             </div>
           )}
 
