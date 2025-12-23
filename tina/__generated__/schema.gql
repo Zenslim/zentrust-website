@@ -56,6 +56,8 @@ type Query {
   document(collection: String, relativePath: String): DocumentNode!
   blog(relativePath: String): Blog!
   blogConnection(before: String, after: String, first: Float, last: Float, sort: String, filter: BlogFilter): BlogConnection!
+  questions(relativePath: String): Questions!
+  questionsConnection(before: String, after: String, first: Float, last: Float, sort: String, filter: QuestionsFilter): QuestionsConnection!
   pages(relativePath: String): Pages!
   pagesConnection(before: String, after: String, first: Float, last: Float, sort: String, filter: PagesFilter): PagesConnection!
   programs(relativePath: String): Programs!
@@ -68,6 +70,7 @@ type Query {
 
 input DocumentFilter {
   blog: BlogFilter
+  questions: QuestionsFilter
   pages: PagesFilter
   programs: ProgramsFilter
   stories: StoriesFilter
@@ -97,7 +100,7 @@ type Collection {
   documents(before: String, after: String, first: Float, last: Float, sort: String, filter: DocumentFilter, folder: String): DocumentConnection!
 }
 
-union DocumentNode = Blog | Pages | Programs | Stories | Team | Folder
+union DocumentNode = Blog | Questions | Pages | Programs | Stories | Team | Folder
 
 type Blog implements Node & Document {
   title: String!
@@ -169,6 +172,47 @@ type BlogConnection implements Connection {
   pageInfo: PageInfo!
   totalCount: Float!
   edges: [BlogConnectionEdges]
+}
+
+type Questions implements Node & Document {
+  question: String!
+  heroMode: String!
+  heroText: String!
+  youtubeUrl: String
+  category: String!
+  adEligible: Boolean
+  status: String!
+  body: JSON
+  id: ID!
+  _sys: SystemInfo!
+  _values: JSON!
+}
+
+input BooleanFilter {
+  eq: Boolean
+  exists: Boolean
+}
+
+input QuestionsFilter {
+  question: StringFilter
+  heroMode: StringFilter
+  heroText: StringFilter
+  youtubeUrl: StringFilter
+  category: StringFilter
+  adEligible: BooleanFilter
+  status: StringFilter
+  body: RichTextFilter
+}
+
+type QuestionsConnectionEdges {
+  cursor: String!
+  node: Questions
+}
+
+type QuestionsConnection implements Connection {
+  pageInfo: PageInfo!
+  totalCount: Float!
+  edges: [QuestionsConnectionEdges]
 }
 
 type PagesHeroImpactStats {
@@ -421,6 +465,8 @@ type Mutation {
   createFolder(collection: String, relativePath: String!): DocumentNode!
   updateBlog(relativePath: String!, params: BlogMutation!): Blog!
   createBlog(relativePath: String!, params: BlogMutation!): Blog!
+  updateQuestions(relativePath: String!, params: QuestionsMutation!): Questions!
+  createQuestions(relativePath: String!, params: QuestionsMutation!): Questions!
   updatePages(relativePath: String!, params: PagesMutation!): Pages!
   createPages(relativePath: String!, params: PagesMutation!): Pages!
   updatePrograms(relativePath: String!, params: ProgramsMutation!): Programs!
@@ -433,6 +479,7 @@ type Mutation {
 
 input DocumentUpdateMutation {
   blog: BlogMutation
+  questions: QuestionsMutation
   pages: PagesMutation
   programs: ProgramsMutation
   stories: StoriesMutation
@@ -442,6 +489,7 @@ input DocumentUpdateMutation {
 
 input DocumentMutation {
   blog: BlogMutation
+  questions: QuestionsMutation
   pages: PagesMutation
   programs: ProgramsMutation
   stories: StoriesMutation
@@ -460,6 +508,17 @@ input BlogMutation {
   audio: String
   category: String
   heroImage: String
+  body: JSON
+}
+
+input QuestionsMutation {
+  question: String
+  heroMode: String
+  heroText: String
+  youtubeUrl: String
+  category: String
+  adEligible: Boolean
+  status: String
   body: JSON
 }
 

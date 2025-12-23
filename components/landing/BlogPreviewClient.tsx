@@ -30,7 +30,7 @@ export function BlogPreviewClient({ posts }: Props) {
         <Stagger className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
           {posts.length === 0 && (
             <FadeIn className="col-span-full rounded-3xl border border-border bg-card p-8 text-muted-foreground">
-              Blog posts coming soon. Stay tuned for the latest research and program milestones.
+              New stories will appear here soon. Stay tuned for the latest research and program milestones.
             </FadeIn>
           )}
 

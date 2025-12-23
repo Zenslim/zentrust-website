@@ -11,7 +11,7 @@ const footerLinks = {
   organization: [
     { name: 'About Us', href: '/about' },
     { name: 'Governance & Policies', href: '/governance' },
-    { name: 'Blog', href: '/blog' },
+    { name: 'Questions', href: '/questions' },
     { name: 'Contact Us', href: '/contact' },
   ],
   resources: [

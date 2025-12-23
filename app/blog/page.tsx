@@ -68,7 +68,7 @@ export default async function BlogPage() {
                 {heroImage && (
                   <img
                     src={heroImage}
-                    alt={post?.title || "Blog hero image"}
+                    alt={post?.title || "Legacy post hero image"}
                     className="h-48 w-full rounded-xl object-cover"
                   />
                 )}

@@ -31,7 +31,7 @@ const config = defineConfig({
        * ----------------------------------------------------- */
       {
         name: "blog",
-        label: "Blog",
+        label: "Legacy Posts",
         path: "content/blog",
         format: "mdx",
         defaultItem: () => ({
@@ -39,6 +39,7 @@ const config = defineConfig({
           author: "ZenTrust Team",
         }),
         ui: {
+          allowedActions: { create: false, delete: false },
           filename: {
             readonly: true,
           },
@@ -104,6 +105,86 @@ const config = defineConfig({
           },
           { name: "category", type: "string", required: false },
           { name: "heroImage", type: "image", required: false },
+          { name: "body", type: "rich-text", isBody: true },
+        ],
+      },
+
+      /* -----------------------------------------------------
+       * QUESTIONS
+       * ----------------------------------------------------- */
+      {
+        name: "questions",
+        label: "Questions",
+        path: "content/questions",
+        format: "mdx",
+        defaultItem: () => ({
+          status: "draft",
+          adEligible: false,
+          heroMode: "answer_below",
+        }),
+        ui: {
+          router: ({ document }) => `/questions/${document._sys.filename}`,
+        },
+        fields: [
+          {
+            name: "question",
+            label: "Question",
+            type: "string",
+            isTitle: true,
+            required: true,
+          },
+          {
+            name: "heroMode",
+            label: "Hero Mode",
+            type: "string",
+            required: true,
+            options: [
+              { label: "Full answer in hero", value: "full_answer" },
+              { label: "Answer below hero", value: "answer_below" },
+            ],
+            ui: {
+              component: "radio-group",
+            },
+          },
+          {
+            name: "heroText",
+            label: "Hero Text",
+            type: "string",
+            ui: { component: "textarea" },
+            required: true,
+          },
+          {
+            name: "youtubeUrl",
+            label: "YouTube Explainer URL",
+            type: "string",
+          },
+          {
+            name: "category",
+            label: "Category",
+            type: "string",
+            required: true,
+            options: [
+              "Nature & Land",
+              "Health & Suffering",
+              "Mind & Experience",
+              "Schools & Systems",
+              "Meaning & Seeking",
+              "Tools & Technology",
+            ],
+          },
+          {
+            name: "adEligible",
+            label: "Ad Eligible",
+            type: "boolean",
+            required: false,
+          },
+          {
+            name: "status",
+            label: "Status",
+            type: "string",
+            required: true,
+            options: ["draft", "published", "archived"],
+          },
           { name: "body", type: "rich-text", isBody: true },
         ],
       },

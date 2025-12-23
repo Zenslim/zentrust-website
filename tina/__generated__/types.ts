@@ -84,6 +84,8 @@ export type Query = {
   document: DocumentNode;
   blog: Blog;
   blogConnection: BlogConnection;
+  questions: Questions;
+  questionsConnection: QuestionsConnection;
   pages: Pages;
   pagesConnection: PagesConnection;
   programs: Programs;
@@ -128,6 +130,21 @@ export type QueryBlogConnectionArgs = {
   last?: InputMaybe<Scalars['Float']['input']>;
   sort?: InputMaybe<Scalars['String']['input']>;
   filter?: InputMaybe<BlogFilter>;
+};
+
+
+export type QueryQuestionsArgs = {
+  relativePath?: InputMaybe<Scalars['String']['input']>;
+};
+
+
+export type QueryQuestionsConnectionArgs = {
+  before?: InputMaybe<Scalars['String']['input']>;
+  after?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Float']['input']>;
+  last?: InputMaybe<Scalars['Float']['input']>;
+  sort?: InputMaybe<Scalars['String']['input']>;
+  filter?: InputMaybe<QuestionsFilter>;
 };
 
 
@@ -192,6 +209,7 @@ export type QueryTeamConnectionArgs = {
 
 export type DocumentFilter = {
   blog?: InputMaybe<BlogFilter>;
+  questions?: InputMaybe<QuestionsFilter>;
   pages?: InputMaybe<PagesFilter>;
   programs?: InputMaybe<ProgramsFilter>;
   stories?: InputMaybe<StoriesFilter>;
@@ -235,7 +253,7 @@ export type CollectionDocumentsArgs = {
   folder?: InputMaybe<Scalars['String']['input']>;
 };
 
-export type DocumentNode = Blog | Pages | Programs | Stories | Team | Folder;
+export type DocumentNode = Blog | Questions | Pages | Programs | Stories | Team | Folder;
 
 export type Blog = Node & Document & {
   __typename?: 'Blog';
@@ -310,6 +328,50 @@ export type BlogConnection = Connection & {
   pageInfo: PageInfo;
   totalCount: Scalars['Float']['output'];
   edges?: Maybe<Array<Maybe<BlogConnectionEdges>>>;
+};
+
+export type Questions = Node & Document & {
+  __typename?: 'Questions';
+  question: Scalars['String']['output'];
+  heroMode: Scalars['String']['output'];
+  heroText: Scalars['String']['output'];
+  youtubeUrl?: Maybe<Scalars['String']['output']>;
+  category: Scalars['String']['output'];
+  adEligible?: Maybe<Scalars['Boolean']['output']>;
+  status: Scalars['String']['output'];
+  body?: Maybe<Scalars['JSON']['output']>;
+  id: Scalars['ID']['output'];
+  _sys: SystemInfo;
+  _values: Scalars['JSON']['output'];
+};
+
+export type BooleanFilter = {
+  eq?: InputMaybe<Scalars['Boolean']['input']>;
+  exists?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+export type QuestionsFilter = {
+  question?: InputMaybe<StringFilter>;
+  heroMode?: InputMaybe<StringFilter>;
+  heroText?: InputMaybe<StringFilter>;
+  youtubeUrl?: InputMaybe<StringFilter>;
+  category?: InputMaybe<StringFilter>;
+  adEligible?: InputMaybe<BooleanFilter>;
+  status?: InputMaybe<StringFilter>;
+  body?: InputMaybe<RichTextFilter>;
+};
+
+export type QuestionsConnectionEdges = {
+  __typename?: 'QuestionsConnectionEdges';
+  cursor: Scalars['String']['output'];
+  node?: Maybe<Questions>;
+};
+
+export type QuestionsConnection = Connection & {
+  __typename?: 'QuestionsConnection';
+  pageInfo: PageInfo;
+  totalCount: Scalars['Float']['output'];
+  edges?: Maybe<Array<Maybe<QuestionsConnectionEdges>>>;
 };
 
 export type PagesHeroImpactStats = {
@@ -582,6 +644,8 @@ export type Mutation = {
   createFolder: DocumentNode;
   updateBlog: Blog;
   createBlog: Blog;
+  updateQuestions: Questions;
+  createQuestions: Questions;
   updatePages: Pages;
   createPages: Pages;
   updatePrograms: Programs;
@@ -638,6 +702,18 @@ export type MutationCreateBlogArgs = {
 };
 
 
+export type MutationUpdateQuestionsArgs = {
+  relativePath: Scalars['String']['input'];
+  params: QuestionsMutation;
+};
+
+
+export type MutationCreateQuestionsArgs = {
+  relativePath: Scalars['String']['input'];
+  params: QuestionsMutation;
+};
+
+
 export type MutationUpdatePagesArgs = {
   relativePath: Scalars['String']['input'];
   params: PagesMutation;
@@ -687,6 +763,7 @@ export type MutationCreateTeamArgs = {
 
 export type DocumentUpdateMutation = {
   blog?: InputMaybe<BlogMutation>;
+  questions?: InputMaybe<QuestionsMutation>;
   pages?: InputMaybe<PagesMutation>;
   programs?: InputMaybe<ProgramsMutation>;
   stories?: InputMaybe<StoriesMutation>;
@@ -696,6 +773,7 @@ export type DocumentUpdateMutation = {
 
 export type DocumentMutation = {
   blog?: InputMaybe<BlogMutation>;
+  questions?: InputMaybe<QuestionsMutation>;
   pages?: InputMaybe<PagesMutation>;
   programs?: InputMaybe<ProgramsMutation>;
   stories?: InputMaybe<StoriesMutation>;
@@ -714,6 +792,17 @@ export type BlogMutation = {
   audio?: InputMaybe<Scalars['String']['input']>;
   category?: InputMaybe<Scalars['String']['input']>;
   heroImage?: InputMaybe<Scalars['String']['input']>;
+  body?: InputMaybe<Scalars['JSON']['input']>;
+};
+
+export type QuestionsMutation = {
+  question?: InputMaybe<Scalars['String']['input']>;
+  heroMode?: InputMaybe<Scalars['String']['input']>;
+  heroText?: InputMaybe<Scalars['String']['input']>;
+  youtubeUrl?: InputMaybe<Scalars['String']['input']>;
+  category?: InputMaybe<Scalars['String']['input']>;
+  adEligible?: InputMaybe<Scalars['Boolean']['input']>;
+  status?: InputMaybe<Scalars['String']['input']>;
   body?: InputMaybe<Scalars['JSON']['input']>;
 };
 
@@ -812,6 +901,8 @@ export type TeamMutation = {
 
 export type BlogPartsFragment = { __typename: 'Blog', title: string, date?: string | null, author?: string | null, excerpt?: string | null, primaryCategory: string, categories?: Array<string | null> | null, tags?: Array<string | null> | null, tones?: Array<string | null> | null, audio?: string | null, category?: string | null, heroImage?: string | null, body?: any | null };
 
+export type QuestionsPartsFragment = { __typename: 'Questions', question: string, heroMode: string, heroText: string, youtubeUrl?: string | null, category: string, adEligible?: boolean | null, status: string, body?: any | null };
+
 export type PagesPartsFragment = { __typename: 'Pages', hero?: { __typename: 'PagesHero', badge?: string | null, titleLine1?: string | null, titleHighlight?: string | null, titleLine3?: string | null, subtitle?: string | null, primaryCta?: string | null, primaryCtaLink?: string | null, secondaryCta?: string | null, secondaryCtaLink?: string | null, achievements?: Array<string | null> | null, impactStats?: Array<{ __typename: 'PagesHeroImpactStats', number?: string | null, label?: string | null } | null> | null, callout?: { __typename: 'PagesHeroCallout', title?: string | null, subtitle?: string | null, cta?: string | null, ctaLink?: string | null } | null } | null, stats?: Array<{ __typename: 'PagesStats', number?: string | null, label?: string | null, description?: string | null } | null> | null, programsSection?: { __typename: 'PagesProgramsSection', title?: string | null, subtitle?: string | null, ctaText?: string | null, ctaLink?: string | null } | null, storiesSection?: { __typename: 'PagesStoriesSection', title?: string | null, subtitle?: string | null, ctaText?: string | null, ctaLink?: string | null } | null, newsletter?: { __typename: 'PagesNewsletter', title?: string | null, subtitle?: string | null, emailPlaceholder?: string | null, buttonText?: string | null, disclaimer?: string | null } | null };
 
 export type ProgramsPartsFragment = { __typename: 'Programs', title: string, heroImage?: string | null, body?: any | null, category?: string | null, impactMetric?: string | null, impactValue?: string | null, impactUnit?: string | null };
@@ -838,6 +929,25 @@ export type BlogConnectionQueryVariables = Exact<{
 
 
 export type BlogConnectionQuery = { __typename?: 'Query', blogConnection: { __typename?: 'BlogConnection', totalCount: number, pageInfo: { __typename?: 'PageInfo', hasPreviousPage: boolean, hasNextPage: boolean, startCursor: string, endCursor: string }, edges?: Array<{ __typename?: 'BlogConnectionEdges', cursor: string, node?: { __typename: 'Blog', id: string, title: string, date?: string | null, author?: string | null, excerpt?: string | null, primaryCategory: string, categories?: Array<string | null> | null, tags?: Array<string | null> | null, tones?: Array<string | null> | null, audio?: string | null, category?: string | null, heroImage?: string | null, body?: any | null, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, hasReferences?: boolean | null, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string } } | null } | null> | null } };
+
+export type QuestionsQueryVariables = Exact<{
+  relativePath: Scalars['String']['input'];
+}>;
+
+
+export type QuestionsQuery = { __typename?: 'Query', questions: { __typename: 'Questions', id: string, question: string, heroMode: string, heroText: string, youtubeUrl?: string | null, category: string, adEligible?: boolean | null, status: string, body?: any | null, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, hasReferences?: boolean | null, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string } } };
+
+export type QuestionsConnectionQueryVariables = Exact<{
+  before?: InputMaybe<Scalars['String']['input']>;
+  after?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Float']['input']>;
+  last?: InputMaybe<Scalars['Float']['input']>;
+  sort?: InputMaybe<Scalars['String']['input']>;
+  filter?: InputMaybe<QuestionsFilter>;
+}>;
+
+
+export type QuestionsConnectionQuery = { __typename?: 'Query', questionsConnection: { __typename?: 'QuestionsConnection', totalCount: number, pageInfo: { __typename?: 'PageInfo', hasPreviousPage: boolean, hasNextPage: boolean, startCursor: string, endCursor: string }, edges?: Array<{ __typename?: 'QuestionsConnectionEdges', cursor: string, node?: { __typename: 'Questions', id: string, question: string, heroMode: string, heroText: string, youtubeUrl?: string | null, category: string, adEligible?: boolean | null, status: string, body?: any | null, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, hasReferences?: boolean | null, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string } } | null } | null> | null } };
 
 export type PagesQueryVariables = Exact<{
   relativePath: Scalars['String']['input'];
@@ -929,6 +1039,19 @@ export const BlogPartsFragmentDoc = gql`
   audio
   category
   heroImage
+  body
+}
+    `;
+export const QuestionsPartsFragmentDoc = gql`
+    fragment QuestionsParts on Questions {
+  __typename
+  question
+  heroMode
+  heroText
+  youtubeUrl
+  category
+  adEligible
+  status
   body
 }
     `;
@@ -1083,6 +1206,63 @@ export const BlogConnectionDocument = gql`
   }
 }
     ${BlogPartsFragmentDoc}`;
+export const QuestionsDocument = gql`
+    query questions($relativePath: String!) {
+  questions(relativePath: $relativePath) {
+    ... on Document {
+      _sys {
+        filename
+        basename
+        hasReferences
+        breadcrumbs
+        path
+        relativePath
+        extension
+      }
+      id
+    }
+    ...QuestionsParts
+  }
+}
+    ${QuestionsPartsFragmentDoc}`;
+export const QuestionsConnectionDocument = gql`
+    query questionsConnection($before: String, $after: String, $first: Float, $last: Float, $sort: String, $filter: QuestionsFilter) {
+  questionsConnection(
+    before: $before
+    after: $after
+    first: $first
+    last: $last
+    sort: $sort
+    filter: $filter
+  ) {
+    pageInfo {
+      hasPreviousPage
+      hasNextPage
+      startCursor
+      endCursor
+    }
+    totalCount
+    edges {
+      cursor
+      node {
+        ... on Document {
+          _sys {
+            filename
+            basename
+            hasReferences
+            breadcrumbs
+            path
+            relativePath
+            extension
+          }
+          id
+        }
+        ...QuestionsParts
+      }
+    }
+  }
+}
+    ${QuestionsPartsFragmentDoc}`;
 export const PagesDocument = gql`
     query pages($relativePath: String!) {
   pages(relativePath: $relativePath) {
@@ -1320,6 +1500,12 @@ export type Requester<C= {}> = <R, V>(doc: DocumentNode, vars?: V, options?: C) 
     blogConnection(variables?: BlogConnectionQueryVariables, options?: C): Promise<{data: BlogConnectionQuery, errors?: { message: string, locations: { line: number, column: number }[], path: string[] }[], variables: BlogConnectionQueryVariables, query: string}> {
         return requester<{data: BlogConnectionQuery, errors?: { message: string, locations: { line: number, column: number }[], path: string[] }[], variables: BlogConnectionQueryVariables, query: string}, BlogConnectionQueryVariables>(BlogConnectionDocument, variables, options);
       },
+    questions(variables: QuestionsQueryVariables, options?: C): Promise<{data: QuestionsQuery, errors?: { message: string, locations: { line: number, column: number }[], path: string[] }[], variables: QuestionsQueryVariables, query: string}> {
+        return requester<{data: QuestionsQuery, errors?: { message: string, locations: { line: number, column: number }[], path: string[] }[], variables: QuestionsQueryVariables, query: string}, QuestionsQueryVariables>(QuestionsDocument, variables, options);
+      },
+    questionsConnection(variables?: QuestionsConnectionQueryVariables, options?: C): Promise<{data: QuestionsConnectionQuery, errors?: { message: string, locations: { line: number, column: number }[], path: string[] }[], variables: QuestionsConnectionQueryVariables, query: string}> {
+        return requester<{data: QuestionsConnectionQuery, errors?: { message: string, locations: { line: number, column: number }[], path: string[] }[], variables: QuestionsConnectionQueryVariables, query: string}, QuestionsConnectionQueryVariables>(QuestionsConnectionDocument, variables, options);
+      },
     pages(variables: PagesQueryVariables, options?: C): Promise<{data: PagesQuery, errors?: { message: string, locations: { line: number, column: number }[], path: string[] }[], variables: PagesQueryVariables, query: string}> {
         return requester<{data: PagesQuery, errors?: { message: string, locations: { line: number, column: number }[], path: string[] }[], variables: PagesQueryVariables, query: string}, PagesQueryVariables>(PagesDocument, variables, options);
       },
@@ -1391,7 +1577,7 @@ export const ExperimentalGetTinaClient = () =>
   getSdk(
     generateRequester(
       createClient({
-        url: "http://localhost:4001/graphql",
+        url: "https://content.tinajs.io/2.0/content/local/github/main",
         queries,
       })
     )

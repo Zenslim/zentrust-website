@@ -14,6 +14,18 @@ fragment BlogParts on Blog {
   body
 }
 
+fragment QuestionsParts on Questions {
+  __typename
+  question
+  heroMode
+  heroText
+  youtubeUrl
+  category
+  adEligible
+  status
+  body
+}
+
 fragment PagesParts on Pages {
   __typename
   hero {
