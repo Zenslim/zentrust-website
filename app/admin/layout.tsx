@@ -19,7 +19,7 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
 
     cmsInstance.flags.set("tina-admin", true);
 
-    // Generated GraphQL client (collections, documents, etc.)
+    // Register generated GraphQL client for collections/documents
     cmsInstance.registerApi("tina", client);
 
     // Admin API
@@ -29,8 +29,12 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
   }, []);
 
   return (
-    <TinaCloudProvider>
-      <TinaCMSProvider cms={cms}>{children}</TinaCMSProvider>
+    <TinaCloudProvider
+      tinaGraphQLVersion="0.0.1"
+    >
+      <TinaCMSProvider cms={cms}>
+        {children}
+      </TinaCMSProvider>
     </TinaCloudProvider>
   );
 }
