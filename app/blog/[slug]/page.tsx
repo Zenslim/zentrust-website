@@ -68,11 +68,9 @@ export default async function BlogPostPage({
 
       <div id={contentId} className="pt-[110px] md:pt-[130px]">
         <TinaBlogClient
-          data={{
-            post: {
-              ...post,
-              date: post?.date ?? "",
-            },
+          post={{
+            ...post,
+            date: post?.date ?? "",
           }}
           relatedPosts={relatedPosts}
           prevPost={prevPost}

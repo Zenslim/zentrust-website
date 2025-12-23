@@ -7,7 +7,7 @@ import { calculateReadTime } from "@/lib/readTime";
 import { renderRichText, renderStaticMarkdown } from "@/lib/richTextRenderer";
 
 interface TinaBlogClientProps {
-  data: any;
+  post: any;
   relatedPosts?: any[];
   prevPost?: any | null;
   nextPost?: any | null;
@@ -39,13 +39,11 @@ const getHero = (img: any) =>
   typeof img === "string" ? img : img?.src || "/images/default.jpg";
 
 const TinaBlogClient: FC<TinaBlogClientProps> = ({
-  data,
+  post,
   relatedPosts = [],
   prevPost,
   nextPost,
 }) => {
-  const post = data?.post;
-
   if (!post) {
     return <div className="text-center py-20 text-foreground">Post not found.</div>;
   }
