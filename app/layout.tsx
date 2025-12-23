@@ -3,7 +3,6 @@ export const fetchCache = "force-no-store";
 export const revalidate = 0;
 
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
 import { Suspense } from "react";
 import Script from "next/script";
 import "./globals.css";
@@ -13,11 +12,6 @@ import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { TrackPageView } from "@/components/analytics/TrackPageView";
 import { DarkSky } from "@/components/background/DarkSky";
-
-const inter = Inter({
-  subsets: ["latin"],
-  display: "swap", // ✅ avoids font blocking paint
-});
 
 export const metadata: Metadata = {
   title: {
@@ -81,14 +75,14 @@ export default function RootLayout({
         )}
       </head>
 
-      <body className={inter.className} suppressHydrationWarning>
+      <body className="font-sans" suppressHydrationWarning>
         <Suspense fallback={null}>
           <TrackPageView />
         </Suspense>
 
-       <Suspense fallback={null}>
-  <DarkSky />
-</Suspense>
+        <Suspense fallback={null}>
+          <DarkSky />
+        </Suspense>
 
         <ThemeProvider
           attribute="class"

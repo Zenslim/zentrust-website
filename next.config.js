@@ -17,11 +17,6 @@ const nextConfig = {
         hostname: "images.unsplash.com",
         pathname: "/**",
       },
-      {
-        protocol: "https",
-        hostname: "assets.tina.io",
-        pathname: "/**",
-      },
     ],
     formats: ["image/avif", "image/webp"],
   },

@@ -3,10 +3,6 @@ export const runtime = "nodejs";
 import { NextResponse } from "next/server";
 import Stripe from "stripe";
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  typescript: true,
-});
-
 // -----------------------------------------------------------------------------
 // Config
 // -----------------------------------------------------------------------------
@@ -16,15 +12,28 @@ const MAX_AMOUNT_USD = 1000;
 
 type Frequency = "once" | "monthly";
 
-const MONTHLY_PRICE_ID = process.env.STRIPE_MONTHLY_PRICE_ID!;
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL!;
-
 // -----------------------------------------------------------------------------
 // POST handler
 // -----------------------------------------------------------------------------
 
 export async function POST(req: Request) {
   try {
+    const stripeSecretKey = process.env.STRIPE_SECRET_KEY;
+    const monthlyPriceId = process.env.STRIPE_MONTHLY_PRICE_ID;
+    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL;
+
+    if (!stripeSecretKey || !siteUrl) {
+      console.error("❌ Stripe environment variables are missing.");
+      return NextResponse.json(
+        { error: "Stripe configuration missing" },
+        { status: 500 }
+      );
+    }
+
+    const stripe = new Stripe(stripeSecretKey, {
+      typescript: true,
+    });
+
     const { amount, frequency } = (await req.json()) as {
       amount: number;
       frequency: Frequency;
@@ -69,8 +78,8 @@ export async function POST(req: Request) {
             quantity: 1,
           },
         ],
-        success_url: `${SITE_URL}/stewardship/thank-you`,
-        cancel_url: `${SITE_URL}/stewardship/checkout`,
+        success_url: `${siteUrl}/stewardship/thank-you`,
+        cancel_url: `${siteUrl}/stewardship/checkout`,
         metadata: {
           purpose: "zentrust_stewardship",
           frequency: "once",
@@ -83,7 +92,7 @@ export async function POST(req: Request) {
 
     // ------------------ MONTHLY (FIXED) ------------------
 
-    if (!MONTHLY_PRICE_ID) {
+    if (!monthlyPriceId) {
       throw new Error("Missing STRIPE_MONTHLY_PRICE_ID");
     }
 
@@ -92,12 +101,12 @@ export async function POST(req: Request) {
       payment_method_types: ["card"],
       line_items: [
         {
-          price: MONTHLY_PRICE_ID, // $1/month
+          price: monthlyPriceId, // $1/month
           quantity: amount,         // slider value
         },
       ],
-      success_url: `${SITE_URL}/stewardship/thank-you`,
-      cancel_url: `${SITE_URL}/stewardship/checkout`,
+      success_url: `${siteUrl}/stewardship/thank-you`,
+      cancel_url: `${siteUrl}/stewardship/checkout`,
       subscription_data: {
         metadata: {
           purpose: "zentrust_stewardship",

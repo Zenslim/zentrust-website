@@ -3,7 +3,7 @@ export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
 import { notFound } from "next/navigation";
-import TinaBlogClient from "./TinaBlogClient";
+import BlogPostClient from "./BlogPostClient";
 import { GlobalHero } from "@/components/hero/GlobalHero";
 import { getAllBlogPosts, getBlogPostBySlug } from "@/lib/blog";
 
@@ -67,7 +67,7 @@ export default async function BlogPostPage({
       />
 
       <div id={contentId} className="pt-[110px] md:pt-[130px]">
-        <TinaBlogClient
+        <BlogPostClient
           post={{
             ...post,
             date: post?.date ?? "",

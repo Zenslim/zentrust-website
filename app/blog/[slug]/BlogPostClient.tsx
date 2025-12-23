@@ -6,7 +6,7 @@ import ReadingProgress from "@/components/ReadingProgress";
 import { calculateReadTime } from "@/lib/readTime";
 import { renderRichText, renderStaticMarkdown } from "@/lib/richTextRenderer";
 
-interface TinaBlogClientProps {
+interface BlogPostClientProps {
   post: any;
   relatedPosts?: any[];
   prevPost?: any | null;
@@ -34,11 +34,11 @@ const richTextClasses = {
   img: "rounded-lg my-6 mx-auto shadow-md max-w-full",
 };
 
-/** Normalize Tina heroImage value (string OR {src}) */
+/** Normalize heroImage value (string OR {src}) */
 const getHero = (img: any) =>
   typeof img === "string" ? img : img?.src || "/images/default.jpg";
 
-const TinaBlogClient: FC<TinaBlogClientProps> = ({
+const BlogPostClient: FC<BlogPostClientProps> = ({
   post,
   relatedPosts = [],
   prevPost,
@@ -224,4 +224,4 @@ const TinaBlogClient: FC<TinaBlogClientProps> = ({
   );
 };
 
-export default TinaBlogClient;
+export default BlogPostClient;

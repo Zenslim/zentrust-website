@@ -42,11 +42,6 @@ export default async function BlogPage() {
           )}
 
           {posts.map((post) => {
-            /**
-             * IMPORTANT:
-             * Tina media fields resolve to STRING URLs.
-             * They are NOT objects and do NOT have `.src`.
-             */
             const heroImage =
               typeof post?.heroImage === "string" ? post.heroImage : null;
 

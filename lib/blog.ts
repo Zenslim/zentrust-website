@@ -1,6 +1,5 @@
 import fs from 'fs'
 import path from 'path'
-import matter from 'gray-matter'
 
 export type BlogPost = {
   title: string
@@ -19,6 +18,49 @@ export type BlogPost = {
 
 const BLOG_DIR = path.join(process.cwd(), 'content', 'blog')
 
+type FrontMatterParseResult = {
+  data: Record<string, any>
+  content: string
+}
+
+function parseFrontMatter(fileContent: string): FrontMatterParseResult {
+  const frontMatterRegex = /^---\s*\n([\s\S]*?)\n---\s*\n?/
+  const match = fileContent.match(frontMatterRegex)
+
+  if (!match) {
+    return { data: {}, content: fileContent }
+  }
+
+  const rawFrontMatter = match[1]
+  const content = fileContent.slice(match[0].length)
+
+  const data: Record<string, any> = {}
+  let currentArrayKey: string | null = null
+
+  rawFrontMatter.split(/\r?\n/).forEach((line) => {
+    const arrayItem = line.match(/^\s*-\s*(.*)$/)
+    if (arrayItem && currentArrayKey) {
+      data[currentArrayKey] = data[currentArrayKey] || []
+      data[currentArrayKey].push(arrayItem[1])
+      return
+    }
+
+    const keyValue = line.match(/^([A-Za-z0-9_-]+):\s*(.*)$/)
+    if (keyValue) {
+      const [, key, value] = keyValue
+      if (value) {
+        data[key] = value
+        currentArrayKey = null
+      } else {
+        data[key] = []
+        currentArrayKey = key
+      }
+    }
+  })
+
+  return { data, content }
+}
+
 function getBlogFiles() {
   if (!fs.existsSync(BLOG_DIR)) return []
 
@@ -30,11 +72,11 @@ function getBlogFiles() {
 function parseBlogFile(file: string): BlogPost {
   const slug = file.replace(/\.mdx?$/, '')
   const raw = fs.readFileSync(path.join(BLOG_DIR, file), 'utf8')
-  const { data, content } = matter(raw)
+  const { data, content } = parseFrontMatter(raw)
 
   return {
-    title: data.title ?? slug,
-    excerpt: data.excerpt ?? content.slice(0, 160),
+    title: (data.title as string) ?? slug,
+    excerpt: (data.excerpt as string) ?? content.slice(0, 160),
     author: data.author,
     date: data.date,
     primaryCategory: data.primaryCategory,
