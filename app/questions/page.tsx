@@ -1,6 +1,6 @@
 import Link from "next/link";
-import client from "@/tina/__generated__/client";
 import { GlobalHero } from "@/components/hero/GlobalHero";
+import { fetchQuestions } from "@/lib/questions";
 
 const CATEGORY_ORDER = [
   "Nature & Land",
@@ -13,11 +13,7 @@ const CATEGORY_ORDER = [
 
 export default async function QuestionsIndexPage() {
   const contentId = "questions-list";
-  const questionsRes = await client.queries.questionsConnection();
-  const questions =
-    questionsRes?.data?.questionsConnection?.edges
-      ?.map((edge) => edge?.node)
-      .filter((node): node is NonNullable<typeof node> => Boolean(node)) || [];
+  const questions = await fetchQuestions();
 
   const published = questions.filter(
     (question) => question.status === "published",

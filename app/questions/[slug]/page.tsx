@@ -1,10 +1,9 @@
-import client from "@/tina/__generated__/client";
 import { GlobalHero } from "@/components/hero/GlobalHero";
 import { RitualPause } from "@/components/hero/RitualPause";
 import { TinaMarkdown } from "tinacms/dist/rich-text";
+import { fetchQuestions } from "@/lib/questions";
 import { notFound } from "next/navigation";
 
-type QuestionStatus = "draft" | "published" | "archived";
 type HeroMode = "full_answer" | "answer_below";
 
 function extractYouTubeId(url: string): string | null {
@@ -78,11 +77,13 @@ export default async function QuestionPage({
 }: {
   params: { slug: string };
 }) {
-  const relativePath = `${params.slug}.mdx`;
-  const result = await client.queries.questions({ relativePath }).catch(() => null);
-  const question = result?.data?.questions;
+  const questions = await fetchQuestions();
+  const question = questions.find(
+    (item) =>
+      item.status === "published" && item._sys.filename === params.slug,
+  );
 
-  if (!question || question.status !== "published") {
+  if (!question) {
     notFound();
   }
 
@@ -122,15 +123,7 @@ export default async function QuestionPage({
 }
 
 export async function generateStaticParams() {
-  const questionsRes = await client.queries
-    .questionsConnection()
-    .catch(() => null);
-
-  const questions =
-    questionsRes?.data?.questionsConnection?.edges
-      ?.map((edge) => edge?.node)
-      .filter((node): node is NonNullable<typeof node> => Boolean(node)) ?? [];
-
+  const questions = await fetchQuestions();
   return questions
     .filter((question) => question.status === "published")
     .map((question) => ({ slug: question._sys.filename }));
