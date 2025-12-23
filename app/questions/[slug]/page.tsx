@@ -1,9 +1,5 @@
 import type { ReactNode } from "react";
-import {
-  fetchQuestionBySlug,
-  fetchQuestions,
-  getPublishedQuestionSlugsFromFiles,
-} from "@/lib/questions";
+import { fetchQuestionBySlug, getPublishedQuestionSlugsFromFiles } from "@/lib/questions";
 import { GlobalHero } from "@/components/hero/GlobalHero";
 import { RitualPause } from "@/components/hero/RitualPause";
 import { notFound } from "next/navigation";
@@ -217,20 +213,7 @@ export default async function QuestionPage({
 }
 
 export async function generateStaticParams() {
-  const questions = await fetchQuestions();
+  const slugs = getPublishedQuestionSlugsFromFiles();
 
-  const slugsFromApi =
-    questions
-      .filter(
-        (item): item is NonNullable<typeof item> =>
-          !!item && item.status === "published" && !!item._sys?.filename,
-      )
-      .map((item) => item._sys.filename) ?? [];
-
-  const slugsFromFiles = getPublishedQuestionSlugsFromFiles();
-  const uniqueSlugs = Array.from(new Set([...slugsFromApi, ...slugsFromFiles]));
-
-  return uniqueSlugs.map((slug) => ({
-    slug,
-  }));
+  return slugs.map((slug) => ({ slug }));
 }
