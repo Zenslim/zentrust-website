@@ -371,6 +371,4 @@ const config = defineConfig({
   },
 });
 
-console.log("TINA MEDIA CONFIG:", config.media);
-
 export default config;
