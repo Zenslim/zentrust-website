@@ -3,7 +3,7 @@
 import type { ReactNode } from "react";
 import { useMemo } from "react";
 import { TinaCMS, TinaAdminApi } from "tinacms";
-import { TinaProvider } from "tinacms/dist/react";
+import { TinaEditProvider } from "tinacms/dist/edit-state";
 import client from "@/tina/__generated__/client";
 
 export default function AdminLayout({ children }: { children: ReactNode }) {
@@ -20,5 +20,5 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
     return cmsInstance;
   }, []);
 
-  return <TinaProvider cms={cms}>{children}</TinaProvider>;
+  return <TinaEditProvider cms={cms}>{children}</TinaEditProvider>;
 }
