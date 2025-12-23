@@ -1,8 +1,7 @@
-'use client';
+"use client";
 
-import TinaAdmin from "tinacms/dist/admin";
-import config from "@/tina/config";
+import { TinaAdmin } from "tinacms";
 
 export default function AdminPage() {
-  return <TinaAdmin config={config} />;
+  return <TinaAdmin />;
 }
