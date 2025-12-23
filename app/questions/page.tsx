@@ -1,6 +1,15 @@
 import Link from "next/link";
+import type { ReactElement } from "react";
 import { GlobalHero } from "@/components/hero/GlobalHero";
 import { fetchQuestions } from "@/lib/questions";
+import {
+  Brain,
+  Compass,
+  HeartPulse,
+  Leaf,
+  School,
+  Wrench,
+} from "lucide-react";
 
 const CATEGORY_ORDER = [
   "Nature & Land",
@@ -10,6 +19,15 @@ const CATEGORY_ORDER = [
   "Meaning & Seeking",
   "Tools & Technology",
 ] as const;
+
+const CATEGORY_ICONS: Record<(typeof CATEGORY_ORDER)[number], ReactElement> = {
+  "Nature & Land": <Leaf className="h-5 w-5" aria-hidden />,
+  "Health & Suffering": <HeartPulse className="h-5 w-5" aria-hidden />,
+  "Mind & Experience": <Brain className="h-5 w-5" aria-hidden />,
+  "Schools & Systems": <School className="h-5 w-5" aria-hidden />,
+  "Meaning & Seeking": <Compass className="h-5 w-5" aria-hidden />,
+  "Tools & Technology": <Wrench className="h-5 w-5" aria-hidden />,
+};
 
 export default async function QuestionsIndexPage() {
   const contentId = "questions-list";
@@ -68,10 +86,7 @@ Enter to see clearly.`}
             <div key={category} className="space-y-4">
               <div className="flex items-center gap-3">
                 <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/10 text-sm font-semibold text-primary">
-                  {category
-                    .split(" ")
-                    .map((word) => word[0])
-                    .join("")}
+                  {CATEGORY_ICONS[category]}
                 </div>
                 <div>
                   <p className="text-xs uppercase tracking-[0.18em] text-primary/70">

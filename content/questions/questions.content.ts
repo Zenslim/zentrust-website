@@ -7,7 +7,7 @@ export type QuestionContent = {
   category?: string;
   adEligible: boolean;
   status: string;
-  body: string;
+  body: any;
   _sys: { filename: string };
 };
 
@@ -72,7 +72,7 @@ The design mirrors a forest: layered plants, continuous organic matter, and coop
     youtubeUrl: "",
     category: "Health & Suffering",
     adEligible: false,
-    status: "published",
+    status: "archived",
     body: `## Answer
 
 Imagine living beneath a roof with a small leak. Buckets keep the floor dry and mops keep people safe. The house looks fine, yet tension returns every time clouds gather. The fixes help, but they do not stop the rain.
@@ -95,7 +95,7 @@ Health can feel like that roof. Medications protect organs and calm pain, but if
     youtubeUrl: "https://www.youtube.com/watch?v=1VyWI1FQKIk",
     category: "Nature & Land",
     adEligible: false,
-    status: "published",
+    status: "archived",
     body: `## Answer
 
 A field can look healthy while its underlying relationships unravel. Fertilizer keeps plants green while soil life thins. Irrigation keeps yields steady while water cycles weaken. Each fix works briefly because it replaces what the ecosystem once handled on its own.

@@ -1,8 +1,13 @@
 import type { ReactNode } from "react";
-import { fetchQuestionBySlug, getPublishedQuestionSlugsFromFiles } from "@/lib/questions";
+import { TinaMarkdown } from "tinacms/dist/rich-text";
+import {
+  fetchQuestionBySlug,
+  getCanonicalSlug,
+  getPublishedQuestionSlugsFromFiles,
+} from "@/lib/questions";
 import { GlobalHero } from "@/components/hero/GlobalHero";
 import { RitualPause } from "@/components/hero/RitualPause";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 
 type HeroMode = "full_answer" | "answer_below";
 
@@ -168,7 +173,13 @@ export default async function QuestionPage({
 }: {
   params: { slug: string };
 }) {
-  const question = await fetchQuestionBySlug(params.slug);
+  const canonicalSlug = getCanonicalSlug(params.slug);
+
+  if (canonicalSlug !== params.slug) {
+    redirect(`/questions/${canonicalSlug}`);
+  }
+
+  const question = await fetchQuestionBySlug(canonicalSlug);
 
   if (!question || question.status !== "published") {
     notFound();
@@ -201,7 +212,11 @@ export default async function QuestionPage({
         className="mx-auto max-w-3xl px-6 py-12 sm:px-8 lg:px-10"
       >
         <article className="prose prose-neutral dark:prose-invert prose-lg">
-          {renderStaticMarkdown(question.body)}
+          {typeof question.body === "object" && question.body !== null ? (
+            <TinaMarkdown content={question.body} />
+          ) : (
+            renderStaticMarkdown(String(question.body ?? ""))
+          )}
         </article>
       </section>
 
