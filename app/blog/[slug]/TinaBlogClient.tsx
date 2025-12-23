@@ -1,16 +1,13 @@
 "use client";
 
-import { TinaMarkdown, Components } from "tinacms/dist/rich-text";
-import { useTina } from "tinacms/dist/react";
 import Image from "next/image";
 import { FC } from "react";
 import ReadingProgress from "@/components/ReadingProgress";
 import { calculateReadTime } from "@/lib/readTime";
+import { renderRichText, renderStaticMarkdown } from "@/lib/richTextRenderer";
 
 interface TinaBlogClientProps {
   data: any;
-  query: string;
-  variables: any;
   relatedPosts?: any[];
   prevPost?: any | null;
   nextPost?: any | null;
@@ -21,63 +18,20 @@ interface TinaBlogClientProps {
  *  Replace all text-gray-* with theme-aware foreground colors.
  ------------------------------------------------------ */
 
-const richTextComponents: Components<{}> = {
-  h1: (props) => (
-    <h1 className="text-4xl font-bold mt-10 mb-6 leading-tight text-foreground" {...props} />
-  ),
-  h2: (props) => (
-    <h2 className="text-3xl font-semibold mt-10 mb-4 text-foreground" {...props} />
-  ),
-  h3: (props) => (
-    <h3 className="text-2xl font-semibold mt-8 mb-3 text-foreground" {...props} />
-  ),
-  h4: (props) => (
-    <h4 className="text-xl font-semibold mt-6 mb-2 text-foreground" {...props} />
-  ),
-
+const richTextClasses = {
+  h1: "text-4xl font-bold mt-10 mb-6 leading-tight text-foreground",
+  h2: "text-3xl font-semibold mt-10 mb-4 text-foreground",
+  h3: "text-2xl font-semibold mt-8 mb-3 text-foreground",
+  h4: "text-xl font-semibold mt-6 mb-2 text-foreground",
   // BODY PARAGRAPHS — MOST IMPORTANT FIX
-  p: (props) => (
-    <p className="leading-relaxed my-4 text-foreground/90 dark:text-foreground/85" {...props} />
-  ),
-
-  a: (props) => (
-    <a
-      className="text-primary underline hover:text-primary/80 transition"
-      {...props}
-    />
-  ),
-
-  ul: (props) => (
-    <ul className="list-disc pl-6 my-4 space-y-2 text-foreground/90 dark:text-foreground/85" {...props} />
-  ),
-  ol: (props) => (
-    <ol className="list-decimal pl-6 my-4 space-y-2 text-foreground/90 dark:text-foreground/85" {...props} />
-  ),
-
-  li: (props) => (
-    <li className="leading-relaxed text-foreground/90 dark:text-foreground/85" {...props} />
-  ),
-
-  blockquote: (props) => (
-    <blockquote
-      className="border-l-4 border-primary/40 pl-4 italic text-foreground/80 dark:text-foreground/70 my-6"
-      {...props}
-    />
-  ),
-
-  code: (props) => (
-    <code
-      className="bg-muted px-1.5 py-0.5 rounded text-sm font-mono text-primary"
-      {...props}
-    />
-  ),
-
-  img: (props) => (
-    <img
-      className="rounded-lg my-6 mx-auto shadow-md max-w-full"
-      {...props}
-    />
-  ),
+  p: "leading-relaxed my-4 text-foreground/90 dark:text-foreground/85",
+  link: "text-primary underline hover:text-primary/80 transition",
+  ul: "list-disc pl-6 my-4 space-y-2 text-foreground/90 dark:text-foreground/85",
+  ol: "list-decimal pl-6 my-4 space-y-2 text-foreground/90 dark:text-foreground/85",
+  li: "leading-relaxed text-foreground/90 dark:text-foreground/85",
+  blockquote: "border-l-4 border-primary/40 pl-4 italic text-foreground/80 dark:text-foreground/70 my-6",
+  code: "bg-muted px-1.5 py-0.5 rounded text-sm font-mono text-primary",
+  img: "rounded-lg my-6 mx-auto shadow-md max-w-full",
 };
 
 /** Normalize Tina heroImage value (string OR {src}) */
@@ -86,14 +40,11 @@ const getHero = (img: any) =>
 
 const TinaBlogClient: FC<TinaBlogClientProps> = ({
   data,
-  query,
-  variables,
   relatedPosts = [],
   prevPost,
   nextPost,
 }) => {
-  const tina = useTina({ data, query, variables });
-  const post = tina.data?.post;
+  const post = data?.post;
 
   if (!post) {
     return <div className="text-center py-20 text-foreground">Post not found.</div>;
@@ -203,7 +154,9 @@ const TinaBlogClient: FC<TinaBlogClientProps> = ({
             dark:prose-blockquote:text-foreground/75
           "
         >
-          <TinaMarkdown content={post.body} components={richTextComponents} />
+          {typeof post.body === "string"
+            ? renderStaticMarkdown(post.body, richTextClasses)
+            : renderRichText(post.body, richTextClasses)}
         </div>
 
         {/* RELATED POSTS */}

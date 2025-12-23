@@ -1,8 +1,1 @@
-"use client";
-
-import { TinaAdmin } from "tinacms";
-import config from "@/tina/config";
-
-export default function AdminPage() {
-  return <TinaAdmin config={config} />;
-}
+export { default } from "@/tina/AdminPage";
