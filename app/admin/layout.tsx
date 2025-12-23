@@ -11,10 +11,8 @@ import {
 } from "tinacms";
 import client from "@/tina/__generated__/client";
 
-const staticMedia: StaticMedia = {
-  publicFolder: "public",
-  mediaRoot: "",
-};
+// ✅ Correct shape: map of collections → StaticMediaItem[]
+const staticMedia: StaticMedia = {};
 
 export default function AdminLayout({ children }: { children: ReactNode }) {
   const cms = useMemo(() => {
