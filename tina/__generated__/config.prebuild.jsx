@@ -359,7 +359,6 @@ var config = defineConfig({
     ]
   }
 });
-console.log("TINA MEDIA CONFIG:", config.media);
 var config_default = config;
 export {
   config_default as default
