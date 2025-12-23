@@ -9,9 +9,11 @@ import {
   TinaCloudProvider,
   type StaticMedia,
 } from "tinacms";
-import client from "@/tina/__generated__/client";
 
-// ✅ Correct shape: map of collections → StaticMediaItem[]
+import client from "@/tina/__generated__/client";
+import config from "@/tina/config"; // 🔑 THIS WAS MISSING
+
+// No static media collections yet — valid empty map
 const staticMedia: StaticMedia = {};
 
 export default function AdminLayout({ children }: { children: ReactNode }) {
@@ -23,10 +25,13 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
 
     cmsInstance.flags.set("tina-admin", true);
 
-    // Generated GraphQL client (collections, documents)
+    // 🔑 Attach Tina schema/config (collections live here)
+    cmsInstance.config = config;
+
+    // 🔑 GraphQL API
     cmsInstance.registerApi("tina", client);
 
-    // Admin API
+    // 🔑 Admin API (expects config to exist)
     cmsInstance.registerApi("admin", new TinaAdminApi(cmsInstance));
 
     return cmsInstance;
