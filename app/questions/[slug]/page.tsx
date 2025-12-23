@@ -129,10 +129,7 @@ export async function generateStaticParams() {
   const questions =
     questionsRes?.data?.questionsConnection?.edges
       ?.map((edge) => edge?.node)
-      .filter(
-        (node): node is { _sys: { filename: string }; status?: QuestionStatus } =>
-          Boolean(node),
-      ) || [];
+      .filter((node): node is NonNullable<typeof node> => Boolean(node)) ?? [];
 
   return questions
     .filter((question) => question.status === "published")
