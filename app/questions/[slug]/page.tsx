@@ -78,9 +78,12 @@ export default async function QuestionPage({
   params: { slug: string };
 }) {
   const questions = await fetchQuestions();
+
   const question = questions.find(
-    (item) =>
-      item.status === "published" && item._sys.filename === params.slug,
+    (item): item is NonNullable<typeof item> =>
+      !!item &&
+      item.status === "published" &&
+      item._sys?.filename === params.slug,
   );
 
   if (!question) {
@@ -103,7 +106,10 @@ export default async function QuestionPage({
       />
 
       {question.youtubeUrl && question.youtubeUrl.trim().length > 0 && (
-        <YouTubeThumbnail url={question.youtubeUrl} title={question.question} />
+        <YouTubeThumbnail
+          url={question.youtubeUrl}
+          title={question.question}
+        />
       )}
 
       <section
@@ -124,7 +130,13 @@ export default async function QuestionPage({
 
 export async function generateStaticParams() {
   const questions = await fetchQuestions();
+
   return questions
-    .filter((question) => question.status === "published")
-    .map((question) => ({ slug: question._sys.filename }));
+    .filter(
+      (item): item is NonNullable<typeof item> =>
+        !!item && item.status === "published" && !!item._sys?.filename,
+    )
+    .map((item) => ({
+      slug: item._sys.filename,
+    }));
 }
