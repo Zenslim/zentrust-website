@@ -1,14 +1,105 @@
-import { GlobalHero } from "@/components/hero/GlobalHero";
-import { RitualPause } from "@/components/hero/RitualPause";
-import { TinaMarkdown } from "tinacms/dist/rich-text";
+import type { ReactNode } from "react";
 import {
   fetchQuestionBySlug,
   fetchQuestions,
   getPublishedQuestionSlugsFromFiles,
 } from "@/lib/questions";
+import { GlobalHero } from "@/components/hero/GlobalHero";
+import { RitualPause } from "@/components/hero/RitualPause";
 import { notFound } from "next/navigation";
 
 type HeroMode = "full_answer" | "answer_below";
+
+function renderInlineMarkdown(text: string) {
+  const parts = text.split(/(\*\*[^*]+\*\*|\*[^*]+\*)/g).filter(Boolean);
+
+  return parts.map((part, index) => {
+    if (part.startsWith("**") && part.endsWith("**")) {
+      return <strong key={index}>{part.slice(2, -2)}</strong>;
+    }
+
+    if (part.startsWith("*") && part.endsWith("*")) {
+      return <em key={index}>{part.slice(1, -1)}</em>;
+    }
+
+    return <span key={index}>{part}</span>;
+  });
+}
+
+function renderStaticMarkdown(content: string) {
+  const elements: ReactNode[] = [];
+  const lines = content.split("\n");
+
+  let listItems: string[] = [];
+  let paragraphLines: string[] = [];
+
+  const flushList = () => {
+    if (!listItems.length) return;
+    elements.push(
+      <ul key={`list-${elements.length}`} className="list-disc pl-6">
+        {listItems.map((item, index) => (
+          <li key={index}>{renderInlineMarkdown(item)}</li>
+        ))}
+      </ul>,
+    );
+    listItems = [];
+  };
+
+  const flushParagraph = () => {
+    if (!paragraphLines.length) return;
+    elements.push(
+      <p key={`p-${elements.length}`}>{renderInlineMarkdown(paragraphLines.join(" "))}</p>,
+    );
+    paragraphLines = [];
+  };
+
+  for (const line of lines) {
+    const trimmed = line.trim();
+
+    if (!trimmed) {
+      flushList();
+      flushParagraph();
+      continue;
+    }
+
+    if (trimmed.startsWith("- ")) {
+      flushParagraph();
+      listItems.push(trimmed.slice(2).trim());
+      continue;
+    }
+
+    flushList();
+    flushParagraph();
+
+    if (trimmed.startsWith("### ")) {
+      elements.push(
+        <h3 key={`h3-${elements.length}`}>{renderInlineMarkdown(trimmed.slice(4))}</h3>,
+      );
+      continue;
+    }
+
+    if (trimmed.startsWith("## ")) {
+      elements.push(
+        <h2 key={`h2-${elements.length}`}>{renderInlineMarkdown(trimmed.slice(3))}</h2>,
+      );
+      continue;
+    }
+
+    if (trimmed.startsWith("# ")) {
+      elements.push(
+        <h1 key={`h1-${elements.length}`}>{renderInlineMarkdown(trimmed.slice(2))}</h1>,
+      );
+      continue;
+    }
+
+    paragraphLines.push(trimmed);
+  }
+
+  flushList();
+  flushParagraph();
+
+  return elements;
+}
 
 function extractYouTubeId(url: string): string | null {
   try {
@@ -114,7 +205,7 @@ export default async function QuestionPage({
         className="mx-auto max-w-3xl px-6 py-12 sm:px-8 lg:px-10"
       >
         <article className="prose prose-neutral dark:prose-invert prose-lg">
-          <TinaMarkdown content={question.body} />
+          {renderStaticMarkdown(question.body)}
         </article>
       </section>
 
