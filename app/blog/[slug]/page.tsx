@@ -2,12 +2,10 @@
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
-import fs from "fs";
-import path from "path";
 import { notFound } from "next/navigation";
-import client from "../../../tina/__generated__/client";
 import TinaBlogClient from "./TinaBlogClient";
 import { GlobalHero } from "@/components/hero/GlobalHero";
+import { getAllBlogPosts, getBlogPostBySlug } from "@/lib/blog";
 
 export default async function BlogPostPage({
   params,
@@ -17,36 +15,10 @@ export default async function BlogPostPage({
   const slug = params?.slug;
   if (!slug) return notFound();
 
-  // Fetch single post (build-time / server-only)
-  let data;
-  try {
-    data = await client.queries.blog({
-      relativePath: `${slug}.mdx`,
-    });
-  } catch {
-    return notFound();
-  }
-
-  const post = data?.data?.blog;
+  const post = getBlogPostBySlug(slug);
   if (!post) return notFound();
 
-  // Fetch all posts (for related / prev / next)
-  let allPostsRes;
-  try {
-    allPostsRes = await client.queries.blogConnection();
-  } catch {
-    allPostsRes = null;
-  }
-
-  const allPosts =
-    allPostsRes?.data?.blogConnection?.edges
-      ?.map((edge) => edge?.node)
-      .filter(Boolean)
-      .sort(
-        (a, b) =>
-          new Date(b?.date || "").getTime() -
-          new Date(a?.date || "").getTime()
-      ) ?? [];
+  const allPosts = getAllBlogPosts();
 
   // RELATED POSTS
   const relatedPosts =
@@ -113,12 +85,7 @@ export default async function BlogPostPage({
 
 // ⚠️ KEEP THIS — still needed for routing, but no longer cached
 export async function generateStaticParams() {
-  const blogDir = path.join(process.cwd(), "content", "blog");
-  const files = fs.existsSync(blogDir) ? fs.readdirSync(blogDir) : [];
-
-  return files
-    .filter((file) => file.endsWith(".mdx"))
-    .map((file) => ({
-      slug: file.replace(/\.mdx$/, ""),
-    }));
+  return getAllBlogPosts().map((post) => ({
+    slug: post.slug,
+  }));
 }

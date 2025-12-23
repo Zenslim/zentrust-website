@@ -7,41 +7,69 @@ export type BlogPost = {
   excerpt: string
   author?: string
   date?: string
+  primaryCategory?: string
+  categories?: string[]
+  tags?: string[]
   category?: string
   heroImage?: string
   slug: string
+  body?: string
+  _sys?: { filename: string }
 }
 
 const BLOG_DIR = path.join(process.cwd(), 'content', 'blog')
 
-export function getLatestBlogPosts(limit = 3): BlogPost[] {
+function getBlogFiles() {
   if (!fs.existsSync(BLOG_DIR)) return []
 
-  const files = fs
+  return fs
     .readdirSync(BLOG_DIR)
-    .filter((file) => file.endsWith('.md'))
+    .filter((file) => file.endsWith('.md') || file.endsWith('.mdx'))
+}
 
-  const posts = files.map((file) => {
-    const slug = file.replace(/\.md$/, '')
-    const raw = fs.readFileSync(path.join(BLOG_DIR, file), 'utf8')
-    const { data, content } = matter(raw)
+function parseBlogFile(file: string): BlogPost {
+  const slug = file.replace(/\.mdx?$/, '')
+  const raw = fs.readFileSync(path.join(BLOG_DIR, file), 'utf8')
+  const { data, content } = matter(raw)
 
-    return {
-      title: data.title ?? slug,
-      excerpt: data.excerpt ?? content.slice(0, 160),
-      author: data.author,
-      date: data.date,
-      category: data.category,
-      heroImage: data.heroImage,
-      slug,
-    } as BlogPost
-  })
+  return {
+    title: data.title ?? slug,
+    excerpt: data.excerpt ?? content.slice(0, 160),
+    author: data.author,
+    date: data.date,
+    primaryCategory: data.primaryCategory,
+    categories: data.categories,
+    tags: data.tags,
+    category: data.category,
+    heroImage: data.heroImage,
+    slug,
+    body: content,
+    _sys: { filename: slug },
+  } as BlogPost
+}
 
-  return posts
+export function getAllBlogPosts(): BlogPost[] {
+  const files = getBlogFiles()
+  if (!files.length) return []
+
+  return files
+    .map(parseBlogFile)
     .sort((a, b) => {
       const dateA = a.date ? new Date(a.date).getTime() : 0
       const dateB = b.date ? new Date(b.date).getTime() : 0
       return dateB - dateA
     })
-    .slice(0, limit)
+}
+
+export function getLatestBlogPosts(limit = 3): BlogPost[] {
+  return getAllBlogPosts().slice(0, limit)
+}
+
+export function getBlogPostBySlug(slug: string): BlogPost | null {
+  const posts = getAllBlogPosts()
+  return (
+    posts.find(
+      (post) => post.slug === slug || post._sys?.filename === slug
+    ) ?? null
+  )
 }

@@ -1,6 +1,6 @@
 import Link from "next/link";
-import client from "@/tina/__generated__/client";
 import { GlobalHero } from "@/components/hero/GlobalHero";
+import { getAllBlogPosts } from "@/lib/blog";
 
 export default async function CategoryPage({
   params,
@@ -9,15 +9,8 @@ export default async function CategoryPage({
 }) {
   const category = decodeURIComponent(params.category);
 
-  let posts =
-    (
-      await client.queries.blogConnection().catch(() => null)
-    )?.data?.blogConnection?.edges
-      ?.map((edge) => edge?.node)
-      .filter(Boolean) ?? [];
-
-  posts =
-    posts.filter(
+  const posts =
+    getAllBlogPosts().filter(
       (post: any) =>
         post?.primaryCategory === category ||
         post?.categories?.includes?.(category)

@@ -1,21 +1,12 @@
 import Link from "next/link";
-import client from "@/tina/__generated__/client";
 import { GlobalHero } from "@/components/hero/GlobalHero";
+import { getAllBlogPosts } from "@/lib/blog";
 
 /**
  * Blog index page.
  */
 export default async function BlogPage() {
-  const postsRes = await client.queries.blogConnection();
-  const posts =
-    postsRes?.data?.blogConnection?.edges
-      ?.map((edge) => edge?.node)
-      .filter(Boolean)
-      .sort(
-        (a, b) =>
-          new Date(b?.date || "").getTime() -
-          new Date(a?.date || "").getTime()
-      ) ?? [];
+  const posts = getAllBlogPosts();
 
   const contentId = "content";
 
