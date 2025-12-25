@@ -1,7 +1,8 @@
+import fs from "fs";
+import path from "path";
 import Link from "next/link";
 import type { ReactElement } from "react";
 import { GlobalHero } from "@/components/hero/GlobalHero";
-import { fetchQuestions } from "@/lib/questions";
 import {
   Brain,
   Compass,
@@ -10,6 +11,18 @@ import {
   School,
   Wrench,
 } from "lucide-react";
+
+type QuestionMeta = {
+  question: string;
+  category: (typeof CATEGORY_ORDER)[number];
+  order?: number;
+};
+
+type Question = QuestionMeta & {
+  slug: string;
+};
+
+const QUESTIONS_DIR = path.join(process.cwd(), "app/questions");
 
 const CATEGORY_ORDER = [
   "Nature & Land",
@@ -29,21 +42,51 @@ const CATEGORY_ICONS: Record<(typeof CATEGORY_ORDER)[number], ReactElement> = {
   "Tools & Technology": <Wrench className="h-5 w-5" aria-hidden />,
 };
 
-export default async function QuestionsIndexPage() {
-  const contentId = "questions-list";
-  const questions = await fetchQuestions();
+/* ================= DATA ================= */
 
-  const published = questions.filter(
-    (question): question is NonNullable<typeof question> =>
-      !!question && question.status === "published",
-  );
+function getAllQuestions(): Question[] {
+  const entries = fs.readdirSync(QUESTIONS_DIR, { withFileTypes: true });
+
+  const questions: Question[] = [];
+
+  for (const entry of entries) {
+    if (!entry.isDirectory()) continue;
+
+    const slug = entry.name;
+    const pagePath = path.join(QUESTIONS_DIR, slug, "page.tsx");
+
+    if (!fs.existsSync(pagePath)) continue;
+
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    const mod = require(`./${slug}/page.tsx`);
+
+    if (!mod.questionMeta) {
+      throw new Error(
+        `Missing exported questionMeta in app/questions/${slug}/page.tsx`,
+      );
+    }
+
+    questions.push({
+      slug,
+      ...mod.questionMeta,
+    });
+  }
+
+  return questions;
+}
+
+/* ================= PAGE ================= */
+
+export default function QuestionsIndexPage() {
+  const contentId = "questions-list";
+
+  const questions = getAllQuestions();
 
   const grouped = CATEGORY_ORDER.map((category) => ({
     category,
-    items: published.filter(
-      (question) =>
-        question.category === category && !!question._sys?.filename,
-    ),
+    items: questions
+      .filter((q) => q.category === category)
+      .sort((a, b) => (a.order ?? 0) - (b.order ?? 0)),
   })).filter(({ items }) => items.length > 0);
 
   return (
@@ -101,9 +144,9 @@ Enter to see clearly.`}
               <div className="rounded-2xl border border-neutral-200 bg-white/80 p-4 shadow-sm dark:border-neutral-800 dark:bg-neutral-900/50">
                 <ul className="divide-y divide-neutral-200 dark:divide-neutral-800">
                   {items.map((question) => (
-                    <li key={question._sys.filename} className="py-3">
+                    <li key={question.slug} className="py-3">
                       <Link
-                        href={`/questions/${question._sys.filename}`}
+                        href={`/questions/${question.slug}`}
                         className="group inline-flex items-center gap-2 text-lg font-semibold text-neutral-900 transition hover:text-primary dark:text-neutral-100"
                       >
                         <span className="block max-w-3xl leading-tight">
