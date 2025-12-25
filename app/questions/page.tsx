@@ -10,9 +10,9 @@ import {
   Wrench,
 } from "lucide-react";
 
-import { QUESTIONS, type QuestionCategory } from "./registry";
+import { getQuestions, type QuestionCategory } from "./getQuestions";
 
-type Question = (typeof QUESTIONS)[number];
+type Question = Awaited<ReturnType<typeof getQuestions>>[number];
 
 const CATEGORY_ORDER: readonly QuestionCategory[] = [
   "Nature & Land",
@@ -41,10 +41,11 @@ function groupQuestions(questions: Question[]) {
   })).filter(({ items }) => items.length > 0);
 }
 
-export default function QuestionsIndexPage() {
+export default async function QuestionsIndexPage() {
   const contentId = "questions-list";
 
-  const grouped = groupQuestions(QUESTIONS);
+  const questions = await getQuestions();
+  const grouped = groupQuestions(questions);
 
   return (
     <main className="min-h-screen bg-white text-neutral-900 dark:bg-neutral-950 dark:text-neutral-50">
