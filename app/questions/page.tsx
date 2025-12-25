@@ -1,7 +1,3 @@
-export const runtime = "nodejs";
-export const dynamic = "force-dynamic";
-import fs from "fs";
-import path from "path";
 import Link from "next/link";
 import type { ReactElement } from "react";
 import { GlobalHero } from "@/components/hero/GlobalHero";
@@ -14,28 +10,20 @@ import {
   Wrench,
 } from "lucide-react";
 
-type QuestionMeta = {
-  question: string;
-  category: (typeof CATEGORY_ORDER)[number];
-  order?: number;
-};
+import { QUESTIONS, type QuestionCategory } from "./registry";
 
-type Question = QuestionMeta & {
-  slug: string;
-};
+type Question = (typeof QUESTIONS)[number];
 
-const QUESTIONS_DIR = path.join(process.cwd(), "app/questions");
-
-const CATEGORY_ORDER = [
+const CATEGORY_ORDER: readonly QuestionCategory[] = [
   "Nature & Land",
   "Health & Suffering",
   "Mind & Experience",
   "Schools & Systems",
   "Meaning & Seeking",
   "Tools & Technology",
-] as const;
+];
 
-const CATEGORY_ICONS: Record<(typeof CATEGORY_ORDER)[number], ReactElement> = {
+const CATEGORY_ICONS: Record<QuestionCategory, ReactElement> = {
   "Nature & Land": <Leaf className="h-5 w-5" aria-hidden />,
   "Health & Suffering": <HeartPulse className="h-5 w-5" aria-hidden />,
   "Mind & Experience": <Brain className="h-5 w-5" aria-hidden />,
@@ -44,52 +32,19 @@ const CATEGORY_ICONS: Record<(typeof CATEGORY_ORDER)[number], ReactElement> = {
   "Tools & Technology": <Wrench className="h-5 w-5" aria-hidden />,
 };
 
-/* ================= DATA ================= */
-
-function getAllQuestions(): Question[] {
-  const entries = fs.readdirSync(QUESTIONS_DIR, { withFileTypes: true });
-
-  const questions: Question[] = [];
-
-  for (const entry of entries) {
-    if (!entry.isDirectory()) continue;
-
-    const slug = entry.name;
-    const pagePath = path.join(QUESTIONS_DIR, slug, "page.tsx");
-
-    if (!fs.existsSync(pagePath)) continue;
-
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
-    const mod = require(`./${slug}/page.tsx`);
-
-    if (!mod.questionMeta) {
-      throw new Error(
-        `Missing exported questionMeta in app/questions/${slug}/page.tsx`,
-      );
-    }
-
-    questions.push({
-      slug,
-      ...mod.questionMeta,
-    });
-  }
-
-  return questions;
-}
-
-/* ================= PAGE ================= */
-
-export default function QuestionsIndexPage() {
-  const contentId = "questions-list";
-
-  const questions = getAllQuestions();
-
-  const grouped = CATEGORY_ORDER.map((category) => ({
+function groupQuestions(questions: Question[]) {
+  return CATEGORY_ORDER.map((category) => ({
     category,
     items: questions
       .filter((q) => q.category === category)
       .sort((a, b) => (a.order ?? 0) - (b.order ?? 0)),
   })).filter(({ items }) => items.length > 0);
+}
+
+export default function QuestionsIndexPage() {
+  const contentId = "questions-list";
+
+  const grouped = groupQuestions(QUESTIONS);
 
   return (
     <main className="min-h-screen bg-white text-neutral-900 dark:bg-neutral-950 dark:text-neutral-50">
@@ -154,10 +109,7 @@ Enter to see clearly.`}
                         <span className="block max-w-3xl leading-tight">
                           {question.question}
                         </span>
-                        <span
-                          aria-hidden
-                          className="transition group-hover:translate-x-1"
-                        >
+                        <span aria-hidden className="transition group-hover:translate-x-1">
                           →
                         </span>
                       </Link>
