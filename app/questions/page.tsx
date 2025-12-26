@@ -43,16 +43,19 @@ const CATEGORY_ICONS: Partial<Record<QuestionCategory, ReactElement>> = {
   "Tools & Technology": <Wrench className="h-5 w-5" aria-hidden />,
 };
 
-const questionModules = import.meta.glob<{ metadata?: Metadata }>(
-  "./*/page.tsx",
-  { eager: true },
-);
+const context = require.context("./", true, /page\\.tsx$/);
 
 function collectQuestions(): Question[] {
-  return Object.entries(questionModules)
-    .map(([path, module]) => {
-      const metadata = module.metadata;
-      const slug = path.replace("./", "").split("/")[0];
+  return context
+    .keys()
+    .map((key) => {
+      if (key === "./page.tsx") {
+        return null;
+      }
+
+      const mod = context(key) as { metadata?: Metadata };
+      const metadata = mod.metadata;
+      const slug = key.replace("./", "").split("/")[0];
 
       if (!metadata || typeof metadata.other?.category !== "string") {
         return null;
@@ -159,7 +162,7 @@ Enter to see clearly.`}
                         className="group inline-flex items-center gap-2 text-lg font-semibold text-neutral-900 transition hover:text-primary dark:text-neutral-100"
                       >
                         <span className="block max-w-3xl leading-tight">
-                          {question.question}
+                          {question.title}
                         </span>
                         <span aria-hidden className="transition group-hover:translate-x-1">
                           →
