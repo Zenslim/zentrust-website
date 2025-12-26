@@ -71,7 +71,7 @@ function collectQuestions(): Question[] {
       } satisfies Question;
     })
  .filter((entry: Question | null): entry is Question => entry !== null)
-    .sort((a, b) => a.title.localeCompare(b.title));
+.sort((a: Question, b: Question) => a.title.localeCompare(b.title));
 }
 
 function getCategoryWeight(category: string) {
