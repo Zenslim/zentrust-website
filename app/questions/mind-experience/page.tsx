@@ -1,18 +1,13 @@
 import type { Metadata } from "next";
 import { GlobalHero } from "@/components/hero/GlobalHero";
-import { type QuestionMeta } from "../getQuestions";
-
-export const questionMeta: QuestionMeta = {
-  slug: "mind-experience",
-  question: "Why does the mind keep returning to thoughts that make life harder?",
-  category: "Mind & Experience",
-  order: 10,
-};
 
 export const metadata: Metadata = {
   title: "Why does the mind keep returning to thoughts that make life harder?",
   description:
     "A question-led exploration of why the mind repeats painful thoughts, using simple stories to explain loops, effort, and release.",
+  other: {
+    category: "Mind & Experience",
+  },
 };
 
 export default function MindExperienceQuestionPage() {
