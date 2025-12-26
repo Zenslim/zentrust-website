@@ -1,4 +1,5 @@
 import Link from "next/link";
+import type { Metadata } from "next";
 import type { ReactElement } from "react";
 import { GlobalHero } from "@/components/hero/GlobalHero";
 import {
@@ -10,9 +11,19 @@ import {
   Wrench,
 } from "lucide-react";
 
-import { getQuestions, type QuestionCategory } from "./getQuestions";
+type QuestionCategory =
+  | "Nature & Land"
+  | "Health & Suffering"
+  | "Mind & Experience"
+  | "Schools & Systems"
+  | "Meaning & Seeking"
+  | "Tools & Technology";
 
-type Question = Awaited<ReturnType<typeof getQuestions>>[number];
+type Question = {
+  slug: string;
+  title: string;
+  category: string;
+};
 
 const CATEGORY_ORDER: readonly QuestionCategory[] = [
   "Nature & Land",
@@ -23,7 +34,7 @@ const CATEGORY_ORDER: readonly QuestionCategory[] = [
   "Tools & Technology",
 ];
 
-const CATEGORY_ICONS: Record<QuestionCategory, ReactElement> = {
+const CATEGORY_ICONS: Partial<Record<QuestionCategory, ReactElement>> = {
   "Nature & Land": <Leaf className="h-5 w-5" aria-hidden />,
   "Health & Suffering": <HeartPulse className="h-5 w-5" aria-hidden />,
   "Mind & Experience": <Brain className="h-5 w-5" aria-hidden />,
@@ -32,19 +43,59 @@ const CATEGORY_ICONS: Record<QuestionCategory, ReactElement> = {
   "Tools & Technology": <Wrench className="h-5 w-5" aria-hidden />,
 };
 
-function groupQuestions(questions: Question[]) {
-  return CATEGORY_ORDER.map((category) => ({
-    category,
-    items: questions
-      .filter((q) => q.category === category)
-      .sort((a, b) => (a.order ?? 0) - (b.order ?? 0)),
-  })).filter(({ items }) => items.length > 0);
+const questionModules = import.meta.glob<{ metadata?: Metadata }>(
+  "./*/page.tsx",
+  { eager: true },
+);
+
+function collectQuestions(): Question[] {
+  return Object.entries(questionModules)
+    .map(([path, module]) => {
+      const metadata = module.metadata;
+      const slug = path.replace("./", "").split("/")[0];
+
+      if (!metadata || typeof metadata.other?.category !== "string") {
+        return null;
+      }
+
+      return {
+        slug,
+        title: metadata.title ?? slug,
+        category: metadata.other.category,
+      } satisfies Question;
+    })
+    .filter((entry): entry is Question => Boolean(entry))
+    .sort((a, b) => a.title.localeCompare(b.title));
 }
 
-export default async function QuestionsIndexPage() {
+function getCategoryWeight(category: string) {
+  const index = CATEGORY_ORDER.indexOf(category as QuestionCategory);
+
+  return index === -1 ? CATEGORY_ORDER.length : index;
+}
+
+function groupQuestions(questions: Question[]) {
+  const grouped = new Map<string, Question[]>();
+
+  for (const question of questions) {
+    const existing = grouped.get(question.category) ?? [];
+    grouped.set(question.category, [...existing, question]);
+  }
+
+  return Array.from(grouped.entries())
+    .sort(([categoryA], [categoryB]) =>
+      getCategoryWeight(categoryA) - getCategoryWeight(categoryB),
+    )
+    .map(([category, items]) => ({
+      category,
+      items: [...items].sort((a, b) => a.title.localeCompare(b.title)),
+    }));
+}
+
+export default function QuestionsIndexPage() {
   const contentId = "questions-list";
 
-  const questions = await getQuestions();
+  const questions = collectQuestions();
   const grouped = groupQuestions(questions);
 
   return (

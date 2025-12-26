@@ -1,18 +1,13 @@
 import type { Metadata } from "next";
 import { GlobalHero } from "@/components/hero/GlobalHero";
-import { type QuestionMeta } from "../getQuestions";
-
-export const questionMeta: QuestionMeta = {
-  slug: "bpss-health",
-  question: "Why did things improve, but still not feel better?",
-  category: "Health & Suffering",
-  order: 10,
-};
 
 export const metadata: Metadata = {
   title: "Why did things improve, but still not feel better?",
   description:
     "A whole-system explanation for why symptoms improve without healing — and why a Biopsychosocial-Spiritual approach is necessary.",
+  other: {
+    category: "Health & Suffering",
+  },
 };
 
 export default function BPSSHealthPage() {

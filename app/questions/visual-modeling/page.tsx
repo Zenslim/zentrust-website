@@ -1,19 +1,14 @@
 
 import type { Metadata } from "next";
 import { GlobalHero } from "@/components/hero/GlobalHero";
-import { type QuestionMeta } from "../getQuestions";
-
-export const questionMeta: QuestionMeta = {
-  slug: "visual-modeling",
-  question: "Why do some systems need to be seen, not just described?",
-  category: "Tools & Technology",
-  order: 10,
-};
 
 export const metadata: Metadata = {
   title: "Why do some systems need to be seen, not just described?",
   description:
     "An answer-first explanation of why regenerative systems require visual modeling — and how seeing change over time prevents false certainty.",
+  other: {
+    category: "Tools & Technology",
+  },
 };
 
 export default function VisualModelingQuestionPage() {

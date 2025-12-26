@@ -1,14 +1,16 @@
 'use client';
 
 import Link from "next/link";
+import type { Metadata } from "next";
 import { GlobalHero } from "@/components/hero/GlobalHero";
-import { type QuestionMeta } from "../getQuestions";
 
-export const questionMeta: QuestionMeta = {
-  slug: "syntropic-ecology",
-  question: "Why does land keep degrading, even as we invest more into fixing it?",
-  category: "Nature & Land",
-  order: 10,
+export const metadata: Metadata = {
+  title: "Why does land keep degrading, even as we invest more into fixing it?",
+  description:
+    "A question-led exploration of syntropic design that explains why land struggles without restored relationships.",
+  other: {
+    category: "Nature & Land",
+  },
 };
 
 function AccordionItem({
