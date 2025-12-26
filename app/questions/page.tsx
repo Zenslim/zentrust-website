@@ -43,14 +43,23 @@ const CATEGORY_ICONS: Partial<Record<QuestionCategory, ReactElement>> = {
   "Tools & Technology": <Wrench className="h-5 w-5" aria-hidden />,
 };
 
-// 🔒 IMPORTANT: non-recursive, one-level deep only
-const context = (require as any).context("./", false, /\/page\.tsx$/);
+// ✅ Recursive again, but filtered precisely below
+const context = (require as any).context("./", true, /page\.tsx$/);
 
 function collectQuestions(): Question[] {
   return context
     .keys()
     .map((key: string) => {
-      // Skip the index page itself
+      /**
+       * Valid question pages look like:
+       * ./slug/page.tsx  → exactly 3 segments when split by "/"
+       */
+      const parts = key.split("/");
+
+      if (parts.length !== 3) {
+        return null;
+      }
+
       if (key === "./page.tsx") {
         return null;
       }
@@ -58,8 +67,7 @@ function collectQuestions(): Question[] {
       const mod = context(key) as { metadata?: Metadata };
       const metadata = mod.metadata;
 
-      // ./slug/page.tsx → slug
-      const slug = key.replace("./", "").split("/")[0];
+      const slug = parts[1];
 
       if (!metadata || typeof metadata.other?.category !== "string") {
         return null;
