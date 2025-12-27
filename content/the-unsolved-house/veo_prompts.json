@@ -1,0 +1,338 @@
+[
+  {
+    "shot_id": "A2",
+    "duration": 5,
+    "model": "Veo 3.1 Fast",
+    "prompt": "Cinematic close-up of a digital flip clock shifting to 6:00, harsh alarm beep implied, mid-tone cut, dawn ambient light, controlled handheld realism, no dialogue.",
+    "negative_prompt": "digital overlays, bright colors, visible people talking"
+  },
+  {
+    "shot_id": "A3",
+    "duration": 8,
+    "model": "Veo 3.1 Fast",
+    "prompt": "Medium shot of a woman in her mid-30s sitting up instantly in bed, hair untouched, posture upright, shoulders tense, hand reaching for a pill bottle; minimal bedroom decor; drone bed implied.",
+    "negative_prompt": "smiling, dramatic camera whip, exaggerated acting"
+  },
+  {
+    "shot_id": "A4",
+    "duration": 5,
+    "model": "Veo 3.1 Fast",
+    "prompt": "Close-up of pill placed on tongue followed by a dry swallow, no water nearby, throat tightening, strained gulp audible, muted clinical tone.",
+    "negative_prompt": "water glass visible, cinematic hero lighting, blood"
+  },
+  {
+    "shot_id": "A5",
+    "duration": 7,
+    "model": "Veo 3.1 Fast",
+    "prompt": "Close-up of the same woman drinking water with mechanical relief, quick glass clink, minimal background, neutral palette, no dialogue.",
+    "negative_prompt": "smile, messy room, colorful props"
+  },
+  {
+    "shot_id": "A7",
+    "duration": 7,
+    "model": "Veo 3.1 Fast",
+    "prompt": "Extreme close-up of her hand holding the phone trembling for half a second, controlled breathing audible, micro-flutter emphasized.",
+    "negative_prompt": "motion blur, jittery camera, visible text pop-ups"
+  },
+  {
+    "shot_id": "A8",
+    "duration": 15,
+    "model": "Veo 3.1 Fast",
+    "prompt": "Medium shot in kitchen: woman weighs food precisely, efficient slightly rigid movements, precise utensil clinks, neutral countertops, restrained color grade.",
+    "negative_prompt": "smiling cooking show energy, messy spills, vibrant colors"
+  },
+  {
+    "shot_id": "A9",
+    "duration": 10,
+    "model": "Veo 3.1 Fast",
+    "prompt": "Long shot tying shoes, standing with breath held; exits with door closing exactly on time and clean latch click; morning neutrality.",
+    "negative_prompt": "crowded hallway, dramatic lighting flares"
+  },
+  {
+    "shot_id": "B1",
+    "duration": 13,
+    "model": "Veo 3.1 Fast",
+    "prompt": "Medium shot in dim interior with close-up moments on clenched jaw, mask intact and strained; cyclical drone presence, subdued movement.",
+    "negative_prompt": "tears, dialogue, extreme shaking"
+  },
+  {
+    "shot_id": "B2",
+    "duration": 4,
+    "model": "Veo 3.1 Fast",
+    "prompt": "Close-up ceiling where a bead of water forms, hangs, and falls; isolated sharp plink sync; muted color temperature.",
+    "negative_prompt": "heavy rain, bright sunlight, insects"
+  },
+  {
+    "shot_id": "B3",
+    "duration": 6,
+    "model": "Veo 3.1 Fast",
+    "prompt": "Close-up of her face showing a tiny flinch before recognition, subtle breath hitch, restrained expression, soft key light.",
+    "negative_prompt": "crying, dialogue, dramatic camera move"
+  },
+  {
+    "shot_id": "B4",
+    "duration": 17,
+    "model": "Veo 3.1 Fast",
+    "prompt": "Medium shot as she grabs a mop, handle scrape audible, controlled urgency, muted interior palette, no dialogue.",
+    "negative_prompt": "slapstick movement, wide smiles, bright decorations"
+  },
+  {
+    "shot_id": "B5",
+    "duration": 2,
+    "model": "Veo 3.1 Fast",
+    "prompt": "Close-up mop sweeping water across floor, wet swoosh under persistent drip rhythm, tight framing on motion.",
+    "negative_prompt": "foam or soap suds, excessive motion blur"
+  },
+  {
+    "shot_id": "B6",
+    "duration": 0.4,
+    "model": "Veo 3.1 Fast",
+    "prompt": "Flashback tone: bathroom at night, woman bent over sink gripping edge, sharp internal inhale, desaturated grading, slight vignette.",
+    "negative_prompt": "dialogue, bright bathroom lights, gore"
+  },
+  {
+    "shot_id": "B7",
+    "duration": 5,
+    "model": "Veo 3.1 Fast",
+    "prompt": "Medium shot she steadies herself, breath controlled and forced, shoulders square, sparse background.",
+    "negative_prompt": "tearful breakdown, handheld shake"
+  },
+  {
+    "shot_id": "B8",
+    "duration": 2,
+    "model": "Veo 3.1 Fast",
+    "prompt": "Close-up bucket placed precisely under drip with dull thud, careful hands, muted kitchen/bath setting.",
+    "negative_prompt": "splashes everywhere, bright labels"
+  },
+  {
+    "shot_id": "B9",
+    "duration": 0.4,
+    "model": "Veo 3.1 Fast",
+    "prompt": "Flashback tone: extreme close-up of neck pulse racing under skin, rapid thump-thump, desaturated and slightly grainy.",
+    "negative_prompt": "needles, medical monitors, dialogue"
+  },
+  {
+    "shot_id": "B10",
+    "duration": 25,
+    "model": "Veo 3.1 Fast",
+    "prompt": "Close-up whiteboard note reading 'Check level @ 7pm.' She checks it off with marker tick, controlled and precise, neutral interior lighting.",
+    "negative_prompt": "messy handwriting, extra notes, colorful stickers"
+  },
+  {
+    "shot_id": "B12",
+    "duration": 15,
+    "model": "Veo 3.1 Fast",
+    "prompt": "Extreme close-up fingers tapping bedsheet rapidly yet controlled, anxious rhythm synced with drip, shallow depth of field.",
+    "negative_prompt": "visible keyboard, neon lighting"
+  },
+  {
+    "shot_id": "C1",
+    "duration": 40,
+    "model": "Veo 3.1 Fast",
+    "prompt": "Measured montage: pill, mop, chart, empty bucket, folded towel. Controlled cuts, steady framing, metallic rhythm building, consistent muted palette, silent visual essay style.",
+    "negative_prompt": "fast frantic edits, subtitles, text overlays"
+  },
+  {
+    "shot_id": "C2",
+    "duration": 5,
+    "model": "Veo 3.1 Fast",
+    "prompt": "Medium shot late night desk with presentation titled 'Final Version (v12)' onscreen, unsaved dot blinking, laptop fan hum implied, tired posture.",
+    "negative_prompt": "busy office, multiple people, bright daylight"
+  },
+  {
+    "shot_id": "C3",
+    "duration": 2,
+    "model": "Veo 3.1 Fast",
+    "prompt": "Drop hits laptop screen, sharp electronic tap; tight framing on impact and pixel ripple.",
+    "negative_prompt": "overflowing water, dramatic sparks"
+  },
+  {
+    "shot_id": "C4",
+    "duration": 1,
+    "model": "Veo 3.1 Fast",
+    "prompt": "Immediate wipe of laptop screen with towel, efficient motion, neutral palette, no dialogue.",
+    "negative_prompt": "large gestures, comedic exaggeration"
+  },
+  {
+    "shot_id": "C5",
+    "duration": 0.4,
+    "model": "Veo 3.1 Fast",
+    "prompt": "Flashback: seated on floor gripping hair, back to wall, internal gurgle cut short, desaturated and grainy, steady framing.",
+    "negative_prompt": "visible tears, screaming, bright neon"
+  },
+  {
+    "shot_id": "C6",
+    "duration": 30,
+    "model": "Veo 3.1 Fast",
+    "prompt": "Close-up placing a second bucket beside the first with towels stacked nearby; second dull thud; dim interior with practical light.",
+    "negative_prompt": "overflow, chaotic splashes, colorful towels"
+  },
+  {
+    "shot_id": "C7",
+    "duration": 5,
+    "model": "Veo 3.1 Fast",
+    "prompt": "Medium shot on sofa; drop hits TV screen causing brief distortion, crackle, electronic pop; calm but alert posture.",
+    "negative_prompt": "shattered screen, dramatic sparks"
+  },
+  {
+    "shot_id": "C8",
+    "duration": 2,
+    "model": "Veo 3.1 Fast",
+    "prompt": "Sequence: wipe TV, apply hairdryer, press remote to reboot; efficient, minimal movements; hairdryer whirr blending into score.",
+    "negative_prompt": "chaotic multitasking, extra people"
+  },
+  {
+    "shot_id": "C9",
+    "duration": 0.4,
+    "model": "Veo 3.1 Fast",
+    "prompt": "Flashback: empty wall with broken photo frame hook, hollow room tone implied, desaturated stillness.",
+    "negative_prompt": "hanging photo, bright decor"
+  },
+  {
+    "shot_id": "C10",
+    "duration": 15,
+    "model": "Veo 3.1 Fast",
+    "prompt": "Close-up chest breathing shallow and quick, synced to faster drip rhythm, minimal wardrobe, neutral lighting.",
+    "negative_prompt": "dramatic sweating, heavy shaking"
+  },
+  {
+    "shot_id": "C11",
+    "duration": 5,
+    "model": "Veo 3.1 Fast",
+    "prompt": "Extreme close-up hand rubbing neck knot; momentary relief then strain, high-pitched score layer implied.",
+    "negative_prompt": "massage tools, vocal reactions"
+  },
+  {
+    "shot_id": "D2",
+    "duration": 5,
+    "model": "Veo 3.1 Fast",
+    "prompt": "Close-up bucket overflowing, water spilling across floor; uncontrolled slosh captured with restrained camera.",
+    "negative_prompt": "dramatic flood, debris"
+  },
+  {
+    "shot_id": "D3",
+    "duration": 5,
+    "model": "Veo 3.1 Fast",
+    "prompt": "Close-up smartwatch as she glances once and turns away, subtle alert tone ignored, neutral wrist movement.",
+    "negative_prompt": "notification overlays, bright fitness graphics"
+  },
+  {
+    "shot_id": "D4",
+    "duration": 15,
+    "model": "Veo 3.1 Fast",
+    "prompt": "Medium kitchen shot making breakfast while water spreads across floor; familiar utensil sounds under growing stream; calm demeanor.",
+    "negative_prompt": "breakfast feast, laughter, busy family"
+  },
+  {
+    "shot_id": "D5",
+    "duration": 5,
+    "model": "Veo 3.1 Fast",
+    "prompt": "Close-up drop hitting her shoulder, fabric tap audible; she remains composed; neutral wardrobe.",
+    "negative_prompt": "visible shock, bright wardrobe"
+  },
+  {
+    "shot_id": "D6",
+    "duration": 5,
+    "model": "Veo 3.1 Fast",
+    "prompt": "Medium shot deploying towels and mop then reaching for umbrella; frantic rustle but controlled actions.",
+    "negative_prompt": "slipping, comedic panic"
+  },
+  {
+    "shot_id": "D7",
+    "duration": 3,
+    "model": "Veo 3.1 Fast",
+    "prompt": "Close-up umbrella opening indoors; water hits fabric with metallic snap leading to muffled rain, muted kitchen background.",
+    "negative_prompt": "outdoor scenery, sunlight"
+  },
+  {
+    "shot_id": "D8",
+    "duration": 2,
+    "model": "Veo 3.1 Fast",
+    "prompt": "Pouring coffee under the umbrella while holding for profound silence, minimal movement, soft kitchen light.",
+    "negative_prompt": "steam exaggerated, smiling social scene"
+  },
+  {
+    "shot_id": "D9",
+    "duration": 0.4,
+    "model": "Veo 3.1 Fast",
+    "prompt": "Flashback: mirror reflection blank and hollow, tone drops out, monochrome desaturation, steady camera.",
+    "negative_prompt": "broken mirror shards, screaming"
+  },
+  {
+    "shot_id": "D10",
+    "duration": 5,
+    "model": "Veo 3.1 Fast",
+    "prompt": "Medium shot water moving across floor, her bare feet feeling it, she stops; continuous stream audible, neutral framing.",
+    "negative_prompt": "panic, falling"
+  },
+  {
+    "shot_id": "D11",
+    "duration": 5,
+    "model": "Veo 3.1 Fast",
+    "prompt": "She drops the umbrella and observes mop, buckets, towels; umbrella clatter echoes; composed posture.",
+    "negative_prompt": "throwing objects, shouting"
+  },
+  {
+    "shot_id": "D14",
+    "duration": 0.5,
+    "model": "Veo 3.1 Fast",
+    "prompt": "Transition move passing through her gaze into darkness with a deep whoosh; abstract camera move into black, no added imagery.",
+    "negative_prompt": "colorful tunnels, text overlays"
+  },
+  {
+    "shot_id": "E1",
+    "duration": 5,
+    "model": "Veo 3.1 Fast",
+    "prompt": "Minimal dark space with a sustained cello note and subtle electronics emerging; abstract light textures only, no figures.",
+    "negative_prompt": "bright lens flares, floating text"
+  },
+  {
+    "shot_id": "E2",
+    "duration": 6,
+    "model": "Veo 3.1 Fast",
+    "prompt": "Diagram forming imperfectly: heart, knot, two figures, old photo; slight misalignment, monochrome lines on dark field, slow drawing motion.",
+    "negative_prompt": "neon colors, animated text labels"
+  },
+  {
+    "shot_id": "E3",
+    "duration": 6,
+    "model": "Veo 3.1 Fast",
+    "prompt": "Diagram shrinks as camera ascends into attic space, smooth upward movement, muted palette, dust motes drifting.",
+    "negative_prompt": "fast spin, bright sun shafts"
+  },
+  {
+    "shot_id": "E5",
+    "duration": 6,
+    "model": "Veo 3.1 Fast",
+    "prompt": "Memory fragment: tangled frayed wires lit by single beam of light, overlapping indistinct whispers implied, slow drifting camera.",
+    "negative_prompt": "sparks, flames, glowing LEDs"
+  },
+  {
+    "shot_id": "E8",
+    "duration": 7,
+    "model": "Veo 3.1 Fast",
+    "prompt": "All elements merge into a single drop suspended mid-air; stillness dominant; neutral lighting; silence.",
+    "negative_prompt": "colorful particles, slow motion streaks"
+  },
+  {
+    "shot_id": "E9",
+    "duration": 7,
+    "model": "Veo 3.1 Fast",
+    "prompt": "Drop dissolves into vapor, plink stops; restrained dissolve motion, dark background, minimal particles.",
+    "negative_prompt": "smoke billows, bright sparks"
+  },
+  {
+    "shot_id": "E10",
+    "duration": 10,
+    "model": "Veo 3.1 Fast",
+    "prompt": "Pull back to woman in kitchen with quiet recognition; slow dolly out, soft minor chord mood, mop and buckets visible unused.",
+    "negative_prompt": "smile, dialogue, rapid dolly"
+  },
+  {
+    "shot_id": "F1",
+    "duration": 10,
+    "model": "Veo 3.1 Fast",
+    "prompt": "Morning light enters room; she removes main bucket while mop remains unused; slow plink returns; composed motion, clean framing.",
+    "negative_prompt": "busy household, dramatic sunlight beams"
+  }
+]

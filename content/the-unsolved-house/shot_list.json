@@ -1,0 +1,482 @@
+[
+  {
+    "shot_id": "A1",
+    "act": "ACT I — FUNCTIONING",
+    "start_time": "0:00",
+    "duration": 5,
+    "shot_type": "BLACK",
+    "description": "Black screen with faint low-frequency drone initiating the bed."
+  },
+  {
+    "shot_id": "A2",
+    "act": "ACT I — FUNCTIONING",
+    "start_time": "0:05",
+    "duration": 5,
+    "shot_type": "VEO",
+    "description": "Close-up digital flip clock changing to 6:00; alarm beep cuts mid-tone."
+  },
+  {
+    "shot_id": "A3",
+    "act": "ACT I — FUNCTIONING",
+    "start_time": "0:10",
+    "duration": 8,
+    "shot_type": "VEO",
+    "description": "Medium shot of woman sitting up instantly in bed; hair untouched, posture upright, hand reaches for pill bottle while drone holds."
+  },
+  {
+    "shot_id": "A4",
+    "act": "ACT I — FUNCTIONING",
+    "start_time": "0:18",
+    "duration": 5,
+    "shot_type": "VEO",
+    "description": "Close-up pill placed on tongue, dry swallow without water, tight throat with strained gulp." 
+  },
+  {
+    "shot_id": "A5",
+    "act": "ACT I — FUNCTIONING",
+    "start_time": "0:23",
+    "duration": 7,
+    "shot_type": "VEO",
+    "description": "Close-up as she drinks water; mechanical relief with a glass clink."
+  },
+  {
+    "shot_id": "A6",
+    "act": "ACT I — FUNCTIONING",
+    "start_time": "0:30",
+    "duration": 3,
+    "shot_type": "IMAGEN",
+    "description": "Extreme close-up phone screen showing health chart perfectly in range; drone subtly increases."
+  },
+  {
+    "shot_id": "A7",
+    "act": "ACT I — FUNCTIONING",
+    "start_time": "0:33",
+    "duration": 7,
+    "shot_type": "VEO",
+    "description": "Extreme close-up of her hand trembling for half a second while holding the phone; micro-flutter in the drone."
+  },
+  {
+    "shot_id": "A8",
+    "act": "ACT I — FUNCTIONING",
+    "start_time": "0:40",
+    "duration": 15,
+    "shot_type": "VEO",
+    "description": "Medium shot kitchen: she weighs food precisely with efficient, slightly rigid movements and precise clinks."
+  },
+  {
+    "shot_id": "A9",
+    "act": "ACT I — FUNCTIONING",
+    "start_time": "0:55",
+    "duration": 10,
+    "shot_type": "VEO",
+    "description": "Long shot tying shoes, standing with breath held; door closes exactly on time with a clean latch click as drone cuts."
+  },
+  {
+    "shot_id": "B1",
+    "act": "ACT II — ADAPTATION",
+    "start_time": "1:05",
+    "duration": 13,
+    "shot_type": "VEO",
+    "description": "Medium shot in dim interior; close-up jaw clenched, mask intact and strained as cyclical drone returns."
+  },
+  {
+    "shot_id": "B2",
+    "act": "ACT II — ADAPTATION",
+    "start_time": "1:18",
+    "duration": 4,
+    "shot_type": "VEO",
+    "description": "Close-up ceiling where a bead of water forms, hangs, and falls with isolated sharp plink."
+  },
+  {
+    "shot_id": "B3",
+    "act": "ACT II — ADAPTATION",
+    "start_time": "1:22",
+    "duration": 6,
+    "shot_type": "VEO",
+    "description": "Close-up her face with a tiny flinch before recognition and subtle breath hitch."
+  },
+  {
+    "shot_id": "B4",
+    "act": "ACT II — ADAPTATION",
+    "start_time": "1:28",
+    "duration": 17,
+    "shot_type": "VEO",
+    "description": "Medium shot grabbing the mop; handle scrape audible."
+  },
+  {
+    "shot_id": "B5",
+    "act": "ACT II — ADAPTATION",
+    "start_time": "1:45",
+    "duration": 2,
+    "shot_type": "VEO",
+    "description": "Close-up mop sweeping water with wet swoosh under the plink."
+  },
+  {
+    "shot_id": "B6",
+    "act": "ACT II — ADAPTATION",
+    "start_time": "1:47",
+    "duration": 0.4,
+    "shot_type": "FLASHBACK",
+    "description": "Flashback: bathroom at night; she bends over sink gripping the edge, sharp internal inhale."
+  },
+  {
+    "shot_id": "B7",
+    "act": "ACT II — ADAPTATION",
+    "start_time": "1:55",
+    "duration": 5,
+    "shot_type": "VEO",
+    "description": "Medium shot she steadies herself with controlled, forced breath."
+  },
+  {
+    "shot_id": "B8",
+    "act": "ACT II — ADAPTATION",
+    "start_time": "2:00",
+    "duration": 2,
+    "shot_type": "VEO",
+    "description": "Close-up bucket placed precisely under drip with dull thud."
+  },
+  {
+    "shot_id": "B9",
+    "act": "ACT II — ADAPTATION",
+    "start_time": "2:02",
+    "duration": 0.4,
+    "shot_type": "FLASHBACK",
+    "description": "Flashback: close-up neck pulse racing under skin; rapid thump-thump fades." 
+  },
+  {
+    "shot_id": "B10",
+    "act": "ACT II — ADAPTATION",
+    "start_time": "2:15",
+    "duration": 25,
+    "shot_type": "VEO",
+    "description": "Close-up whiteboard note “Check level @ 7pm.” She checks it off with marker tick." 
+  },
+  {
+    "shot_id": "B11",
+    "act": "ACT II — ADAPTATION",
+    "start_time": "2:40",
+    "duration": 25,
+    "shot_type": "IMAGEN",
+    "description": "Long shot night bed; she lies eyes open as isolated plink grows louder." 
+  },
+  {
+    "shot_id": "B12",
+    "act": "ACT II — ADAPTATION",
+    "start_time": "3:05",
+    "duration": 15,
+    "shot_type": "VEO",
+    "description": "Extreme close-up fingers tapping sheet fast and controlled with plink underneath."
+  },
+  {
+    "shot_id": "C1",
+    "act": "ACT III — MANAGEMENT",
+    "start_time": "3:20",
+    "duration": 40,
+    "shot_type": "VEO",
+    "description": "Montage with measured cuts: pill, mop, chart, empty bucket, towel folded; metallic tiring rhythm layer builds." 
+  },
+  {
+    "shot_id": "C2",
+    "act": "ACT III — MANAGEMENT",
+    "start_time": "4:00",
+    "duration": 5,
+    "shot_type": "VEO",
+    "description": "Medium shot late night desk, presentation open titled “Final Version (v12)” with unsaved dot blinking; laptop fan hum joins mix." 
+  },
+  {
+    "shot_id": "C3",
+    "act": "ACT III — MANAGEMENT",
+    "start_time": "4:05",
+    "duration": 2,
+    "shot_type": "VEO",
+    "description": "Drop hits laptop screen with sharp electronic tap." 
+  },
+  {
+    "shot_id": "C4",
+    "act": "ACT III — MANAGEMENT",
+    "start_time": "4:07",
+    "duration": 1,
+    "shot_type": "VEO",
+    "description": "She wipes screen instantly with towel; cloth wipe audible." 
+  },
+  {
+    "shot_id": "C5",
+    "act": "ACT III — MANAGEMENT",
+    "start_time": "4:08",
+    "duration": 0.4,
+    "shot_type": "FLASHBACK",
+    "description": "Flashback: she grips her hair seated on floor, back to wall; internal gurgle cut short." 
+  },
+  {
+    "shot_id": "C6",
+    "act": "ACT III — MANAGEMENT",
+    "start_time": "4:30",
+    "duration": 30,
+    "shot_type": "VEO",
+    "description": "Close-up second bucket placed beside first with towels stacked; second dull thud." 
+  },
+  {
+    "shot_id": "C7",
+    "act": "ACT III — MANAGEMENT",
+    "start_time": "5:00",
+    "duration": 5,
+    "shot_type": "VEO",
+    "description": "Medium shot sofa; drop hits TV screen causing brief distortion with crackle and electronic pop." 
+  },
+  {
+    "shot_id": "C8",
+    "act": "ACT III — MANAGEMENT",
+    "start_time": "5:05",
+    "duration": 2,
+    "shot_type": "VEO",
+    "description": "She wipes, uses hairdryer, then reboots via remote in perfect sequence; hairdryer whirr bleeds into score." 
+  },
+  {
+    "shot_id": "C9",
+    "act": "ACT III — MANAGEMENT",
+    "start_time": "5:07",
+    "duration": 0.4,
+    "shot_type": "FLASHBACK",
+    "description": "Flashback: empty wall with broken photo frame hook; hollow room tone." 
+  },
+  {
+    "shot_id": "C10",
+    "act": "ACT III — MANAGEMENT",
+    "start_time": "5:30",
+    "duration": 15,
+    "shot_type": "VEO",
+    "description": "Close-up chest breathing shallow and quick syncing with faster plink." 
+  },
+  {
+    "shot_id": "C11",
+    "act": "ACT III — MANAGEMENT",
+    "start_time": "5:45",
+    "duration": 5,
+    "shot_type": "VEO",
+    "description": "Extreme close-up hand rubbing neck knot; relief lasts half a second as high-pitched strain enters score." 
+  },
+  {
+    "shot_id": "D1",
+    "act": "ACT IV — STRAIN",
+    "start_time": "5:50",
+    "duration": 20,
+    "shot_type": "IMAGEN",
+    "description": "Long shot window; no rain outside while plink accelerates into stream."
+  },
+  {
+    "shot_id": "D2",
+    "act": "ACT IV — STRAIN",
+    "start_time": "6:10",
+    "duration": 5,
+    "shot_type": "VEO",
+    "description": "Close-up bucket overflowing, water spilling across floor with uncontrolled slosh." 
+  },
+  {
+    "shot_id": "D3",
+    "act": "ACT IV — STRAIN",
+    "start_time": "6:15",
+    "duration": 5,
+    "shot_type": "VEO",
+    "description": "Close-up smartwatch glance with subtle ignored alert tone." 
+  },
+  {
+    "shot_id": "D4",
+    "act": "ACT IV — STRAIN",
+    "start_time": "6:20",
+    "duration": 15,
+    "shot_type": "VEO",
+    "description": "Medium shot kitchen: she makes breakfast while water spreads; familiar kitchen sounds under stream." 
+  },
+  {
+    "shot_id": "D5",
+    "act": "ACT IV — STRAIN",
+    "start_time": "6:35",
+    "duration": 5,
+    "shot_type": "VEO",
+    "description": "A drop hits her shoulder without emotional reaction; fabric tap."
+  },
+  {
+    "shot_id": "D6",
+    "act": "ACT IV — STRAIN",
+    "start_time": "6:40",
+    "duration": 5,
+    "shot_type": "VEO",
+    "description": "She deploys towels and mop then reaches for umbrella amid frantic rustle." 
+  },
+  {
+    "shot_id": "D7",
+    "act": "ACT IV — STRAIN",
+    "start_time": "6:45",
+    "duration": 3,
+    "shot_type": "VEO",
+    "description": "Close-up umbrella opening indoors; water hits fabric with metallic snap leading to muffled rain."
+  },
+  {
+    "shot_id": "D8",
+    "act": "ACT IV — STRAIN",
+    "start_time": "6:48",
+    "duration": 2,
+    "shot_type": "VEO",
+    "description": "She pours coffee under the umbrella; profound silence for one full beat." 
+  },
+  {
+    "shot_id": "D9",
+    "act": "ACT IV — STRAIN",
+    "start_time": "6:50",
+    "duration": 0.4,
+    "shot_type": "FLASHBACK",
+    "description": "Flashback: mirror with blank hollow reflection as tone drops out completely." 
+  },
+  {
+    "shot_id": "D10",
+    "act": "ACT IV — STRAIN",
+    "start_time": "7:00",
+    "duration": 5,
+    "shot_type": "VEO",
+    "description": "Medium shot water moving across floor; she feels it with bare feet and stops while stream continues." 
+  },
+  {
+    "shot_id": "D11",
+    "act": "ACT IV — STRAIN",
+    "start_time": "7:05",
+    "duration": 5,
+    "shot_type": "VEO",
+    "description": "She drops the umbrella and looks at mop, buckets, towels; umbrella clatter." 
+  },
+  {
+    "shot_id": "D12",
+    "act": "ACT IV — STRAIN",
+    "start_time": "7:10",
+    "duration": 8,
+    "shot_type": "IMAGEN",
+    "description": "The Pause: locked medium shot; she stands motionless as single low cello note begins." 
+  },
+  {
+    "shot_id": "D13",
+    "act": "ACT IV — STRAIN",
+    "start_time": "7:18",
+    "duration": 7,
+    "shot_type": "IMAGEN",
+    "description": "Slow zoom toward her eyes without blink; room tone only." 
+  },
+  {
+    "shot_id": "D14",
+    "act": "ACT IV — STRAIN",
+    "start_time": "7:25",
+    "duration": 0.5,
+    "shot_type": "VEO",
+    "description": "Camera passes through gaze into darkness with deep whoosh transition (transition bridge into Act V)."
+  },
+  {
+    "shot_id": "E1",
+    "act": "ACT V — SEEING",
+    "start_time": "7:25",
+    "duration": 5,
+    "shot_type": "VEO",
+    "description": "Minimal dark space with cello hold and emerging subtle electronics." 
+  },
+  {
+    "shot_id": "E2",
+    "act": "ACT V — SEEING",
+    "start_time": "7:30",
+    "duration": 6,
+    "shot_type": "VEO",
+    "description": "Diagram forming imperfectly: heart, knot, two figures, old photo with slight misalignment." 
+  },
+  {
+    "shot_id": "E3",
+    "act": "ACT V — SEEING",
+    "start_time": "7:36",
+    "duration": 6,
+    "shot_type": "VEO",
+    "description": "Diagram shrinks as camera ascends into attic space." 
+  },
+  {
+    "shot_id": "E4",
+    "act": "ACT V — SEEING",
+    "start_time": "7:42",
+    "duration": 5,
+    "shot_type": "IMAGEN",
+    "description": "Close-up rusted fastener on damp cracked beam with static-like texture."
+  },
+  {
+    "shot_id": "E5",
+    "act": "ACT V — SEEING",
+    "start_time": "7:47",
+    "duration": 6,
+    "shot_type": "VEO",
+    "description": "Memory of tangled frayed wires with single beam of light and overlapping indistinct whispers." 
+  },
+  {
+    "shot_id": "E6",
+    "act": "ACT V — SEEING",
+    "start_time": "7:53",
+    "duration": 6,
+    "shot_type": "IMAGEN",
+    "description": "Attic opening revealing indifferent outside environment with distant wind." 
+  },
+  {
+    "shot_id": "E7",
+    "act": "ACT V — SEEING",
+    "start_time": "7:59",
+    "duration": 7,
+    "shot_type": "IMAGEN",
+    "description": "Empty wall with missing photograph and hollow resonance." 
+  },
+  {
+    "shot_id": "E8",
+    "act": "ACT V — SEEING",
+    "start_time": "8:06",
+    "duration": 7,
+    "shot_type": "VEO",
+    "description": "Elements merge into single drop suspended mid-air in silence." 
+  },
+  {
+    "shot_id": "E9",
+    "act": "ACT V — SEEING",
+    "start_time": "8:13",
+    "duration": 7,
+    "shot_type": "VEO",
+    "description": "Drop dissolves into vapor; plink stops." 
+  },
+  {
+    "shot_id": "E10",
+    "act": "ACT V — SEEING",
+    "start_time": "8:20",
+    "duration": 10,
+    "shot_type": "VEO",
+    "description": "Pull back to woman in kitchen; her face holds quiet recognition as music resolves to soft minor chord." 
+  },
+  {
+    "shot_id": "F1",
+    "act": "ENDING",
+    "start_time": "8:30",
+    "duration": 10,
+    "shot_type": "VEO",
+    "description": "Morning light enters; she removes main bucket while mop remains unused; slow plink returns." 
+  },
+  {
+    "shot_id": "F2",
+    "act": "ENDING",
+    "start_time": "8:40",
+    "duration": 25,
+    "shot_type": "IMAGEN",
+    "description": "Slow zoom on damaged ceiling fully visible; chord holds." 
+  },
+  {
+    "shot_id": "F3",
+    "act": "ENDING",
+    "start_time": "9:05",
+    "duration": 15,
+    "shot_type": "IMAGEN",
+    "description": "Freeze frame on ceiling; chord fades." 
+  },
+  {
+    "shot_id": "F4",
+    "act": "ENDING",
+    "start_time": "9:20",
+    "duration": 40,
+    "shot_type": "BLACK",
+    "description": "Fade to black with complete silence, padding final runtime to 10:00." 
+  }
+]
