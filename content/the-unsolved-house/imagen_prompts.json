@@ -1,0 +1,82 @@
+[
+  {
+    "shot_id": "A6",
+    "duration": 3,
+    "model": "Imagen 4 Fast",
+    "prompt": "1080p extreme close-up of a smartphone health chart perfectly in range, minimal UI, cool dawn light, clinical clarity, cinematic visual essay style, no text overlays, silent tension implied.",
+    "negative_prompt": "hands holding phone in motion, extra text, exaggerated glow",
+    "camera_motion": "1.02x slow push in over duration"
+  },
+  {
+    "shot_id": "B11",
+    "duration": 25,
+    "model": "Imagen 4 Fast",
+    "prompt": "Nighttime long shot of a woman lying awake on bed, eyes open, ceiling drip sound implied, sparse room, cool blue ambient light, cinematic stillness, no dialogue, silent visual essay framing.",
+    "negative_prompt": "tears, dramatic expressions, cluttered bedroom",
+    "camera_motion": "Subtle 1.01x drift toward subject"
+  },
+  {
+    "shot_id": "D1",
+    "duration": 20,
+    "model": "Imagen 4 Fast",
+    "prompt": "Wide shot of a window with no rain outside while interior leak persists, muted morning tones, reflective floor hints, cinematic composition with negative space, restrained lighting.",
+    "negative_prompt": "heavy storm visible, bright sunbeams, people in frame",
+    "camera_motion": "1.015x slow pan left to right"
+  },
+  {
+    "shot_id": "D12",
+    "duration": 8,
+    "model": "Imagen 4 Fast",
+    "prompt": "Locked medium shot of a woman standing motionless in a kitchen with scattered mop, buckets, towels; single low cello note atmosphere, soft overhead light, calm yet tense framing, cinematic essay tone.",
+    "negative_prompt": "overt emotion, smiling, dramatic pose",
+    "camera_motion": "Static hold"
+  },
+  {
+    "shot_id": "D13",
+    "duration": 7,
+    "model": "Imagen 4 Fast",
+    "prompt": "Portrait framing of the same woman, eyes steady and unblinking, background soft kitchen blur, quiet room tone, subtle grain, cinematic realism, no dialogue or subtitles.",
+    "negative_prompt": "tears, exaggerated makeup, wide smile",
+    "camera_motion": "Ken Burns style 1.03x push to eyes"
+  },
+  {
+    "shot_id": "E4",
+    "duration": 5,
+    "model": "Imagen 4 Fast",
+    "prompt": "Close-up of a rusted fastener on a damp cracked attic beam, moisture stains, dim light, static-like texture in air, muted palette, documentary-like still.",
+    "negative_prompt": "fresh paint, vivid colors, human figures",
+    "camera_motion": "0.98x slow pull back"
+  },
+  {
+    "shot_id": "E6",
+    "duration": 6,
+    "model": "Imagen 4 Fast",
+    "prompt": "View up through an attic opening to an indifferent outside environment, distant wind suggested, muted daylight, dust motes, restrained framing, no dramatic sky.",
+    "negative_prompt": "storm clouds, bright sunshine, birds flying",
+    "camera_motion": "1.01x gentle tilt up"
+  },
+  {
+    "shot_id": "E7",
+    "duration": 7,
+    "model": "Imagen 4 Fast",
+    "prompt": "Minimal empty interior wall with a missing photograph spot, faint hook mark, hollow resonance implied, soft shadowing, cinematic austerity, no text.",
+    "negative_prompt": "wall art, visible people, bright decorations",
+    "camera_motion": "1.02x slow push"
+  },
+  {
+    "shot_id": "F2",
+    "duration": 25,
+    "model": "Imagen 4 Fast",
+    "prompt": "Damaged ceiling fully visible in morning light, water stain patterns, controlled framing with negative space, soft chord mood, cinematic essay look, no additional objects intruding.",
+    "negative_prompt": "newly repaired ceiling, tools visible, dramatic cracks",
+    "camera_motion": "0.99x gradual pull back"
+  },
+  {
+    "shot_id": "F3",
+    "duration": 15,
+    "model": "Imagen 4 Fast",
+    "prompt": "Freeze-frame style image of the same damaged ceiling, still and unresolved, neutral color grade, cinematic documentary tone, no text.",
+    "negative_prompt": "workers present, motion blur, bright colored lights",
+    "camera_motion": "Static hold"
+  }
+]
